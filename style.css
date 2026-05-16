@@ -1,0 +1,122 @@
+/* Grundlegende Einstellungen für sauberes Layout */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: #e0e0e0; /* Dezenter, grauer Hintergrund */
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Der Container hält alles schön in der Mitte */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header & BEYOND Logo */
+header {
+    background-color: #2c2c2c; /* Dunkelgrau für starken Kontrast */
+    padding: 50px 0;
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 4px solid #4CAF50; /* Grüner Strich unter dem Header */
+}
+
+.logo {
+    color: #4CAF50; /* BEYOND in Grün */
+    font-size: 3.5rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    color: #aaaaaa;
+    font-size: 1.1rem;
+}
+
+/* Die einzelnen Raid-Posts */
+.post {
+    background: #ffffff; /* Weiße Boxen für optimale Lesbarkeit */
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Leichter 3D Schatten */
+}
+
+.post h2 {
+    color: #222;
+    margin-bottom: 5px;
+}
+
+.date {
+    display: block;
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.post p {
+    margin-bottom: 25px;
+}
+
+/* Tabellen-Styling (Handy-freundlich) */
+.table-responsive {
+    overflow-x: auto; /* Wichtig: Erlaubt Wischen auf dem Handy bei breiten Tabellen */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Macht jede zweite Tabellenzeile minimal dunkler (Zebra-Effekt) */
+tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+footer {
+    text-align: center;
+    padding: 30px 0;
+    color: #666;
+    font-size: 0.9rem;
+    margin-top: 20px;
+}
+
+/* Mobile Optimierung fürs Handy */
+@media (max-width: 600px) {
+    .logo {
+        font-size: 2.5rem;
+    }
+    .post {
+        padding: 20px;
+    }
+    th, td {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+}
