@@ -20,12 +20,26 @@ body {
 }
 
 /* Header & BEYOND Logo */
-header {
-    background-color: #2c2c2c; /* Dunkelgrau für starken Kontrast */
-    padding: 50px 0;
-    text-align: center;
-    margin-bottom: 40px;
-    border-bottom: 4px solid #4CAF50; /* Grüner Strich unter dem Header */
+/* Styling für den Header-Bereich */
+.main-header {
+    width: 100%;
+    background-color: #1a1a1a; /* Hintergrundfarbe des Headers - hier anpassen */
+    padding: 15px 0;           /* Abstand oben und unten für das Logo */
+    text-align: center;        /* Zentriert das Logo */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3); /* Schicker Schatten-Effekt */
+}
+
+/* Styling für das Logo-Bild selbst */
+.header-logo {
+    max-height: 80px;  /* Maximale Höhe des Logos – hier nach Wunsch anpassen! */
+    width: auto;       /* Behält das richtige Seitenverhältnis bei */
+    display: inline-block;
+    transition: transform 0.2s ease; /* Kleiner Animationseffekt beim Drüberfahren */
+}
+
+/* Kleiner Bonus: Logo wird leicht größer, wenn man mit der Maus drüberfährt */
+.header-logo:hover {
+    transform: scale(1.05);
 }
 
 .logo {
