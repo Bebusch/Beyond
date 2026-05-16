@@ -31,7 +31,7 @@ body {
 
 /* Styling für das Logo-Bild selbst */
 .header-logo {
-    max-height: 80px;  /* Maximale Höhe des Logos – hier nach Wunsch anpassen! */
+    max-height: 160px;  /* Maximale Höhe des Logos – hier nach Wunsch anpassen! */
     width: auto;       /* Behält das richtige Seitenverhältnis bei */
     display: inline-block;
     transition: transform 0.2s ease; /* Kleiner Animationseffekt beim Drüberfahren */
