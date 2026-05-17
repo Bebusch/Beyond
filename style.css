@@ -193,20 +193,28 @@ footer {
 /* Mobile Optimierung fürs Handy */
 @media (max-width: 900px) {
     .blog-layout {
-        grid-template-columns: 1fr; 
+        display: flex;
+        flex-direction: column-reverse; /* Dreht die Reihenfolge um: Sidebar rutscht nach oben! */
     }
+
+    .sidebar {
+        margin-bottom: 20px; /* Abstand zwischen Sidebar und den Blogposts */
+        width: 100%;
+    }
+
     .post {
         padding: 20px;
     }
+
     th, td {
         padding: 10px;
         font-size: 0.9rem;
     }
 
-    /* 🔥 HIER DIESE NEUEN ZEILEN FÜR DAS DROPDOWN EINFÜGEN: */
+    /* Verhindert den automatischen Handy-Zoom beim Klicken */
     .table-accordion summary {
-        font-size: 16px; /* Verhindert den automatischen Handy-Zoom! */
-        padding: 12px 15px; /* Macht es auf dem Display kompakter */
+        font-size: 16px; 
+        padding: 12px 15px; 
     }
 
     /* Verhindert, dass die Tabelle die Box auf dem Handy sprengt */
