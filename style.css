@@ -1,4 +1,5 @@
 /* Grundlegende Einstellungen für sauberes Layout */
+/* Grundlegende Einstellungen für sauberes Layout */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -14,55 +15,47 @@ body {
 
 /* Der Container hält alles schön in der Mitte */
 .container {
-    max-width: 800px;
+    max-width: 1100px; /* Erweitert für das Zwei-Spalten-Layout */
     margin: 0 auto;
     padding: 0 20px;
 }
 
 /* Header & BEYOND Logo */
-/* Styling für den Header-Bereich */
 .main-header {
     width: 100%;
-    background-color: #1a1a1a; /* Hintergrundfarbe des Headers - hier anpassen */
-    padding: 15px 0;           /* Abstand oben und unten für das Logo */
-    text-align: center;        /* Zentriert das Logo */
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3); /* Schicker Schatten-Effekt */
+    background-color: #1a1a1a; 
+    padding: 15px 0;           
+    text-align: center;        
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3); 
+    margin-bottom: 40px;
 }
 
-/* Styling für das Logo-Bild selbst */
 .header-logo {
-    max-height: 160px;  /* Maximale Höhe des Logos – hier nach Wunsch anpassen! */
-    width: auto;       /* Behält das richtige Seitenverhältnis bei */
+    max-height: 160px;  
+    width: auto;       
     display: inline-block;
-    transition: transform 0.2s ease; /* Kleiner Animationseffekt beim Drüberfahren */
+    transition: transform 0.2s ease; 
 }
 
-/* Kleiner Bonus: Logo wird leicht größer, wenn man mit der Maus drüberfährt */
 .header-logo:hover {
     transform: scale(1.05);
 }
 
-.logo {
-    color: #4CAF50; /* BEYOND in Grün */
-    font-size: 3.5rem;
-    font-weight: 900;
-    letter-spacing: 3px;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-}
-
-.subtitle {
-    color: #aaaaaa;
-    font-size: 1.1rem;
+/* BLOG GRID-LAYOUT */
+.blog-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px; /* Hauptbereich links, Sidebar rechts */
+    gap: 30px;
+    align-items: start;
 }
 
 /* Die einzelnen Raid-Posts */
 .post {
-    background: #ffffff; /* Weiße Boxen für optimale Lesbarkeit */
+    background: #ffffff; 
     padding: 30px;
     border-radius: 8px;
     margin-bottom: 40px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Leichter 3D Schatten */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
 }
 
 .post h2 {
@@ -82,15 +75,92 @@ body {
     margin-bottom: 25px;
 }
 
+.post ul {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.post li {
+    margin-bottom: 8px;
+}
+
+/* SIDEBAR STYLING */
+.sidebar-box {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.sidebar-box h3 {
+    margin-bottom: 15px;
+    border-bottom: 3px solid #4CAF50; /* Grüner Akzent für BEYOND */
+    padding-bottom: 5px;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.archive-list {
+    list-style: none;
+}
+
+.archive-list li {
+    margin-bottom: 8px;
+}
+
+.archive-list li a {
+    color: #444;
+    text-decoration: none;
+    display: block;
+    padding: 4px 0;
+    transition: color 0.2s ease;
+}
+
+.archive-list li a:hover, .archive-list li a.active {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+/* EINKLAPPBARE TABELLE (ACCORDION) */
+.table-accordion {
+    margin-top: 30px;
+    background: #fdfdfd;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+}
+
+.table-accordion summary {
+    padding: 15px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+    background-color: #f7f7f7;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.table-accordion summary:hover {
+    background-color: #eeeeee;
+    color: #4CAF50;
+}
+
+.table-accordion[open] summary {
+    border-bottom: 1px solid #ddd;
+    background-color: #f4f4f4;
+}
+
 /* Tabellen-Styling (Handy-freundlich) */
 .table-responsive {
-    overflow-x: auto; /* Wichtig: Erlaubt Wischen auf dem Handy bei breiten Tabellen */
+    overflow-x: auto; 
+    padding: 10px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
 }
 
 table, th, td {
@@ -108,7 +178,6 @@ th {
     font-weight: bold;
 }
 
-/* Macht jede zweite Tabellenzeile minimal dunkler (Zebra-Effekt) */
 tr:nth-child(even) {
     background-color: #fafafa;
 }
@@ -122,9 +191,9 @@ footer {
 }
 
 /* Mobile Optimierung fürs Handy */
-@media (max-width: 600px) {
-    .logo {
-        font-size: 2.5rem;
+@media (max-width: 900px) {
+    .blog-layout {
+        grid-template-columns: 1fr; /* Sidebar rutscht auf Handys nach unten */
     }
     .post {
         padding: 20px;
