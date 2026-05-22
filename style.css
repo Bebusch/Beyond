@@ -1,5 +1,4 @@
 /* Grundlegende Einstellungen für sauberes Layout */
-/* Grundlegende Einstellungen für sauberes Layout */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -15,9 +14,13 @@ body {
 
 /* Der Container hält alles schön in der Mitte */
 .container {
-    max-width: 1100px; /* Erweitert für das Zwei-Spalten-Layout */
+    max-width: 1100px;
     margin: 0 auto;
     padding: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
 }
 
 /* Header & BEYOND Logo */
@@ -41,12 +44,15 @@ body {
     transform: scale(1.05);
 }
 
-/* BLOG GRID-LAYOUT */
-.blog-layout {
-    display: grid;
-    grid-template-columns: 1fr 300px; /* Hauptbereich links, Sidebar rechts */
-    gap: 30px;
-    align-items: start;
+/* BLOG LAYOUT SPALTEN */
+.main-content {
+    flex: 3; /* Hauptbereich nimmt 3 Teile des Platzes */
+    min-width: 300px;
+}
+
+.sidebar {
+    flex: 1; /* Sidebar nimmt 1 Teil des Platzes */
+    min-width: 250px;
 }
 
 /* Die einzelnen Raid-Posts */
@@ -123,13 +129,81 @@ body {
     font-weight: bold;
 }
 
+/* KOMPAKTES STYLING FÜR DIE ATTENDANCE BOX */
+.attendance-box {
+    background: #1a1a1a; /* Dunkler, edler Hintergrund */
+    border: 1px solid #333;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.attendance-box h2 {
+    color: #fff !important;
+}
+
+/* Scrollbalken, falls die Tabelle doch mal zu lang wird */
+.attendance-scroll {
+    max-height: 400px; /* Begrenzt die Höhe der Liste */
+    overflow-y: auto;  /* Erlaubt vertikales Scrollen innerhalb der Box */
+    margin-top: 10px;
+}
+
+/* Tabellen-Feinschliff */
+#attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+#attendance-table th {
+    background-color: #262626;
+    color: #fff;
+    border: 1px solid #333;
+}
+
+#attendance-table td {
+    padding: 8px 10px;
+    text-align: left;
+    border: 1px solid #2a2a2a;
+    color: #ddd;
+}
+
+#attendance-table tr:nth-child(even) {
+    background-color: #202020;
+}
+
+/* Der Fortschrittsbalken */
+.attendance-progress-bg {
+    background: #262626;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    width: 80px; 
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+    overflow: hidden;
+    height: 6px;
+}
+
+.attendance-progress-bar {
+    background: linear-gradient(90deg, #4caf50, #81c784); /* Schöner grüner Verlauf */
+    height: 100%;
+    border-radius: 3px;
+}
+
 /* EINKLAPPBARE TABELLE (ACCORDION) */
 .table-accordion {
-    margin-top: 30px;
+    margin-top: 10px;
     background: #fdfdfd;
     border-radius: 6px;
     border: 1px solid #e0e0e0;
     overflow: hidden;
+}
+
+.attendance-box .table-accordion {
+    background: #222;
+    border: 1px solid #333;
 }
 
 .table-accordion summary {
@@ -142,8 +216,18 @@ body {
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+.attendance-box .table-accordion summary {
+    background-color: #262626;
+    color: #eee;
+}
+
 .table-accordion summary:hover {
     background-color: #eeeeee;
+    color: #4CAF50;
+}
+
+.attendance-box .table-accordion summary:hover {
+    background-color: #333;
     color: #4CAF50;
 }
 
@@ -152,7 +236,12 @@ body {
     background-color: #f4f4f4;
 }
 
-/* Tabellen-Styling (Handy-freundlich) */
+.attendance-box .table-accordion[open] summary {
+    border-bottom: 1px solid #333;
+    background-color: #1e1e1e;
+}
+
+/* Tabellen-Styling standard */
 .table-responsive {
     overflow-x: auto; 
     padding: 10px;
@@ -188,17 +277,32 @@ footer {
     color: #666;
     font-size: 0.9rem;
     margin-top: 20px;
+    width: 100%;
 }
+
+/* WoW Klassenfarben */
+.color-druid { color: #FF7C0A; font-weight: bold; }
+.color-hunter { color: #AAD372; font-weight: bold; }
+.color-mage { color: #3FC7EB; font-weight: bold; }
+.color-paladin { color: #F48CBA; font-weight: bold; }
+.color-priest { color: #7f8c8d; font-weight: bold; } 
+.color-rogue { color: #d1c40f; font-weight: bold; } 
+.color-shaman { color: #0070DD; font-weight: bold; }
+.color-warlock { color: #8788EE; font-weight: bold; }
+.color-warrior { color: #C69B6D; font-weight: bold; }
 
 /* Mobile Optimierung fürs Handy */
 @media (max-width: 900px) {
-    .blog-layout {
-        display: flex;
-        flex-direction: column-reverse; /* Dreht die Reihenfolge um: Sidebar rutscht nach oben! */
+    .container {
+        flex-direction: column-reverse; /* Sidebar wandert oben übers Handy-Display */
     }
 
     .sidebar {
-        margin-bottom: 20px; /* Abstand zwischen Sidebar und den Blogposts */
+        margin-bottom: 20px; 
+        width: 100%;
+    }
+    
+    .main-content {
         width: 100%;
     }
 
@@ -211,107 +315,13 @@ footer {
         font-size: 0.9rem;
     }
 
-    /* Verhindert den automatischen Handy-Zoom beim Klicken */
     .table-accordion summary {
         font-size: 16px; 
         padding: 12px 15px; 
     }
 
-    /* Verhindert, dass die Tabelle die Box auf dem Handy sprengt */
     .table-responsive {
         padding: 0;
         width: 100%;
     }
-}
-
-/* ==========================================================================
-   WoW Klassenfarben für Spielernamen
-   ========================================================================== */
-.color-druid { color: #FF7C0A; font-weight: bold; }
-.color-hunter { color: #AAD372; font-weight: bold; }
-.color-mage { color: #3FC7EB; font-weight: bold; }
-.color-paladin { color: #F48CBA; font-weight: bold; }
-/* Da der Hintergrund weiß/hellgrau ist, machen wir Priester ein dunkles Grau/Silber, sonst sieht man weiß nicht! */
-.color-priest { color: #7f8c8d; font-weight: bold; } 
-.color-rogue { color: #d1c40f; font-weight: bold; } /* Leicht abgedunkeltes Gelb für bessere Lesbarkeit auf weiß */
-.color-shaman { color: #0070DD; font-weight: bold; }
-.color-warlock { color: #8788EE; font-weight: bold; }
-.color-warrior { color: #C69B6D; font-weight: bold; }
-
-/* Styling für den Attendance-Fortschrittsbalken */
-.table-responsive div[style*="background"] {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
-}
-
-/* Verhindert unschöne Zeilenumbrüche bei der Prozentanzeige */
-#attendance-table td:last-child {
-    white-space: nowrap;
-}
-
-/* Layout-Retter: Sorgt dafür, dass Main und Sidebar nebeneinander passen */
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    align-items: flex-start;
-}
-
-.main-content {
-    flex: 3; /* Hauptbereich nimmt 3 Teile des Platzes */
-    min-width: 300px;
-}
-
-.sidebar {
-    flex: 1; /* Sidebar nimmt 1 Teil des Platzes */
-    min-width: 250px;
-}
-
-/* Kompaktes Styling für die Attendance-Box */
-.attendance-box {
-    background: #1a1a1a; /* Dunkler, edler Hintergrund */
-    border: 1px solid #333;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 25px;
-}
-
-/* Scrollbalken, falls die Tabelle doch mal zu lang wird */
-.attendance-scroll {
-    max-height: 400px; /* Begrenzt die Höhe der Liste */
-    overflow-y: auto;  /* Erlaubt vertikales Scrollen innerhalb der Box */
-    margin-top: 10px;
-}
-
-/* Tabellen-Feinschliff */
-#attendance-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem; /* Etwas kleinere Schrift für mehr Kompaktheit */
-}
-
-#attendance-table th, 
-#attendance-table td {
-    padding: 8px 10px;
-    text-align: left;
-    border-bottom: 1px solid #2a2a2a;
-}
-
-/* Der Fortschrittsbalken (schmaler und eleganter) */
-.attendance-progress-bg {
-    background: #262626;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 3px;
-    width: 80px; /* Schmaler gemacht */
-    display: inline-block;
-    margin-right: 8px;
-    vertical-align: middle;
-    overflow: hidden;
-    height: 6px;
-}
-
-.attendance-progress-bar {
-    background: linear-gradient(90deg, #4caf50, #81c784); /* Schöner Verlauf */
-    height: 100%;
-    border-radius: 3px;
 }
