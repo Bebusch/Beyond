@@ -507,15 +507,21 @@
         </div>
     </footer>
 
+Genau das Skript meinte ich! Du hast es perfekt parat.
+
+Damit wir dort die neuen, schlanken CSS-Klassen für den Fortschrittsbalken und das kompaktere Design nutzen (die ich dir eben in der style.css vorgeschlagen habe), müssen wir in diesem Skript nur den unteren Teil (Schritt 3) leicht anpassen.
+
+Hier ist das komplett fertige, optimierte JavaScript für dich. Ersetze dein aktuelles Skript einfach 1:1 mit diesem hier:
+
+HTML
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     const rows = document.querySelectorAll(".table-responsive table tbody tr");
     const attendance = {};
     
-    // NEU: Zählt einfach, wie viele Raid-Links du im Archiv-Menü hast (das sind garantiert alle!)
+    // Zählt, wie viele Raid-Links du im Archiv-Menü hast
     let totalRaids = document.querySelectorAll(".archive-list li a").length; 
     
-    // Falls das Archiv leer ist, nutzen wir als Backup die Posts
     if (totalRaids === 0) {
         totalRaids = document.querySelectorAll("article.post, section.post").length;
     }
@@ -528,9 +534,8 @@ document.addEventListener("DOMContentLoaded", function() {
         const nameSpan = row.querySelector("td:first-child span");
         if (nameSpan) {
             const name = nameSpan.textContent.trim();
-            const className = nameSpan.className; // Holt z.B. "color-warlock"
+            const className = nameSpan.className; 
             
-            // Holt die Klasse aus der zweiten Spalte
             const classCell = row.querySelector("td:nth-child(2)");
             const classText = classCell ? classCell.textContent.trim().split(" ")[0] : "Unbekannt"; 
 
@@ -550,26 +555,25 @@ document.addEventListener("DOMContentLoaded", function() {
         return { name: name, ...attendance[name] };
     }).sort((a, b) => b.count - a.count);
 
-    // 3. Tabelle im HTML befüllen
+    // 3. Tabelle im HTML befüllen (JETZT OPTIMIERT & COMPAKT)
     const tbody = document.getElementById("attendance-tbody");
     if (tbody) {
-        tbody.innerHTML = ""; // Clear
+        tbody.innerHTML = ""; 
 
         sortedAttendance.forEach(player => {
-            // Sicherheitscheck, damit die Quote nicht über 100% steigt, falls ein Log doppelt zählt
             const displayTotal = Math.max(totalRaids, player.count);
             const percentage = Math.round((player.count / displayTotal) * 100);
             
             const tr = document.createElement("tr");
             tr.innerHTML = `
                 <td><span class="${player.cssClass}">${player.name}</span></td>
-                <td>${player.gameClass}</td>
-                <td><strong>${player.count}</strong> / ${displayTotal}</td>
-                <td>
-                    <div style="background: #333; border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; width: 100px; display: inline-block; margin-right: 10px; vertical-align: middle; overflow: hidden;">
-                        <div style="background: #4caf50; height: 8px; width: ${percentage}%;"></div>
+                <td><small>${player.gameClass}</small></td>
+                <td><strong>${player.count}</strong>/${displayTotal}</td>
+                <td style="white-space: nowrap;">
+                    <div class="attendance-progress-bg">
+                        <div class="attendance-progress-bar" style="width: ${percentage}%;"></div>
                     </div> 
-                    ${percentage}%
+                    <span style="font-weight: bold; font-size: 0.85rem;">${percentage}%</span>
                 </td>
             `;
             tbody.appendChild(tr);
