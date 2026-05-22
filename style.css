@@ -223,3 +223,17 @@ footer {
         width: 100%;
     }
 }
+
+/* ==========================================================================
+   WoW Klassenfarben für Spielernamen
+   ========================================================================== */
+.color-druid { color: #FF7C0A; font-weight: bold; }
+.color-hunter { color: #AAD372; font-weight: bold; }
+.color-mage { color: #3FC7EB; font-weight: bold; }
+.color-paladin { color: #F48CBA; font-weight: bold; }
+/* Da der Hintergrund weiß/hellgrau ist, machen wir Priester ein dunkles Grau/Silber, sonst sieht man weiß nicht! */
+.color-priest { color: #7f8c8d; font-weight: bold; } 
+.color-rogue { color: #d1c40f; font-weight: bold; } /* Leicht abgedunkeltes Gelb für bessere Lesbarkeit auf weiß */
+.color-shaman { color: #0070DD; font-weight: bold; }
+.color-warlock { color: #8788EE; font-weight: bold; }
+.color-warrior { color: #C69B6D; font-weight: bold; }
