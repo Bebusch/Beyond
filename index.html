@@ -513,40 +513,47 @@
         </div>
     </footer>
 
-    <script>
+<script>
     document.addEventListener("DOMContentLoaded", function() {
         const rows = document.querySelectorAll(".table-responsive table tbody tr");
         const attendance = {};
         
+        // Zählt, wie viele Raid-Links im Archiv sind (aktuell 4)
         let totalRaids = document.querySelectorAll(".archive-list li a").length; 
         if (totalRaids === 0) {
             totalRaids = document.querySelectorAll("article.post, section.post").length;
         }
 
         rows.forEach(row => {
+            // Ignoriert die Anwesenheits-Tabelle selbst beim Zählen!
             if (row.closest("#attendance-table")) return;
 
             const nameSpan = row.querySelector("td:first-child span");
             if (nameSpan) {
-                const name = nameSpan.textContent.trim();
+                const rawName = nameSpan.textContent.trim();
+                // Macht den Namensabgleich unempfindlich gegen kleine Tippfehler/Akzente
+                const nameKey = rawName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                
                 const className = nameSpan.className; 
                 
+                // Holt die Klasse aus Spalte 2
                 const classCell = row.querySelector("td:nth-child(2)");
                 const classText = classCell ? classCell.textContent.trim().split(" ")[0] : "Unbekannt"; 
 
-                if (!attendance[name]) {
-                    attendance[name] = {
+                if (!attendance[nameKey]) {
+                    attendance[nameKey] = {
+                        displayName: rawName,
                         count: 0,
                         cssClass: className,
                         gameClass: classText
                     };
                 }
-                attendance[name].count++;
+                attendance[nameKey].count++;
             }
         });
 
-        const sortedAttendance = Object.keys(attendance).map(name => {
-            return { name: name, ...attendance[name] };
+        const sortedAttendance = Object.keys(attendance).map(key => {
+            return { name: attendance[key].displayName, ...attendance[key] };
         }).sort((a, b) => b.count - a.count);
 
         const tbody = document.getElementById("attendance-tbody");
@@ -560,8 +567,8 @@
                 const tr = document.createElement("tr");
                 tr.innerHTML = `
                     <td><span class="${player.cssClass}">${player.name}</span></td>
-                    <td><small>${player.gameClass}</small></td>
-                    <td><strong>${player.count}</strong>/${displayTotal}</td>
+                    <td>${player.gameClass}</td>
+                    <td><strong>${player.count}</strong> / ${displayTotal}</td>
                     <td style="white-space: nowrap;">
                         <div class="attendance-progress-bg">
                             <div class="attendance-progress-bar" style="width: ${percentage}%;"></div>
