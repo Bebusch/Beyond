@@ -248,3 +248,70 @@ footer {
 #attendance-table td:last-child {
     white-space: nowrap;
 }
+
+/* Layout-Retter: Sorgt dafür, dass Main und Sidebar nebeneinander passen */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.main-content {
+    flex: 3; /* Hauptbereich nimmt 3 Teile des Platzes */
+    min-width: 300px;
+}
+
+.sidebar {
+    flex: 1; /* Sidebar nimmt 1 Teil des Platzes */
+    min-width: 250px;
+}
+
+/* Kompaktes Styling für die Attendance-Box */
+.attendance-box {
+    background: #1a1a1a; /* Dunkler, edler Hintergrund */
+    border: 1px solid #333;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+/* Scrollbalken, falls die Tabelle doch mal zu lang wird */
+.attendance-scroll {
+    max-height: 400px; /* Begrenzt die Höhe der Liste */
+    overflow-y: auto;  /* Erlaubt vertikales Scrollen innerhalb der Box */
+    margin-top: 10px;
+}
+
+/* Tabellen-Feinschliff */
+#attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem; /* Etwas kleinere Schrift für mehr Kompaktheit */
+}
+
+#attendance-table th, 
+#attendance-table td {
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+/* Der Fortschrittsbalken (schmaler und eleganter) */
+.attendance-progress-bg {
+    background: #262626;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    width: 80px; /* Schmaler gemacht */
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+    overflow: hidden;
+    height: 6px;
+}
+
+.attendance-progress-bar {
+    background: linear-gradient(90deg, #4caf50, #81c784); /* Schöner Verlauf */
+    height: 100%;
+    border-radius: 3px;
+}
