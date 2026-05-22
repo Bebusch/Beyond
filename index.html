@@ -515,5 +515,57 @@
         </div>
     </footer>
 
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const rows = document.querySelectorAll(".table-responsive table tbody tr");
+    const attendance = {};
+    let totalRaids = document.querySelectorAll("article.post").length; // Zählt die Raid-Beiträge
+
+    // 1. Daten aus den bestehenden Tabellen auslesen
+    rows.forEach(row => {
+        const nameSpan = row.querySelector("td:first-child span");
+        if (nameSpan) {
+            const name = nameSpan.textContent.trim();
+            const className = nameSpan.className; // Holt z.B. "color-warlock"
+            const classText = row.querySelector("td:nth-child(2)").textContent.trim().split(" ")[0]; // Holt die Klasse
+
+            if (!attendance[name]) {
+                attendance[name] = {
+                    count: 0,
+                    cssClass: className,
+                    gameClass: classText
+                };
+            }
+            attendance[name].count++;
+        }
+    });
+
+    // 2. In ein Array umwandeln und nach Anzahl der Raids sortieren
+    const sortedAttendance = Object.keys(attendance).map(name => {
+        return { name: name, ...attendance[name] };
+    }).sort((a, b) => b.count - a.count);
+
+    // 3. Tabelle im HTML befüllen
+    const tbody = document.getElementById("attendance-tbody");
+    tbody.innerHTML = ""; // Clear
+
+    sortedAttendance.forEach(player => {
+        const percentage = Math.round((player.count / totalRaids) * 100);
+        const tr = document.createElement("tr");
+        
+        tr.innerHTML = `
+            <td><span class="${player.cssClass}">${player.name}</span></td>
+            <td>${player.gameClass}</td>
+            <td><strong>${player.count}</strong> / ${totalRaids}</td>
+            <td><div style="background: #e0e0e0; border-radius: 4px; width: 100px; display: inline-block; margin-right: 100px; vertical-align: middle;">
+                    <div style="background: #4caf50; height: 8px; border-radius: 4px; width: ${percentage}%;"></div>
+                </div> 
+                ${percentage}%
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+});
+</script>
 </body>
 </html>
