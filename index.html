@@ -83,6 +83,7 @@
                             </thead>
                             <tbody>
                                 <tr><td><span class="color-hunter">Konsequenz</span></td><td>Jäger (Bestienmeister)</td><td>1.111 DPS</td><td>0</td><td>Absoluter DPS-König! Konstant, fehlerfrei und ohne Tode durchgezogen. Maschine! 🏹</td></tr>
+                                <tr><td><span class="color-rogue">Tempêst</span></td><td>Schurke (Kampf)</td><td>1.086 DPS</td><td>2 (Melee)</td><td>Brutaler Schaden, stand aber zweimal ganz oben in der Aggro-Liste und kassierte Schellen.</td></tr>
                                 <tr><td><span class="color-shaman">Elyrii</span></td><td>Schamane (Verstärker)</td><td>962 DPS</td><td>1 (Whirl)</td><td>Guter Melee-Schaden, am Ende leider vom Boss-Wirbel erwischt worden.</td></tr>
                                 <tr><td><span class="color-warlock">Yubjap</span></td><td>Hexenmeister (Destro)</td><td>920 DPS</td><td>1 (Melee)</td><td>Starker Hexer-Schaden, hat aber am Ende wieder die Aggro des Todes gezogen. ☄️</td></tr>
                                 <tr><td><span class="color-warrior">Nanev</span></td><td>Krieger (Fury)</td><td>898 DPS</td><td>1 (Knock Away)</td><td>Schaden passt, wurde aber beim Wegkicken unglücklich aus dem Leben befördert.</td></tr>
@@ -513,72 +514,76 @@
     </footer>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const rows = document.querySelectorAll(".table-responsive table tbody tr");
-        const attendance = {};
-        
-        // Zählt, wie viele Raid-Links im Archiv sind (aktuell 4)
-        let totalRaids = document.querySelectorAll(".archive-list li a").length; 
-        if (totalRaids === 0) {
-            totalRaids = document.querySelectorAll("article.post, section.post").length;
-        }
+document.addEventListener("DOMContentLoaded", function() {
+    const rows = document.querySelectorAll(".table-responsive table tbody tr");
+    const attendance = {};
+    
+    // Zählt, wie viele Raid-Links im Archiv-Menü eingetragen sind (aktuell 4)
+    let totalRaids = document.querySelectorAll(".archive-list li a").length; 
+    
+    if (totalRaids === 0) {
+        totalRaids = document.querySelectorAll("article.post, section.post").length;
+    }
 
-        rows.forEach(row => {
-            // Ignoriert die Anwesenheits-Tabelle selbst beim Zählen!
-            if (row.closest("#attendance-table")) return;
+    // 1. Daten aus den bestehenden Tabellen auslesen
+    rows.forEach(row => {
+        // Ignoriert Zeilen, die zur Attendance-Tabelle selbst gehören
+        if (row.closest("#attendance-table")) return;
 
-            const nameSpan = row.querySelector("td:first-child span");
-            if (nameSpan) {
-                const rawName = nameSpan.textContent.trim();
-                // Macht den Namensabgleich unempfindlich gegen kleine Tippfehler/Akzente
-                const nameKey = rawName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-                
-                const className = nameSpan.className; 
-                
-                // Holt die Klasse aus Spalte 2
-                const classCell = row.querySelector("td:nth-child(2)");
-                const classText = classCell ? classCell.textContent.trim().split(" ")[0] : "Unbekannt"; 
+        const nameSpan = row.querySelector("td:first-child span");
+        if (nameSpan) {
+            const rawName = nameSpan.textContent.trim();
+            
+            // WICHTIG: Macht den Namen klein und entfernt Akzente (ê -> e), damit der Abgleich immer klappt!
+            const nameKey = rawName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            
+            const className = nameSpan.className; 
+            
+            const classCell = row.querySelector("td:nth-child(2)");
+            const classText = classCell ? classCell.textContent.trim().split(" ")[0] : "Unbekannt"; 
 
-                if (!attendance[nameKey]) {
-                    attendance[nameKey] = {
-                        displayName: rawName,
-                        count: 0,
-                        cssClass: className,
-                        gameClass: classText
-                    };
-                }
-                attendance[nameKey].count++;
+            if (!attendance[nameKey]) {
+                attendance[nameKey] = {
+                    displayName: rawName, // Speichert die schöne Schreibweise für die Anzeige
+                    count: 0,
+                    cssClass: className,
+                    gameClass: classText
+                };
             }
-        });
-
-        const sortedAttendance = Object.keys(attendance).map(key => {
-            return { name: attendance[key].displayName, ...attendance[key] };
-        }).sort((a, b) => b.count - a.count);
-
-        const tbody = document.getElementById("attendance-tbody");
-        if (tbody) {
-            tbody.innerHTML = ""; 
-
-            sortedAttendance.forEach(player => {
-                const displayTotal = Math.max(totalRaids, player.count);
-                const percentage = Math.round((player.count / displayTotal) * 100);
-                
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td><span class="${player.cssClass}">${player.name}</span></td>
-                    <td>${player.gameClass}</td>
-                    <td><strong>${player.count}</strong> / ${displayTotal}</td>
-                    <td style="white-space: nowrap;">
-                        <div class="attendance-progress-bg">
-                            <div class="attendance-progress-bar" style="width: ${percentage}%;"></div>
-                        </div> 
-                        <span style="font-weight: bold; font-size: 0.85rem;">${percentage}%</span>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
+            attendance[nameKey].count++;
         }
     });
-    </script>
+
+    // 2. In ein Array umwandeln und nach Anzahl der Raids sortieren
+    const sortedAttendance = Object.keys(attendance).map(key => {
+        return { name: attendance[key].displayName, ...attendance[key] };
+    }).sort((a, b) => b.count - a.count);
+
+    // 3. Anwesenheits-Tabelle im HTML befüllen
+    const tbody = document.getElementById("attendance-tbody");
+    if (tbody) {
+        tbody.innerHTML = ""; 
+
+        sortedAttendance.forEach(player => {
+            const displayTotal = Math.max(totalRaids, player.count);
+            const percentage = Math.round((player.count / displayTotal) * 100);
+            
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><span class="${player.cssClass}">${player.name}</span></td>
+                <td>${player.gameClass}</td>
+                <td><strong>${player.count}</strong> / ${displayTotal}</td>
+                <td style="white-space: nowrap;">
+                    <div class="attendance-progress-bg">
+                        <div class="attendance-progress-bar" style="width: ${percentage}%;"></div>
+                    </div> 
+                    <span style="font-weight: bold; font-size: 0.85rem;">${percentage}%</span>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+});
+</script>
 </body>
 </html>
