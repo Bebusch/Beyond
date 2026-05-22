@@ -237,3 +237,14 @@ footer {
 .color-shaman { color: #0070DD; font-weight: bold; }
 .color-warlock { color: #8788EE; font-weight: bold; }
 .color-warrior { color: #C69B6D; font-weight: bold; }
+
+/* Styling für den Attendance-Fortschrittsbalken */
+.table-responsive div[style*="background"] {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Verhindert unschöne Zeilenumbrüche bei der Prozentanzeige */
+#attendance-table td:last-child {
+    white-space: nowrap;
+}
