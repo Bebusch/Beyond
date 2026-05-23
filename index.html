@@ -359,6 +359,14 @@
                 <h3>Raid-News</h3>
                 <p style="font-size: 0.9rem; color: #555;">Tränke besorgen nicht vergessen! Food, Schleifsteine - Jungs wir sind keine Slacker. SCHWANZ 🧪</p>
             </div>
+            <div class="sidebar-box" style="margin-top: 20px; background: #161616; border: 1px solid #2d2d2d; padding: 15px; border-radius: 5px;">
+    <h3>🔊 Taktik- &amp; Mimimi-Generator</h3>
+    <p style="font-size: 0.85rem; color: #888; margin-bottom: 5px;">Raidleitung kurz vorm Herzinfarkt? Klick für eine gepflegte Ansage:</p>
+    <div style="background: #0d0d0d; border-left: 4px solid #aa0000; padding: 12px; margin: 15px 0; min-height: 70px; display: flex; align-items: center; justify-content: center; border-radius: 0 4px 4px 0;">
+        <p id="raid-quote" style="font-style: italic; color: #ffcccc; font-size: 0.95rem; text-align: center; line-height: 1.4; margin: 0; transition: opacity 0.15s ease;">"Wer noch einmal im Wirbelwind stirbt, zahlt 50g in die Gildenbank! VERSTANDEN?!" 🤬</p>
+    </div>
+    <button onclick="generateQuote()" style="background: linear-gradient(180deg, #cc0000 0%, #880000 100%); color: white; border: 1px solid #ff4444; padding: 10px 15px; cursor: pointer; border-radius: 4px; font-weight: bold; width: 100%; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 6px rgba(0,0,0,0.4);">Nächster Einlauf 😡</button>
+</div>
         </aside> 
         
     </div> 
@@ -373,23 +381,20 @@
 document.addEventListener("DOMContentLoaded", function() {
     const raidArticles = document.querySelectorAll("article.post");
     const attendance = {};
-    const deathCounter = {}; // Hier drin speichern wir die Tode
+    const deathCounter = {};
 
-    // --- 1. DATEN AUSLESEN ---
+    // 1. Daten aus den Raid-Berichten auslesen
     raidArticles.forEach(article => {
         const rows = article.querySelectorAll(".table-responsive table tbody tr");
-        
         rows.forEach(row => {
             const nameSpan = row.querySelector("td:first-child span");
             if (nameSpan) {
                 const rawName = nameSpan.textContent.trim();
                 const nameKey = rawName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
                 const className = nameSpan.className; 
-                
                 const classCell = row.querySelector("td:nth-child(2)");
                 const classText = classCell ? classCell.textContent.trim().split(" ")[0] : "Unbekannt"; 
 
-                // Für die Anwesenheit
                 if (!attendance[nameKey]) {
                     attendance[nameKey] = { displayName: rawName, count: 0, cssClass: className, gameClass: classText };
                 }
@@ -398,14 +403,12 @@ document.addEventListener("DOMContentLoaded", function() {
                     row.dataset.countedInRaid = "true";
                 }
 
-                // FÜR DIE TODE (Hall of Shame)
-                const deathCell = row.querySelector("td:nth-child(4)"); // Spalte 4 sind die Tode
+                // Tode für Hall of Shame zählen
+                const deathCell = row.querySelector("td:nth-child(4)");
                 if (deathCell) {
                     const deathText = deathCell.textContent.trim();
-                    // Extrahiert die erste Zahl (z.B. "2 (Whirlwind)" -> 2, "0" -> 0)
                     const match = deathText.match(/^(\d+)/);
                     const deaths = match ? parseInt(match[1], 10) : 0;
-
                     if (deaths > 0) {
                         if (!deathCounter[nameKey]) {
                             deathCounter[nameKey] = { name: rawName, cssClass: className, totalDeaths: 0 };
@@ -417,7 +420,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // --- 2. ANWESENHEITSTABELLE BAUEN ---
+    // 2. Anwesenheits-Tabelle füllen
     const sortedAttendance = Object.keys(attendance).map(key => {
         return { name: attendance[key].displayName, ...attendance[key] };
     }).sort((a, b) => b.count - a.count);
@@ -425,74 +428,82 @@ document.addEventListener("DOMContentLoaded", function() {
     const tbody = document.getElementById("attendance-tbody");
     if (tbody) {
         tbody.innerHTML = ""; 
+        const totalRaids = 4; // Feste Anzahl eurer Archiv-Abende
         sortedAttendance.forEach(player => {
-            const displayTotal = raidArticles.length;
-            const percentage = Math.round((player.count / displayTotal) * 100);
+            const finalCount = Math.min(player.count, totalRaids);
+            const percentage = Math.round((finalCount / totalRaids) * 100);
             const tr = document.createElement("tr");
             tr.innerHTML = `
                 <td><span class="${player.cssClass}">${player.name}</span></td>
                 <td>${player.gameClass}</td>
-                <td><strong>${player.count}</strong> / ${displayTotal}</td>
+                <td><strong>${finalCount}</strong> / ${totalRaids}</td>
                 <td style="white-space: nowrap;">
-                    <div class="attendance-progress-bg" style="background: #333; width: 100px; height: 10px; display: inline-block; margin-right: 5px; border-radius: 3px;">
-                        <div class="attendance-progress-bar" style="width: ${percentage}%; height: 100%; background: #00ff00; border-radius: 3px;"></div>
+                    <div style="background: #222; width: 100px; height: 10px; display: inline-block; margin-right: 8px; border-radius: 3px; overflow: hidden; border: 1px solid #333;">
+                        <div style="width: ${percentage}%; height: 100%; background: linear-gradient(90deg, #00aa00 0%, #00ff00 100%); border-radius: 3px;"></div>
                     </div> 
-                    <span style="font-weight: bold; font-size: 0.85rem;">${percentage}%</span>
+                    <span style="font-weight: bold; font-size: 0.85rem; color: #00ff00;">${percentage}%</span>
                 </td>
             `;
             tbody.appendChild(tr);
         });
     }
 
-    // --- 3. HALL OF SHAME (DIAGRAMM) BAUEN ---
-    const sortedDeaths = Object.keys(deathCounter).map(key => deathCounter[key])
-        .sort((a, b) => b.totalDeaths - a.totalDeaths);
-
+    // 3. Hall of Shame Diagramm füllen
+    const sortedDeaths = Object.keys(deathCounter).map(key => deathCounter[key]).sort((a, b) => b.totalDeaths - a.totalDeaths);
     const chartContainer = document.getElementById("shame-chart-container");
     const awardDiv = document.getElementById("floor-tester-award");
 
     if (chartContainer && sortedDeaths.length > 0) {
         chartContainer.innerHTML = "";
-        
-        // Die höchste Todesanzahl ermitteln, um die Balken prozentual sauber zu skalieren
         const maxDeaths = sortedDeaths[0].totalDeaths;
-
-        // Nur die Top 7 Todes-Könige anzeigen (damit es übersichtlich bleibt)
-        const topShame = sortedDeaths.slice(0, 7);
-
-        topShame.forEach(player => {
-            const barWidth = Math.max(5, Math.round((player.totalDeaths / maxDeaths) * 100)); // Mindestens 5% Breite für die Optik
-            
+        sortedDeaths.slice(0, 7).forEach(player => {
+            const barWidth = Math.max(8, Math.round((player.totalDeaths / maxDeaths) * 100));
             const rowDiv = document.createElement("div");
-            rowDiv.className = "shame-row";
+            rowDiv.style = "display: flex; align-items: center; gap: 15px; margin-bottom: 10px;";
             rowDiv.innerHTML = `
-                <div class="shame-name"><span class="${player.cssClass}">${player.name}</span></div>
-                <div class="shame-bar-wrapper">
-                    <div class="shame-bar" style="width: ${barWidth}%;"></div>
+                <div style="width: 120px; font-weight: bold; text-align: right; white-space: nowrap;"><span class="${player.cssClass}">${player.name}</span></div>
+                <div style="flex-grow: 1; background: #222; height: 20px; border-radius: 4px; border: 1px solid #333; overflow: hidden;">
+                    <div style="width: ${barWidth}%; height: 100%; background: linear-gradient(90deg, #880000 0%, #ff2222 100%);"></div>
                 </div>
-                <div class="shame-count">💀 ${player.totalDeaths} x</div>
+                <div style="width: 60px; font-weight: bold; color: #ff3333;">💀 ${player.totalDeaths} x</div>
             `;
             chartContainer.appendChild(rowDiv);
         });
-
-        // Krönung des Gewinners
-        const king = sortedDeaths[0];
         if (awardDiv) {
-            awardDiv.innerHTML = `👑 Amtlicher Bodenbelag-Tester des Monats: <span class="${king.cssClass}" style="font-size: 1.15rem; text-shadow: 1px 1px 2px black;">${king.name}</span> (${king.totalDeaths} Tode! 🛌)`;
+            awardDiv.innerHTML = `👑 Amtlicher Bodenbelag-Tester des Monats: <span class="${sortedDeaths[0].cssClass}" style="font-weight: 900;">${sortedDeaths[0].name}</span> (${sortedDeaths[0].totalDeaths} Tode! 🛌)`;
         }
-    } else if (chartContainer) {
-        chartContainer.innerHTML = "<p style='color: #666; text-align: center;'>Noch niemand gestorben? Unglaublich!</p>";
-        if (awardDiv) awardDiv.style.display = "none";
     }
 });
 
+// FIESE SPRÜCHE FÜR DEN BUTTON
+const MIMIMI_QUOTES = [
+    "Wirbelwind ist KEIN Karussell! Warum laufen da fünf Caster gleichzeitig rein?! Seid ihr farbenblind? 🎡💀",
+    "Pukipala macht 119 DPS. Ein nackter Gnom mit einem Holzlöffel macht im Autohit mehr Druck! AUFWACHEN! 🪵💤",
+    "Dagegen ist schon wieder First-Death! Jungs, wenn du als Magier Aggro ziehst, hilft dir auch kein Manaschild mehr! 🛌🧙‍♂️",
+    "Alessâ stirbt an STURZSCHADEN im Schlangenschrein! Hast du versucht Bungee-Jumping ohne Seil zu üben?! 🪂🤣",
+    "Wer nicht wegläuft, wird weggespült. Wasser marsch! Die Fontäne ist keine Dusche! 🌊🚿",
+    "An alle Schadensverursacher: Eure Trank-Quote ist absolut erbärmlich! 0 Pots eingeworfen aber nach Loot schreien! 🧪❌",
+    "Du bist KEIN Tank! Aggro-Management überdenken oder Reparaturgold selber farmen! 🛡️🛑",
+    "Liebst du das Geräusch vom Boss-Hammer oder warum läufst du da jede ID dreimal rein?! 🔨💥",
+    "Im Flammenfeld von Al'ar ist es gemütlich warm, gell? DA BLEIBT MAN NICHT LIEGEN! Raus da! 🔥🏃‍♂️",
+    "Ihr teilt euch doch alle eine einzige Gehirnzelle im Raid, und die hat heute auch noch Urlaub! 🧠✈️",
+    "Kuscheln könnt ihr nach dem Raid im Goldhain, hier wird Abstand gehalten beim Multi-Shot! 🏹💥"
+];
+
+function generateQuote() {
+    const quoteElement = document.getElementById("raid-quote");
+    if (!quoteElement) return;
+    quoteElement.style.opacity = "0";
+    setTimeout(() => {
+        const randomIndex = Math.floor(Math.random() * MIMIMI_QUOTES.length);
+        quoteElement.textContent = MIMIMI_QUOTES[randomIndex];
+        quoteElement.style.opacity = "1";
+    }, 150);
+}
+
 function removeTickerItem(element) {
     const item = element.parentElement;
-    item.style.transition = "all 0.3s ease";
-    item.style.opacity = "0";
-    item.style.width = "0";
-    item.style.padding = "0";
-    setTimeout(() => { item.remove(); }, 300);
+    item.remove();
 }
 </script>
 </body>
