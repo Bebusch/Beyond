@@ -371,13 +371,11 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    const attendance = {};
-    
-    // Zählt, wie viele Raid-Beiträge (Articles) es wirklich im Dokument gibt
     const raidArticles = document.querySelectorAll("article.post");
-    const totalRaids = raidArticles.length; 
+    const attendance = {};
+    const deathCounter = {}; // Hier drin speichern wir die Tode
 
-    // 1. Daten NUR aus den Raid-Tabellen auslesen
+    // --- 1. DATEN AUSLESEN ---
     raidArticles.forEach(article => {
         const rows = article.querySelectorAll(".table-responsive table tbody tr");
         
@@ -385,47 +383,51 @@ document.addEventListener("DOMContentLoaded", function() {
             const nameSpan = row.querySelector("td:first-child span");
             if (nameSpan) {
                 const rawName = nameSpan.textContent.trim();
-                
-                // Namen normalisieren für den Abgleich (kleingeschrieben, ohne Akzente)
                 const nameKey = rawName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-                
                 const className = nameSpan.className; 
                 
                 const classCell = row.querySelector("td:nth-child(2)");
                 const classText = classCell ? classCell.textContent.trim().split(" ")[0] : "Unbekannt"; 
 
+                // Für die Anwesenheit
                 if (!attendance[nameKey]) {
-                    attendance[nameKey] = {
-                        displayName: rawName,
-                        count: 0,
-                        cssClass: className,
-                        gameClass: classText
-                    };
+                    attendance[nameKey] = { displayName: rawName, count: 0, cssClass: className, gameClass: classText };
                 }
-                // Verhindert, dass ein Spieler im selben Raid mehrfach gezählt wird (falls er z.B. DD und Heal war)
                 if (!row.dataset.countedInRaid) {
                     attendance[nameKey].count++;
                     row.dataset.countedInRaid = "true";
+                }
+
+                // FÜR DIE TODE (Hall of Shame)
+                const deathCell = row.querySelector("td:nth-child(4)"); // Spalte 4 sind die Tode
+                if (deathCell) {
+                    const deathText = deathCell.textContent.trim();
+                    // Extrahiert die erste Zahl (z.B. "2 (Whirlwind)" -> 2, "0" -> 0)
+                    const match = deathText.match(/^(\d+)/);
+                    const deaths = match ? parseInt(match[1], 10) : 0;
+
+                    if (deaths > 0) {
+                        if (!deathCounter[nameKey]) {
+                            deathCounter[nameKey] = { name: rawName, cssClass: className, totalDeaths: 0 };
+                        }
+                        deathCounter[nameKey].totalDeaths += deaths;
+                    }
                 }
             }
         });
     });
 
-    // 2. In ein Array umwandeln und nach Anzahl der Raids sortieren
+    // --- 2. ANWESENHEITSTABELLE BAUEN ---
     const sortedAttendance = Object.keys(attendance).map(key => {
         return { name: attendance[key].displayName, ...attendance[key] };
     }).sort((a, b) => b.count - a.count);
 
-    // 3. Anwesenheits-Tabelle im HTML befüllen
     const tbody = document.getElementById("attendance-tbody");
     if (tbody) {
         tbody.innerHTML = ""; 
-
         sortedAttendance.forEach(player => {
-            // Berechne die korrekte Quote basierend auf der realen Raid-Anzahl
-            const displayTotal = totalRaids;
+            const displayTotal = raidArticles.length;
             const percentage = Math.round((player.count / displayTotal) * 100);
-            
             const tr = document.createElement("tr");
             tr.innerHTML = `
                 <td><span class="${player.cssClass}">${player.name}</span></td>
@@ -441,7 +443,57 @@ document.addEventListener("DOMContentLoaded", function() {
             tbody.appendChild(tr);
         });
     }
+
+    // --- 3. HALL OF SHAME (DIAGRAMM) BAUEN ---
+    const sortedDeaths = Object.keys(deathCounter).map(key => deathCounter[key])
+        .sort((a, b) => b.totalDeaths - a.totalDeaths);
+
+    const chartContainer = document.getElementById("shame-chart-container");
+    const awardDiv = document.getElementById("floor-tester-award");
+
+    if (chartContainer && sortedDeaths.length > 0) {
+        chartContainer.innerHTML = "";
+        
+        // Die höchste Todesanzahl ermitteln, um die Balken prozentual sauber zu skalieren
+        const maxDeaths = sortedDeaths[0].totalDeaths;
+
+        // Nur die Top 7 Todes-Könige anzeigen (damit es übersichtlich bleibt)
+        const topShame = sortedDeaths.slice(0, 7);
+
+        topShame.forEach(player => {
+            const barWidth = Math.max(5, Math.round((player.totalDeaths / maxDeaths) * 100)); // Mindestens 5% Breite für die Optik
+            
+            const rowDiv = document.createElement("div");
+            rowDiv.className = "shame-row";
+            rowDiv.innerHTML = `
+                <div class="shame-name"><span class="${player.cssClass}">${player.name}</span></div>
+                <div class="shame-bar-wrapper">
+                    <div class="shame-bar" style="width: ${barWidth}%;"></div>
+                </div>
+                <div class="shame-count">💀 ${player.totalDeaths} x</div>
+            `;
+            chartContainer.appendChild(rowDiv);
+        });
+
+        // Krönung des Gewinners
+        const king = sortedDeaths[0];
+        if (awardDiv) {
+            awardDiv.innerHTML = `👑 Amtlicher Bodenbelag-Tester des Monats: <span class="${king.cssClass}" style="font-size: 1.15rem; text-shadow: 1px 1px 2px black;">${king.name}</span> (${king.totalDeaths} Tode! 🛌)`;
+        }
+    } else if (chartContainer) {
+        chartContainer.innerHTML = "<p style='color: #666; text-align: center;'>Noch niemand gestorben? Unglaublich!</p>";
+        if (awardDiv) awardDiv.style.display = "none";
+    }
 });
+
+function removeTickerItem(element) {
+    const item = element.parentElement;
+    item.style.transition = "all 0.3s ease";
+    item.style.opacity = "0";
+    item.style.width = "0";
+    item.style.padding = "0";
+    setTimeout(() => { item.remove(); }, 300);
+}
 </script>
 </body>
 </html>
