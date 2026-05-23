@@ -11,13 +11,24 @@
     <script src="raid-database.js"></script>
 </head>
 <body> 
-    <header class="main-header">
-        <div class="header-container">
-            <a href="https://bebusch.github.io/Beyond/">
-                <img src="beyond.png" alt="Beyond Logo" class="header-logo">
-            </a>
+<header class="main-header" style="position: relative; padding: 15px 20px;">
+    <div class="header-container" style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; gap: 15px;">
+        
+        <a href="https://bebusch.github.io/Beyond/">
+            <img src="beyond.png" alt="Beyond Logo" class="header-logo" style="max-height: 80px; width: auto;">
+        </a>
+
+        <div id="raid-countdown-box" style="background: rgba(0, 0, 0, 0.65); border: 1px solid #aa0000; padding: 10px 20px; border-radius: 4px; text-align: center; box-shadow: 0 0 10px rgba(170, 0, 0, 0.3); min-width: 250px;">
+            <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #888; font-weight: bold; margin-bottom: 3px;">
+                ⏱️ Nächste Hinrichtung (Raid)
+            </div>
+            <div id="countdown-timer" style="font-size: 1.3rem; font-weight: bold; color: #fff; font-family: monospace;">
+                Lädt...
+            </div>
         </div>
-    </header>
+
+    </div>
+</header>
 
     <div class="ticker-wrap">
         <div class="ticker-title">⚠️ AKTUELLE SCHWANZ-LISTE:</div>
@@ -505,6 +516,49 @@ function removeTickerItem(element) {
     const item = element.parentElement;
     item.remove();
 }
+    // --- 5. LIVE-COUNTDOWN FÜR DEN NÄCHSTEN RAID ---
+function updateRaidCountdown() {
+    const now = new Date();
+    const nextRaid = new Date();
+    
+    // Annahme: Euer Hauptraid ist z.B. jeden Sonntag um 19:30 Uhr
+    // (Kannst du unten anpassen: 0 = Sonntag, 1 = Montag, 2 = Dienstag, etc.)
+    const RAID_WDAY = 0; // Sonntag
+    const RAID_HOUR = 19;
+    const RAID_MIN  = 30;
+
+    let daysSize = (RAID_WDAY - now.getDay() + 7) % 7;
+    
+    nextRaid.setDate(now.getDate() + daysSize);
+    nextRaid.setHours(RAID_HOUR, RAID_MIN, 0, 0);
+
+    // Wenn der Raid heute war und die Uhrzeit schon vorbei ist -> Nächste Woche
+    if (daysSize === 0 && now > nextRaid) {
+        nextRaid.setDate(nextRaid.getDate() + 7);
+    }
+
+    const diff = nextRaid - now;
+
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const timerElement = document.getElementById("countdown-timer");
+    if (timerElement) {
+        if (diff <= 0) {
+            timerElement.innerHTML = "<span style='color: #ff0000; animate: pulse 1s infinite;'>RAID LÄUFT! AUFSTELLEN! ⚔️</span>";
+        } else {
+            // Schickes Format: 02d : 05h : 42m : 11s
+            timerElement.textContent = 
+                `${d}d : ${String(h).padStart(2, '0')}h : ${String(m).padStart(2, '0')}m : ${String(s).padStart(2, '0')}s`;
+        }
+    }
+}
+
+// Sofort starten und jede Sekunde aktualisieren
+updateRaidCountdown();
+setInterval(updateRaidCountdown, 1000);
 </script>
 </body>
 </html>
