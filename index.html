@@ -7,6 +7,8 @@
     
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="stylesheet" href="style.css">
+    
+    <script src="raid-database.js"></script>
 </head>
 <body> 
     <header class="main-header">
@@ -65,8 +67,8 @@
             
            <section class="post attendance-box">
                 <h2>🏆 Gilden-Anwesenheit</h2>
-                <details class="table-accordion">
-                    <summary>📊 Liste einblenden (Klicke zum Öffnen)</summary>
+                <details class="table-accordion" open>
+                    <summary>📊 Liste einblenden (Klicke zum Schließen)</summary>
                     <div class="table-responsive attendance-scroll">
                         <table id="attendance-table">
                             <thead>
@@ -170,12 +172,7 @@
                     <li><strong>🛌 <span class="color-priest">Alessâ</span> (Als DPS?!):</strong> Stand laut Log im DPS-Meter mit sagenhaften **49,5 DPS**. Ich weiß ja, dass Priester gern beten, aber mit Wattebällchen nach dem Boss werfen bringt uns nichts. Wenn du Shadow bist, drück Tasten. Wenn du Heiler warst: Warum bist du im falschen Meter?! 🧎‍♀️💤</li>
                 </ul>
 
-                <h3 style="margin-top: 35px;">🚑 Das Heiler-Lazarett (HPS)</h3>
-                <ul>
-                    <li><strong>🏆 <span class="color-priest">Chalawan</span>, <span class="color-druid">Helumi</span> &amp; <span class="color-paladin">Safedich</span>:</strong> Haben die absolute Hauptarbeit geleistet. Während Chalawan fast 27% weggedrückt hat, hat Safedich super unterstützt! 🌲💚🛡️</li>
-                </ul>
-
-                <h3 style="margin-top: 35px;">⚰️ Die "Ich-liebe-Bodenbelag"-Fraktion (Tode des Grauens)</h3>
+                <h3 style="margin-top: 35px;">Campen im Feuer (Tode des Grauens)</h3>
                 <ul>
                     <li><strong>🔨 <span class="color-shaman">Schamänä</span> &amp; <span class="color-priest">Alessâ</span>:</strong> Sterben BEIDE bei Al'ar an *Flame Patch*. Ihr standet buchstäblich in der brennenden Grütze und habt euch gedacht: "Mensch, gemütlich hier, ich bleib mal liegen." Lauft aus der Scheiße raus! 🔥🏃‍♂️</li>
                     <li><strong>🏹 <span class="color-hunter">Blackzillaqt</span> &amp; <span class="color-warlock">Lmbgg</span>:</strong> Gefressen vom *Melee*-Schaden. Was sucht ein Jäger und ein Hexer in der Nahkampf-Reichweite des Bosses? Habt ihr versucht, den Boss zu kuscheln, oder wisst ihr nicht, wie eine Range-Klasse funktioniert? 🤦‍♂️🥊</li>
@@ -196,153 +193,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><span class="color-warlock">Lmbgg</span></td>
-                                    <td>Hexenmeister (Destro)</td>
-                                    <td>1.309 DPS</td>
-                                    <td>1 (Melee)</td>
-                                    <td>Absoluter DPS-Gott des Abends. Aber warum stirbst du im Nahkampf? Aggro gezogen oder kuscheln wollen? ☄️</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-warlock">Yubjap</span></td>
-                                    <td>Hexenmeister (Destro)</td>
-                                    <td>1.287 DPS</td>
-                                    <td>1 (Melee)</td>
-                                    <td>Zweiter Hexer-Gott. Brutaler Schaden, aber exakt denselben Nahkampf-Tod gestorben wie Lmbgg. Ihr teilt euch eine Gehirnzelle! 🧠</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-mage">Augustinaa</span></td>
-                                    <td>Magier (Arkan)</td>
-                                    <td>1.157 DPS</td>
-                                    <td>1 (Flamestrike)</td>
-                                    <td>Sehr stabiler Schaden im oberen Viertel. Ist am Ende leider im Flammenstoß knusprig braun gebacken worden. 🧙‍♂️🔥</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-warlock">Vaeroketh</span></td>
-                                    <td>Hexenmeister (Affli)</td>
-                                    <td>1.116 DPS</td>
-                                    <td>1 (Dive Bomb)</td>
-                                    <td>Guter Schaden, wurde aber am Ende von einer Sturzvogel-Bombe aus dem Leben gecritet. Fliegerabwehr üben! 🦅💥</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-mage">Aevips</span></td>
-                                    <td>Magier (Feuer)</td>
-                                    <td>1.102 DPS</td>
-                                    <td>1 (Melee)</td>
-                                    <td>Vom Drei-Gänge-Menükoch zum echten Schadensverursacher aufgestiegen! Wurde am Ende leider auch vom Boss geboxt.</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-shaman">Størmdude</span></td>
-                                    <td>Schamane (Ele)</td>
-                                    <td>982 DPS</td>
-                                    <td>0</td>
-                                    <td>Solide Leistung, stabil überlebt und das getan, was ein Blitzwerfer tun soll. Keine Klagen! ⚡</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-rogue">Tempêst</span></td>
-                                    <td>Schurke (Kampf)</td>
-                                    <td>979 DPS</td>
-                                    <td>2 (Nether Beam / Shield Spike)</td>
-                                    <td>Schaden ist okay für einen Nahkämpfer, aber zwei Tode tun weh. Einmal an Schildstacheln aufgespießt, einmal vom Netherstrahl gegrillt. 🦔</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-shaman">Schamänä</span></td>
-                                    <td>Schamane (Ele)</td>
-                                    <td>966 DPS</td>
-                                    <td>1 (Flame Patch)</td>
-                                    <td>Schaden passt, aber das Sterben in der lodernden Flammenfläche von Al'ar war wieder Slapstick pur. 🍳</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-druid">Zaccheo</span></td>
-                                    <td>Druide (Eule)</td>
-                                    <td>925 DPS</td>
-                                    <td>0</td>
-                                    <td>Stabile Eule. Hat überlebt, soliden Schaden gebracht und das Gefieder sauber gehalten. 🦉</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-warrior">Purine</span></td>
-                                    <td>Krieger (Fury)</td>
-                                    <td>913 DPS</td>
-                                    <td>1 (Nether Beam)</td>
-                                    <td>Stand voll im Netherstrahl. Augen auf, wo die dicken lila Laserstrahlen einschlagen! 🎆</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-paladin">Thyndal</span></td>
-                                    <td>Paladin (Vergeltung)</td>
-                                    <td>815 DPS</td>
-                                    <td>1 (Nether Beam)</td>
-                                    <td>Gemeinsam mit Purine im Netherstrahl Händchen gehalten und gestorben. Die Bubble war wohl wieder auf Cooldown? 🫧</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-shaman">Elyrii</span></td>
-                                    <td>Schamane (Verstärker)</td>
-                                    <td>744 DPS</td>
-                                    <td>1 (Ember Blast)</td>
-                                    <td>Schaden etwas mager diesmal. Wurde bei Al'ar von der Glut-Explosion zerrissen. 💥</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-shaman">Tibsenshami</span></td>
-                                    <td>Schamane (Verstärker)</td>
-                                    <td>635 DPS</td>
-                                    <td>2 (Bomb / Ember Blast)</td>
-                                    <td>Ganz miese Nummer. Erst nach 1,5 Minuten von einer Bombe gesprengt worden, später an der Glut-Explosion krepiert. Konzentration! 💣</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-priest">Chalawan</span></td>
-                                    <td>Priester (Holy)</td>
-                                    <td>1.098 HPS</td>
-                                    <td>2 (Ember Blast)</td>
-                                    <td>**Heil-MVP des Abends!** Hat 27% des gesamten Raids am Leben gehalten. Ist am Ende selbst heldenhaft den Toden erlegen. Fettes Danke! 🏆</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-druid">Helumi</span></td>
-                                    <td>Druide (Resto)</td>
-                                    <td>795 HPS</td>
-                                    <td>1 (Friedhof)</td>
-                                    <td>Wieder ein extrem starker Support, stand Chalawan in nichts nach. Zuverlässig wie immer. 🌳</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-shaman">Schuppenhuhn</span></td>
-                                    <td>Schamane (Resto)</td>
-                                    <td>660 HPS</td>
-                                    <td>2 (Conflagrate / Nether Beam)</td>
-                                    <td>Gute Heilung, aber stand einmal lichterloh in Flammen und hat sich einmal vom Netherstrahl lasern lassen.</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-priest">Alessâ</span></td>
-                                    <td>Priester (Diszi)</td>
-                                    <td>526 HPS / 49 DPS</td>
-                                    <td>2 (Flame Patch / Melee)</td>
-                                    <td>Heilung im unteren Mittelfeld. Stand ewig im Feuer und hat am Ende noch Schellen vom Boss kassiert. Multitasking üben! 🌸</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-warrior">Fckmogli</span></td>
-                                    <td>Krieger (Tank)</td>
-                                    <td>346 DPS</td>
-                                    <td>0</td>
-                                    <td>Solide Aggro-Maschine, hat die dicken Kellen der Bosse gefressen und brav überlebt. Ehren-Bär! 🐻</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-druid">Tombery</span></td>
-                                    <td>Druide (Tank)</td>
-                                    <td>779 DPS</td>
-                                    <td>1 (Nether Vapor)</td>
-                                    <td>Als Katze/Bär-Hybrid unterwegs. Hat guten Schaden gedrückt, ist am Ende aber am Nether-Dampf erstickt. 💨</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-paladin">Salzstange</span></td>
-                                    <td>Paladin (Tank)</td>
-                                    <td>233 DPS</td>
-                                    <td>1 (Nether Beam)</td>
-                                    <td>Hat die Weihe sauber gelegt, wurde aber schlussendlich auch Opfer des tödlichen Netherstrahls. ☄️</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="color-paladin">Safedich</span></td>
-                                    <td>Paladin (Holy)</td>
-                                    <td>548 HPS</td>
-                                    <td>0</td>
-                                    <td>Über 654k Gesamt-Heilung. Extrem solider Run, keine Fehler gemacht und die Gruppe am Leben gehalten. 👍</td>
-                                </tr>
+                                <tr><td><span class="color-warlock">Lmbgg</span></td><td>Hexenmeister (Destro)</td><td>1.309 DPS</td><td>1 (Melee)</td><td>Absoluter DPS-Gott des Abends. Aber warum stirbst du im Nahkampf? Aggro gezogen oder kuscheln wollen? ☄️</td></tr>
+                                <tr><td><span class="color-warlock">Yubjap</span></td><td>Hexenmeister (Destro)</td><td>1.287 DPS</td><td>1 (Melee)</td><td>Zweiter Hexer-Gott. Brutaler Schaden, aber exakt denselben Nahkampf-Tod gestorben wie Lmbgg. Ihr teilt euch eine Gehirnzelle! 🧠</td></tr>
+                                <tr><td><span class="color-mage">Augustinaa</span></td><td>Magier (Arkan)</td><td>1.157 DPS</td><td>1 (Flamestrike)</td><td>Sehr stabiler Schaden im oberen Viertel. Ist am Ende leider im Flammenstoß knusprig braun gebacken worden. 🧙‍♂️🔥</td></tr>
+                                <tr><td><span class="color-warlock">Vaeroketh</span></td><td>Hexenmeister (Affli)</td><td>1.116 DPS</td><td>1 (Dive Bomb)</td><td>Guter Schaden, wurde aber am Ende von einer Sturzvogel-Bombe aus dem Leben gecritet. Fliegerabwehr üben! 🦅💥</td></tr>
+                                <tr><td><span class="color-mage">Aevips</span></td><td>Magier (Feuer)</td><td>1.102 DPS</td><td>1 (Melee)</td><td>Vom Drei-Gänge-Menükoch zum echten Schadensverursacher aufgestiegen! Wurde am Ende leider auch vom Boss geboxt.</td></tr>
+                                <tr><td><span class="color-shaman">Størmdude</span></td><td>Schamane (Ele)</td><td>982 DPS</td><td>0</td><td>Solide Leistung, stabil überlebt und das getan, was ein Blitzwerfer tun soll. Keine Klagen! ⚡</td></tr>
+                                <tr><td><span class="color-rogue">Tempêst</span></td><td>Schurke (Kampf)</td><td>979 DPS</td><td>2 (Nether Beam / Shield Spike)</td><td>Schaden ist okay für einen Nahkämpfer, aber zwei Tode tun weh. Einmal an Schildstacheln aufgespießt, einmal vom Netherstrahl gegrillt. 🦔</td></tr>
+                                <tr><td><span class="color-shaman">Schamänä</span></td><td>Schamane (Ele)</td><td>966 DPS</td><td>1 (Flame Patch)</td><td>Schaden passt, aber das Sterben in der lodernden Flammenfläche von Al'ar war wieder Slapstick pur. 🍳</td></tr>
+                                <tr><td><span class="color-druid">Zaccheo</span></td><td>Druide (Eule)</td><td>925 DPS</td><td>0</td><td>Stabile Eule. Hat überlebt, soliden Schaden gebracht und das Gefieder sauber gehalten. 🦉</td></tr>
+                                <tr><td><span class="color-warrior">Purine</span></td><td>Krieger (Fury)</td><td>913 DPS</td><td>1 (Nether Beam)</td><td>Stand voll im Netherstrahl. Augen auf, wo die dicken lila Laserstrahlen einschlagen! 🎆</td></tr>
+                                <tr><td><span class="color-paladin">Thyndal</span></td><td>Paladin (Vergeltung)</td><td>815 DPS</td><td>1 (Nether Beam)</td><td>Gemeinsam mit Purine im Netherstrahl Händchen gehalten und gestorben. Die Bubble war wohl wieder auf Cooldown? 🫧</td></tr>
+                                <tr><td><span class="color-shaman">Elyrii</span></td><td>Schamane (Verstärker)</td><td>744 DPS</td><td>1 (Ember Blast)</td><td>Schaden etwas mager diesmal. Wurde bei Al'ar von der Glut-Explosion zerrissen. 💥</td></tr>
+                                <tr><td><span class="color-shaman">Tibsenshami</span></td><td>Schamane (Verstärker)</td><td>635 DPS</td><td>2 (Bomb / Ember Blast)</td><td>Ganz miese Nummer. Erst nach 1,5 Minuten von einer Bombe gesprengt worden, später an der Glut-Explosion krepiert. Konzentration! 💣</td></tr>
+                                <tr><td><span class="color-priest">Chalawan</span></td><td>Priester (Holy)</td><td>1.098 HPS</td><td>2 (Ember Blast)</td><td>**Heil-MVP des Abends!** Hat 27% des gesamten Raids am Leben gehalten. Ist am Ende selbst heldenhaft den Toden erlegen. Fettes Danke! 🏆</td></tr>
+                                <tr><td><span class="color-druid">Helumi</span></td><td>Druide (Resto)</td><td>795 HPS</td><td>1 (Friedhof)</td><td>Wieder ein extrem starker Support, stand Chalawan in nichts nach. Zuverlässig wie immer. 🌳</td></tr>
+                                <tr><td><span class="color-shaman">Schuppenhuhn</span></td><td>Schamane (Resto)</td><td>660 HPS</td><td>2 (Conflagrate / Nether Beam)</td><td>Gute Heilung, aber stand einmal lichterloh in Flammen und hat sich einmal vom Netherstrahl lasern lassen.</td></tr>
+                                <tr><td><span class="color-priest">Alessâ</span></td><td>Priester (Diszi)</td><td>526 HPS / 49 DPS</td><td>2 (Flame Patch / Melee)</td><td>Heilung im unteren Mittelfeld. Stand ewig im Feuer und hat am Ende noch Schellen vom Boss kassiert. Multitasking üben! 🌸</td></tr>
+                                <tr><td><span class="color-warrior">Fckmogli</span></td><td>Krieger (Tank)</td><td>346 DPS</td><td>0</td><td>Solide Aggro-Maschine, hat die dicken Kellen der Bosse gefressen und brav überlebt. Ehren-Bär! 🐻</td></tr>
+                                <tr><td><span class="color-druid">Tombery</span></td><td>Druide (Tank)</td><td>779 DPS</td><td>1 (Nether Vapor)</td><td>Als Katze/Bär-Hybrid unterwegs. Hat guten Schaden gedrückt, ist am Ende aber am Nether-Dampf erstickt. 💨</td></tr>
+                                <tr><td><span class="color-paladin">Salzstange</span></td><td>Paladin (Tank)</td><td>233 DPS</td><td>1 (Nether Beam)</td><td>Hat die Weihe sauber gelegt, wurde aber schlussendlich auch Opfer des tödlichen Netherstrahls. ☄️</td></tr>
+                                <tr><td><span class="color-paladin">Safedich</span></td><td>Paladin (Holy)</td><td>548 HPS</td><td>0</td><td>Über 654k Gesamt-Heilung. Extrem solider Run, keine Fehler gemacht und die Gruppe am Leben gehalten. 👍</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -357,77 +228,8 @@
                 
                 <h3 style="margin-top: 35px;">👑 Schadenskönige &amp; die Mana-Sparfüchse (DPS)</h3>
                 <ul>
-                    <li><strong>👑 <span class="color-warlock">Lmbgg</span> &amp; <span class="color-rogue">Tempêst</span>:</strong> Absolutes Elite-Niveau! Lmbgg ballert 1.119,9 DPS raus und Tempêst steht ihm als Melee mit 1.101,8 DPS in nichts nach. Starker Auftritt von euch beiden! 🧪⚔️</li>
+                    <li><strong>👑 <span class="color-warlock">Lmbgg</span> &amp; <span class="color-rogue">Tempêst</span>:</strong> Absolutes Elite-Niveau! Lmbgg ballert 1.119,9 DPS raus und Tempêst stands ihm als Melee mit 1.101,8 DPS in nichts nach. Starker Auftritt von euch beiden! 🧪⚔️</li>
                     <li><strong>🏹 <span class="color-hunter">Shârpshoter</span>:</strong> 955 DPS und stolze **12 Tränke** eingeworfen! Das ist die perfekte Raidvorbereitung. Bitte alle ein Vorbild nehmen! 📝</li>
-                    <li><strong>🛑 Die Trank-Verweigerer (<span class="color-shaman">Schamänä</span>, <span class="color-warlock">Lmbgg</span>, <span class="color-mage">Dagegen</span>):</strong> Mit **0 Tränken** durch den Raid zu eiern, ist mutig. Tot macht man bekanntlich keinen Schaden, also werft die Pots ein! ⛽❌</li>
-                </ul>
-
-                <h3 style="margin-top: 35px;">🌪️ Das Multi-Shot &amp; Wirbelwind-Begräbnis (Tode des Grauens)</h3>
-                <ul>
-                    <li><strong>🏹 Der Massen-Abschuss (<span class="color-mage">Aevips</span>, <span class="color-shaman">Schamänä</span>, <span class="color-warrior">Tombery</span>, <span class="color-shaman">Elyrii</span>, <span class="color-warrior">Nanev</span>):</strong> Bei Minute 7:45 gab es ein kollektives Versagen. Fünf Leute sterben innerhalb von Sekunden am *Multi-Shot* oder darauffolgenden Mechaniken. Kuscheln im Raid verboten – Abstand halten! 📐💀</li>
-                    <li><strong>🎡 Das Wirbelwind-Karussell (<span class="color-shaman">Størmdude</span>, <span class="color-warlock">Lobstars</span>, <span class="color-warrior">Nanev</span>, <span class="color-rogue">Tempêst</span>):</strong> Auch an diesem Abend war der Wirbelwind der absolute Endgegner für unsere Nahkämpfer und unachtsamen Caster.</li>
-                </ul>
-
-                <details class="table-accordion">
-                    <summary>📊 Detaillierte Spieler-Analyse &amp; DPS-Werte einblenden (17.05.)</summary>
-                    <div class="table-responsive">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Spieler</th>
-                                    <th>Klasse / Rolle</th>
-                                    <th>DPS / HPS</th>
-                                    <th>Tode (Ursache)</th>
-                                    <th>Was wurde verkackt? / Anmerkung</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr><td><span class="color-warlock">Lmbgg</span></td><td>Hexenmeister (Destro)</td><td>1.119 DPS</td><td>2 (Melee)</td><td>Schadenskönig des Abends! Stand aber zweimal im Nahkampf-Prügel. 0 Tränke genutzt. 🧪</td></tr>
-                                <tr><td><span class="color-rogue">Tempêst</span></td><td>Schurke (Kampf)</td><td>1.101 DPS</td><td>1 (Whirlwind)</td><td>Starker zweiter Platz im Schaden. Einmal vom Wirbel erwischt worden.</td></tr>
-                                <tr><td><span class="color-hunter">Chaixi</span></td><td>Jäger (Bestienmeister)</td><td>1.078 DPS</td><td>2 (Whirlwind / Arcing Smash)</td><td>Guter Schaden, stand aber falsch beim Wirbel und Spaltangriff! 🏹</td></tr>
-                                <tr><td><span class="color-warlock">Yubjap</span></td><td>Hexenmeister (Dämo)</td><td>1.051 DPS</td><td>0</td><td>Überlebenskünstler! Vorbildlicher Schaden ohne einen einzigen Tod. 😈</td></tr>
-                                <tr><td><span class="color-warrior">Nanev</span></td><td>Krieger (Fury)</td><td>1.021 DPS</td><td>2 (Static Charge / Whirlwind)</td><td>Schaden vierstellig, stand dafür voll im Statischen Aufladen und Wirbelwind.</td></tr>
-                                <tr><td><span class="color-mage">Aevips</span></td><td>Magier (Feuer)</td><td>1.003 DPS</td><td>2 (Multi-Shot / Melee)</td><td>Schaden top, stand aber zu nah an den Kollegen beim Multi-Shot.</td></tr>
-                                <tr><td><span class="color-hunter">Shârpshoter</span></td><td>Jäger (Survival)</td><td>955 DPS</td><td>0</td><td>0 Tode, Top-Schaden und vorbildliche 12 Tränke! Der absolute Musterschüler. 📝</td></tr>
-                                <tr><td><span class="color-mage">Dagegen</span></td><td>Magier (Feuer)</td><td>944 DPS</td><td>2 (Melee / Scalding Water)</td><td>Solides Mittelfeld, ist aber einmal im kochenden Wasser verbrüht. 0 Pots. 🌊</td></tr>
-                                <tr><td><span class="color-warlock">Lobstars</span></td><td>Hexenmeister (Destro)</td><td>937 DPS</td><td>3 (Toxic Spores / 2x Melee)</td><td>Die personifizierte Friedhofs-Dauerkarte. Bitte Aggro im Auge behalten! ⚰ *2 Pots*</td></tr>
-                                <tr><td><span class="color-priest">Sunnysideupp</span></td><td>Priester (Shadow)</td><td>896 DPS</td><td>0</td><td>Sauber durchgesurft ohne zu sterben und guten Support geliefert.</td></tr>
-                                <tr><td><span class="color-druid">Zaccheo</span></td><td>Druide (Eule)</td><td>882 DPS</td><td>0</td><td>Die Eule hat vorbildlich überlebt und soliden Schaden gebracht. 🦉</td></tr>
-                                <tr><td><span class="color-warrior">Tombery</span></td><td>Krieger (Fury / Katze)</td><td>876 DPS</td><td>1 (Multi-Shot)</td><td>Guter Schaden im Feral-Einsatz, leider beim Multi-Shot mit umgekippt. 🐾</td></tr>
-                                <tr><td><span class="color-shaman">Elyrii</span></td><td>Schamane (Verstärker)</td><td>862 DPS</td><td>1 (Multi-Shot)</td><td>Vom verheerenden Multi-Shot erwischt worden. Sonst solider Support.</td></tr>
-                                <tr><td><span class="color-shaman">Schamänä</span></td><td>Schamane (Ele)</td><td>785 DPS</td><td>1 (Multi-Shot)</td><td>Auch ein Opfer der Multi-Shot-Kuschelrunde. Zudem beschämende 0 Tränke!</td></tr>
-                                <tr><td><span class="color-priest">Zilinei</span></td><td>Priester (Shadow)</td><td>778 DPS</td><td>1 (Melee)</td><td>Du bist kein Tank! Aggro-Management überdenken. 🛡️❌</td></tr>
-                                <tr><td><span class="color-paladin">Thyndal</span></td><td>Paladin (Retri)</td><td>713 DPS</td><td>2 (Melee)</td><td>Zweimal im Nahkampf-Häcksler gelandet und instant umgefallen.</td></tr>
-                                <tr><td><span class="color-shaman">Størmdude</span></td><td>Schamane (Ele)</td><td>506 DPS</td><td>1 (Whirlwind)</td><td>Tot macht man keinen Schaden! Vom Wirbelwind komplett zerlegt worden. 🌀</td></tr>
-                                <tr><td><span class="color-warrior">Fckmogli</span></td><td>Krieger (Tank)</td><td>305 DPS</td><td>0</td><td>Zuverlässig die Schellen gefressen, Aggro gehalten und sauber überlebt. Top! 🐻</td></tr>
-                                <tr><td><span class="color-paladin">Bruegal</span></td><td>Paladin (Tank)</td><td>265 DPS</td><td>0</td><td>Stabile Weihe, ordentliches Tanking und 0 Tode. Sehr solide!</td></tr>
-                                <tr><td><span class="color-warrior">Hemmø</span></td><td>Krieger (Tank)</td><td>233 DPS</td><td>0</td><td>Sicherer Fels in der Brandung an der Tankfront. Keinerlei Fehler.</td></tr>
-                                <tr><td><span class="color-priest">Chalawan</span></td><td>Priester (Holy)</td><td>974 HPS</td><td>4 (3x Arcing Smash / 1x Boss)</td><td>**Absoluter Heilgott (24%)!** Ist aber viermal gestorben, weil er die Aggro der Tode hatte. 🚑</td></tr>
-                                <tr><td><span class="color-druid">Helumi</span></td><td>Druide (Resto)</td><td>822 HPS</td><td>1 (Whirlwind)</td><td>Sehr starke Gruppenheilung. Stand nur einmal unglücklich im Wirbelwind. 🌳</td></tr>
-                                <tr><td><span class="color-shaman">Schuppenhuhn</span></td><td>Schamane (Resto)</td><td>672 HPS</td><td>0</td><td>1,2 Millionen Heilung elegant und ohne Tode auf die Gruppe verteilt! 👍</td></tr>
-                                <tr><td><span class="color-paladin">Safedich</span></td><td>Paladin (Holy)</td><td>543 HPS</td><td>1 (Spout)</td><td>Gute Tankheilung, wurde am Ende leider von der Wasserfontäne weggespült.</td></tr>
-                                <tr><td><span class="color-shaman">Tibsenshami</span></td><td>Schamane (Resto)</td><td>511 HPS</td><td>0</td><td>Heute als Heiler im Einsatz und fehlerfrei mit 0 Toden durchgeheilt. 🌊</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </details>
-            </article><article class="post" id="raid-17-05">
-                <h2>Raid Analyse: Schlangenschrein (SSC) - 17.05. - Gesamtnote: 3</h2>
-                <span class="date">22. Mai 2026</span>
-                
-                <p>Die Bosse liegen im Dreck, aber die Performance bei den Mechaniken hatte stellenweise wieder den Charme eines Autounfalls. Die Heiler haben geschwitzt, während einige Schadensverursacher meinten, die gegnerischen Fähigkeiten mit dem Gesicht abfangen zu müssen. 🏎️💥</p>
-                
-                <h3 style="margin-top: 35px;">👑 Schadenskönige &amp; die Mana-Sparfüchse (DPS)</h3>
-                <ul>
-                    <li><strong>👑 <span class="color-warlock">Lmbgg</span> &amp; <span class="color-rogue">Tempêst</span>:</strong> Absolutes Elite-Niveau! Lmbgg ballert 1.119,9 DPS raus und Tempêst steht ihm als Melee mit 1.101,8 DPS in nichts nach. Starker Auftritt von euch beiden! 🧪⚔️</li>
-                    <li><strong>🏹 <span class="color-hunter">Shârpshoter</span>:</strong> 955 DPS und stolze **12 Tränke** eingeworfen! Das ist die perfekte Raidvorbereitung. Bitte alle ein Vorbild nehmen! 📝</li>
-                    <li><strong>🛑 Die Trank-Verweigerer (<span class="color-shaman">Schamänä</span>, <span class="color-warlock">Lmbgg</span>, <span class="color-mage">Dagegen</span>):</strong> Mit **0 Tränken** durch den Raid zu eiern, ist mutig. Tot macht man bekanntlich keinen Schaden, also werft die Pots ein! ⛽❌</li>
-                </ul>
-
-                <h3 style="margin-top: 35px;">🌪️ Das Multi-Shot &amp; Wirbelwind-Begräbnis (Tode des Grauens)</h3>
-                <ul>
-                    <li><strong>🏹 Der Massen-Abschuss (<span class="color-mage">Aevips</span>, <span class="color-shaman">Schamänä</span>, <span class="color-warrior">Tombery</span>, <span class="color-shaman">Elyrii</span>, <span class="color-warrior">Nanev</span>):</strong> Bei Minute 7:45 gab es ein kollektives Versagen. Fünf Leute sterben innerhalb von Sekunden am *Multi-Shot* oder darauffolgenden Mechaniken. Kuscheln im Raid verboten – Abstand halten! 📐💀</li>
-                    <li><strong>🎡 Das Wirbelwind-Karussell (<span class="color-shaman">Størmdude</span>, <span class="color-warlock">Lobstars</span>, <span class="color-warrior">Nanev</span>, <span class="color-rogue">Tempêst</span>):</strong> Auch an diesem Abend war der Wirbelwind der absolute Endgegner für unsere Nahkämpfer und unachtsamen Caster.</li>
                 </ul>
 
                 <details class="table-accordion">
@@ -475,76 +277,56 @@
                 </details>
             </article>
 
-<article class="post" id="raid-15-05">
-    <h2>Raid Analyse: TK &amp; SSC - 15.05. - Gesamtnote: 3-</h2>
-    <span class="date">16. Mai 2026</span>
-    
-    <p>Der Auftakt in Festung der Stürme und Schlangenschrein! Ein Abend, an dem die Heiler im Dauerstress waren, weil die Schadensverursacher magisch von "Hämmern"-Angriffen und brennenden Flammenfeldern angezogen wurden. Kael'thas und Co. haben uns ordentlich Schellen verteilt! 🏰🧜‍♂️</p>
+            <article class="post" id="raid-15-05">
+                <h2>Raid Analyse: TK &amp; SSC - 15.05. - Gesamtnote: 3-</h2>
+                <span class="date">16. Mai 2026</span>
+                
+                <p>Der Auftakt in Festung der Stürme und Schlangenschrein! Ein Abend, an dem die Heiler im Dauerstress waren, weil die Schadensverursacher magisch von "Hämmern"-Angriffen und brennenden Flammenfeldern angezogen wurden. Kael'thas und Co. haben uns ordentlich Schellen verteilt! 🏰🧜‍♂️</p>
 
-    <h3 style="margin-top: 35px;">👑 Die Schadens-Giganten &amp; die Schlafmützen (DPS)</h3>
-    <ul>
-        <li><strong>👑 <span class="color-mage">Lokomotivejj</span>:</strong> Was für eine Show! Als Arkan-Magier ballert er über 1,60 Millionen Schaden aufs Parkett und holt sich mit 1.021,8 DPS den unangefochtenen Thron. Absoluter Zerstörer-Modus! 🧙‍♂️🔥</li>
-        <li><strong>⚡ <span class="color-shaman">Størmdude</span> &amp; <span class="color-warlock">Yubjap</span>:</strong> Extrem starker Support! Størmdude wirft Blitze für 892 DPS und Hexer Yubjap brennt die Hitboxen mit 884 DPS nieder. Saubere Arbeit an der Spitze! ⛈️☄️</li>
-        <li><strong>🛡️ Die Aggro-Maschinen (<span class="color-warrior">Fckmogli</span>, <span class="color-paladin">Bruegal</span>, <span class="color-warrior">Hemmø</span>):</strong> Unsere Tanks standen stabil. Während Fckmogli nebenbei noch 271 DPS drückt, haben Bruegal und Hemmø die dicken Kellen brav geschluckt.</li>
-    </ul>
-
-    <h3 style="margin-top: 35px;">🚑 Die grüne Wand &amp; der Priester-Gott (HPS)</h3>
-    <ul>
-        <li><strong>🏆 <span class="color-priest">Submeonof</span>:</strong> Absolut gottlose Performance! Drückt monströse 992,1 HPS und stemmt im Alleingang **26%** der gesamten Raidheilung. Heil-MVP des Abends, danke für den Carriemodus! 🚑🥇</li>
-        <li><strong>🌲 <span class="color-druid">Helumi</span> &amp; <span class="color-shaman">Tibsenshami</span>:</strong> Perfekter Support. Helumi verteilt stabil die Verjüngungen (774 HPS) und Tibsenshami rettet Ärsche mit der Kettenheilung (647 HPS). Ein starkes Heiler-Lazarett! 🪵💧</li>
-    </ul>
-
-    <h3 style="margin-top: 35px;">⚰️ Die synchrone Kuschelecke auf dem Hallenboden (Tode des Grauens)</h3>
-    <ul>
-        <li><strong>🔨 Das 3er-Hämmern-Massaker (<span class="color-shaman">Schamänä</span>, <span class="color-mage">Aevips</span>, <span class="color-paladin">Thyndal</span>):</strong> Jungs, ernsthaft? Bei Sekunde 0:12 sterbt ihr ALLE DREI exakt zur selben Zeit an der Fähigkeit *Hämmern*. Habt ihr da vorne Händchen gehalten oder kollektiv die Augen zugemacht? Epischer Slapstick! 🤦‍♂️🔨</li>
-        <li><strong>🔥 Die Flammenfeld-Opfer (<span class="color-mage">Aevips</span>, <span class="color-priest">Alessâ</span>, <span class="color-druid">Helumi</span>):</strong> Gegen Ende des Abends dachten sich Magier, Priester und Heiler-Druide wohl: "Mensch, im *Flammenfeld* ist es so gemütlich warm, da bleiben wir einfach mal stehen." Kollektiver Caster-Tod im Feuer! 🔥🏃‍♂️</li>
-        <li><strong>🩹 <span class="color-warrior">Nanev</span>:</strong> Stirbt erst bei Minute 9:24 unglücklich im *Flammenstoß*, nur um sich kurz darauf bei 5:10 direkt noch eine *Melee*-Schelle vom Boss abzuholen. Den Bodenbelag einmal komplett getestet! 🛌</li>
-    </ul>
-
-    <details class="table-accordion">
-        <summary>📊 Detaillierte Spieler-Analyse &amp; DPS-Werte einblenden (15.05.)</summary>
-        <div class="table-responsive">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Spieler</th>
-                        <th>Klasse / Rolle</th>
-                        <th>DPS / HPS</th>
-                        <th>Tode</th>
-                        <th>Was wurde verkackt? / Anmerkung</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td><span class="color-mage">Lokomotivejj</span></td><td>Magier (Arkan - DPS)</td><td>1.021,8 DPS</td><td>0</td><td>Schadenskönig! Fehlerfrei durchgesurft und die Manabomben perfekt gezündet. 👑</td></tr>
-                    <tr><td><span class="color-shaman">Størmdude</span></td><td>Schamane (Ele - DPS)</td><td>892,0 DPS</td><td>0</td><td>Solide Leistung auf Platz 2. Stabil überlebt und konstant Blitze gespammt. ⚡</td></tr>
-                    <tr><td><span class="color-warlock">Yubjap</span></td><td>Hexenmeister (Dämo - DPS)</td><td>884,1 DPS</td><td>0</td><td>Starker Hexer-Schaden und vorbildlich ohne Tode durchgekommen! 👍</td></tr>
-                    <tr><td><span class="color-warlock">Lobstars</span></td><td>Hexenmeister (Destro - DPS)</td><td>873,8 DPS</td><td>1 (Melee)</td><td>Brutaler Schaden, hat sich aber bei Minute 4:35 eine Nahkampf-Schelle abgeholt. Aggro!</td></tr>
-                    <tr><td><span class="color-rogue">Tempêst</span></td><td>Schurke (Kampf - DPS)</td><td>871,4 DPS</td><td>0</td><td>Solider Melee-Schaden und heute sogar ohne virtuelles Ableben geblieben! ⚔️</td></tr>
-                    <tr><td><span class="color-mage">Augustinaa</span></td><td>Magier (Arkan - DPS)</td><td>855,7 DPS</td><td>0</td><td>Guter Arkan-Schaden im oberen Viertel. Gefieder sauber gehalten.</td></tr>
-                    <tr><td><span class="color-warrior">Nanev</span></td><td>Krieger (Furor - DPS)</td><td>824,1 DPS</td><td>2 (Flammenstoß / Melee)</td><td>Schaden vierstellig geliefert, aber zweimal unglücklich im Dreck gelegen. Konzentration!</td></tr>
-                    <tr><td><span class="color-shaman">Elyrii</span></td><td>Schamane (Verstärker - DPS)</td><td>782,3 DPS</td><td>0</td><td>Guter Melee-Support, stabil überlebt. Passt!</td></tr>
-                    <tr><td><span class="color-druid">Zaccheo</span></td><td>Druide (Eule - DPS)</td><td>744,2 DPS</td><td>1 (Hämmern)</td><td>Stabile Support-Eule, wurde bei Minute 5:00 leider vom dicken Hammer erschlagen. 🔨</td></tr>
-                    <tr><td><span class="color-warrior">Tanabro</span></td><td>Krieger (Furor - DPS)</td><td>700,2 DPS</td><td>2 (Melee / Melee)</td><td>Schaden okay, hat aber gleich zweimal die blanke Nahkampf-Aggro des Todes gezogen. 🥊</td></tr>
-                    <tr><td><span class="color-mage">Aevips</span></td><td>Magier (Feuer - DPS)</td><td>675,1 DPS</td><td>2 (Hämmern / Flammenfeld)</td><td>Erst nach 12 Sekunden vom Hammer zersägt, später im Flammenfeld verbrannt. Full Program!</td></tr>
-                    <tr><td><span class="color-hunter">Shârpshoter</span></td><td>Jäger (Überleben - DPS)</td><td>664,1 DPS</td><td>0</td><td>Im unteren Mittelfeld beim Schaden, dafür vorbildlich überlebt. 🏹</td></tr>
-                    <tr><td><span class="color-shaman">Wasserpause</span></td><td>Schamane (Verstärker - DPS)</td><td>655,3 DPS</td><td>0</td><td>Schaden etwas verhalten, dafür den Abend ohne Reparaturkosten beendet.</td></tr>
-                    <tr><td><span class="color-priest">Zilinei</span></td><td>Priester (Schatten - DPS)</td><td>593,7 DPS</td><td>2 (Großbrand / Shadow: Word Death)</td><td>Früh an Großbrand krepiert, später am eigenen Schattenwort: Tod hingerichtet. Uff. ⚰️</td></tr>
-                    <tr><td><span class="color-warrior">Purine</span></td><td>Krieger (Furor - DPS)</td><td>586,8 DPS</td><td>1 (Melee)</td><td>Bei Minute 4:17 die Aggro geklaut und instant eine Schelle kassiert.</td></tr>
-                    <tr><td><span class="color-shaman">Schamänä</span></td><td>Schamane (Ele - DPS)</td><td>568,2 DPS</td><td>2 (Hämmern / Hämmern)</td><td>Gleich ZWEIMAL vom Hammer getroffen worden! Liebst du das Geräusch oder warum läufst du da rein?</td></tr>
-                    <tr><td><span class="color-paladin">Thyndal</span></td><td>Paladin (Vergeltung - DPS)</td><td>549,6 DPS</td><td>1 (Hämmern)</td><td>Auch ein Opfer des kollektiven Sekunden-0:12-Todes durch Hämmern.</td></tr>
-                    <tr><td><span class="color-warrior">Fckmogli</span></td><td>Krieger (Tank)</td><td>271,5 DPS</td><td>0</td><td>Solider Def-Tank, Aggro gehalten und brav überlebt! Bear-Mode! 🐻</td></tr>
-                    <tr><td><span class="color-paladin">Bruegal</span></td><td>Paladin (Tank)</td><td>252,6 DPS</td><td>0</td><td>Die Weihe saß, die Schläge gefressen und den Kopf oben behalten. 🛡️</td></tr>
-                    <tr><td><span class="color-warrior">Hemmø</span></td><td>Krieger (Tank)</td><td>224,9 DPS</td><td>0</td><td>Zuverlässig getankt, kein Tod, sauber runtergespielt.</td></tr>
-                    <tr><td><span class="color-priest">Submeonof</span></td><td>Priester (Heilig - Heal)</td><td>992,1 HPS</td><td>2 (Hämmern / Unbekannt)</td><td>**HEIL-GOTT DES ABENDS!** Fast 1.56 Millionen Gesamtheilung. Absoluter Wahnsinn! 🏆</td></tr>
-                    <tr><td><span class="color-druid">Helumi</span></td><td>Druide (Resto - Heal)</td><td>774,6 HPS</td><td>1 (Flammenfeld)</td><td>Extrem starke Gruppenheilung, am Ende leider im Flammenfeld knusprig gebacken. 🌳</td></tr>
-                    <tr><td><span class="color-shaman">Tibsenshami</span></td><td>Schamane (Resto - Heal)</td><td>647,8 HPS</td><td>1 (Arcane Missiles)</td><td>Gute Kettenheilungen, wurde leider von den Arkanen Geschossen weggelasert.</td></tr>
-                    <tr><td><span class="color-shaman">Dysoncyclone</span></td><td>Schamane (Resto - Heal)</td><td>630,9 HPS</td><td>1 (Fireball)</td><td>Solide Leistung an der Heilfront, am Ende von einem Feuerball gegrillt.</td></tr>
-                    <tr><td><span class="color-priest">Alessâ</span></td><td>Priester (Diszi - Heal)</td><td>486,8 HPS</td><td>2 (Arcane Missiles / Flammenfeld)</td><td>Solide Schilde verteilt, stand am Ende aber einmal zu oft in den Mechaniken.</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </details>
-</article>
+                <details class="table-accordion">
+                    <summary>📊 Detaillierte Spieler-Analyse &amp; DPS-Werte einblenden (15.05.)</summary>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Spieler</th>
+                                    <th>Klasse / Rolle</th>
+                                    <th>DPS / HPS</th>
+                                    <th>Tode</th>
+                                    <th>Was wurde verkackt? / Anmerkung</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><span class="color-mage">Lokomotivejj</span></td><td>Magier (Arkan - DPS)</td><td>1.021,8 DPS</td><td>0</td><td>Schadenskönig! Fehlerfrei durchgesurft und die Manabomben perfekt gezündet. 👑</td></tr>
+                                <tr><td><span class="color-shaman">Størmdude</span></td><td>Schamane (Ele - DPS)</td><td>892,0 DPS</td><td>0</td><td>Solide Leistung auf Platz 2. Stabil überlebt und konstant Blitze gespammt. ⚡</td></tr>
+                                <tr><td><span class="color-warlock">Yubjap</span></td><td>Hexenmeister (Dämo - DPS)</td><td>884,1 DPS</td><td>0</td><td>Starker Hexer-Schaden und vorbildlich ohne Tode durchgekommen! 👍</td></tr>
+                                <tr><td><span class="color-warlock">Lobstars</span></td><td>Hexenmeister (Destro - DPS)</td><td>873,8 DPS</td><td>1 (Melee)</td><td>Brutaler Schaden, hat sich aber bei Minute 4:35 eine Nahkampf-Schelle abgeholt. Aggro!</td></tr>
+                                <tr><td><span class="color-rogue">Tempêst</span></td><td>Schurke (Kampf - DPS)</td><td>871,4 DPS</td><td>0</td><td>Solider Melee-Schaden und heute sogar ohne virtuelles Ableben geblieben! ⚔️</td></tr>
+                                <tr><td><span class="color-mage">Augustinaa</span></td><td>Magier (Arkan - DPS)</td><td>855,7 DPS</td><td>0</td><td>Guter Arkan-Schaden im oberen Viertel. Gefieder sauber gehalten.</td></tr>
+                                <tr><td><span class="color-warrior">Nanev</span></td><td>Krieger (Furor - DPS)</td><td>824,1 DPS</td><td>2 (Flammenstoß / Melee)</td><td>Schaden vierstellig geliefert, aber zweimal unglücklich im Dreck gelegen. Konzentration!</td></tr>
+                                <tr><td><span class="color-shaman">Elyrii</span></td><td>Schamane (Verstärker - DPS)</td><td>782,3 DPS</td><td>0</td><td>Guter Melee-Support, stabil überlebt. Passt!</td></tr>
+                                <tr><td><span class="color-druid">Zaccheo</span></td><td>Druide (Eule - DPS)</td><td>744,2 DPS</td><td>1 (Hämmern)</td><td>Stabile Support-Eule, wurde bei Minute 5:00 leider vom dicken Hammer erschlagen. 🔨</td></tr>
+                                <tr><td><span class="color-warrior">Tanabro</span></td><td>Krieger (Furor - DPS)</td><td>700,2 DPS</td><td>2 (Melee / Melee)</td><td>Schaden okay, hat aber gleich zweimal die blanke Nahkampf-Aggro des Todes gezogen. 🥊</td></tr>
+                                <tr><td><span class="color-mage">Aevips</span></td><td>Magier (Feuer - DPS)</td><td>675,1 DPS</td><td>2 (Hämmern / Flammenfeld)</td><td>Erst nach 12 Sekunden vom Hammer zersägt, später im Flammenfeld verbrannt. Full Program!</td></tr>
+                                <tr><td><span class="color-hunter">Shârpshoter</span></td><td>Jäger (Überleben - DPS)</td><td>664,1 DPS</td><td>0</td><td>Im unteren Mittelfeld beim Schaden, dafür vorbildlich überlebt. 🏹</td></tr>
+                                <tr><td><span class="color-shaman">Wasserpause</span></td><td>Schamane (Verstärker - DPS)</td><td>655,3 DPS</td><td>0</td><td>Schaden etwas verhalten, dafür den Abend ohne Reparaturkosten beendet.</td></tr>
+                                <tr><td><span class="color-priest">Zilinei</span></td><td>Priester (Schatten - DPS)</td><td>593,7 DPS</td><td>2 (Großbrand / Shadow: Word Death)</td><td>Früh an Großbrand krepiert, später am eigenen Schattenwort: Tod hingerichtet. Uff. ⚰️</td></tr>
+                                <tr><td><span class="color-warrior">Purine</span></td><td>Krieger (Furor - DPS)</td><td>586,8 DPS</td><td>1 (Melee)</td><td>Bei Minute 4:17 die Aggro geklaut und instant eine Schelle kassiert.</td></tr>
+                                <tr><td><span class="color-shaman">Schamänä</span></td><td>Schamane (Ele - DPS)</td><td>568,2 DPS</td><td>2 (Hämmern / Hämmern)</td><td>Gleich ZWEIMAL vom Hammer getroffen worden! Liebst du das Geräusch oder warum läufst du da rein?</td></tr>
+                                <tr><td><span class="color-paladin">Thyndal</span></td><td>Paladin (Vergeltung - DPS)</td><td>549,6 DPS</td><td>1 (Hämmern)</td><td>Auch ein Opfer des kollektiven Sekunden-0:12-Todes durch Hämmern.</td></tr>
+                                <tr><td><span class="color-warrior">Fckmogli</span></td><td>Krieger (Tank)</td><td>271,5 DPS</td><td>0</td><td>Solide Def-Tank, Aggro gehalten und brav überlebt! Bear-Mode! 🐻</td></tr>
+                                <tr><td><span class="color-paladin">Bruegal</span></td><td>Paladin (Tank)</td><td>252,6 DPS</td><td>0</td><td>Die Weihe saß, die Schläge gefressen und den Kopf oben behalten. 🛡️</td></tr>
+                                <tr><td><span class="color-warrior">Hemmø</span></td><td>Krieger (Tank)</td><td>224,9 DPS</td><td>0</td><td>Zuverlässig getankt, kein Tod, sauber runtergespielt.</td></tr>
+                                <tr><td><span class="color-priest">Submeonof</span></td><td>Priester (Heilig - Heal)</td><td>992,1 HPS</td><td>2 (Hämmern / Unbekannt)</td><td>**HEIL-GOTT DES ABENDS!** Fast 1.56 Millionen Gesamtheilung. Absoluter Wahnsinn! 🏆</td></tr>
+                                <tr><td><span class="color-druid">Helumi</span></td><td>Druide (Resto - Heal)</td><td>774,6 HPS</td><td>1 (Flammenfeld)</td><td>Extrem starke Gruppenheilung, am Ende leider im Flammenfeld knusprig gebacken. 🌳</td></tr>
+                                <tr><td><span class="color-shaman">Tibsenshami</span></td><td>Schamane (Resto - Heal)</td><td>647,8 HPS</td><td>1 (Arcane Missiles)</td><td>Gute Kettenheilungen, wurde leider von den Arkanen Geschossen weggelasert.</td></tr>
+                                <tr><td><span class="color-shaman">Dysoncyclone</span></td><td>Schamane (Resto - Heal)</td><td>630,9 HPS</td><td>1 (Fireball)</td><td>Solide Leistung an der Heilfront, am Ende von einem Feuerball gegrillt.</td></tr>
+                                <tr><td><span class="color-priest">Alessâ</span></td><td>Priester (Diszi - Heal)</td><td>486,8 HPS</td><td>2 (Arcane Missiles / Flammenfeld)</td><td>Solide Schilde verteilt, stand am Ende aber einmal zu oft in den Mechaniken.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </details>
+            </article>
             
         </main> 
         
@@ -565,92 +347,85 @@
             </div>
         </aside> 
         
-    </div> <footer>
+    </div> 
+    
+    <footer>
         <div class="container">
             <p>&copy; 2026 BEYOND Raid Team</p>
         </div>
     </footer>
 
-<script>
-function removeTickerItem(element) {
-    const item = element.parentElement;
-    item.style.transition = "all 0.3s ease";
-    item.style.opacity = "0";
-    item.style.width = "0";
-    item.style.padding = "0";
-    setTimeout(() => {
-        item.remove();
-    }, 300);
-}
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        if (typeof RAID_DATABASE === 'undefined') {
+            console.error("Datenbank 'raid-database.js' konnte nicht geladen werden!");
+            return;
+        }
 
-document.addEventListener("DOMContentLoaded", function() {
-    const rows = document.querySelectorAll(".table-responsive table tbody tr");
-    const attendance = {};
-    
-    // Zählt die Links im Archiv (das sind genau 4)
-    let totalRaids = document.querySelectorAll(".archive-list li a").length; 
-    
-    if (totalRaids === 0) {
-        totalRaids = 4; // Sicherheitsanker, falls das Archiv mal nicht lädt
-    }
+        const totalRaids = RAID_DATABASE.totalRaidCount;
+        const playerAttendance = {};
 
-    rows.forEach(row => {
-        // Ignoriert Zeilen, die bereits in der Haupt-Anwesenheitstabelle stehen
-        if (row.closest("#attendance-table")) return;
+        // 1. Alle eingetragenen Raids durchgehen und Teilnahmen zählen
+        RAID_DATABASE.raids.forEach(raid => {
+            raid.attendees.forEach(attendee => {
+                const nameKey = attendee.normalize("NFD").replace(/[\u0300-\u036f]/g "").toLowerCase();
+                if (!playerAttendance[nameKey]) {
+                    playerAttendance[nameKey] = 0;
+                }
+                playerAttendance[nameKey]++;
+            });
+        });
 
-        const nameSpan = row.querySelector("td:first-child span");
-        if (nameSpan) {
-            const rawName = nameSpan.textContent.trim();
-            const nameKey = rawName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-            const className = nameSpan.className; 
-            
-            const classCell = row.querySelector("td:nth-child(2)");
-            const classText = classCell ? classCell.textContent.trim().split(" ")[0] : "Unbekannt"; 
+        // 2. Array für die Tabelle bauen und sortieren
+        const tableRows = [];
+        Object.keys(RAID_DATABASE.players).forEach(key => {
+            const pInfo = RAID_DATABASE.players[key];
+            const actualCount = playerAttendance[key] || 0;
+            const percentage = Math.round((actualCount / totalRaids) * 100);
 
-            if (!attendance[nameKey]) {
-                attendance[nameKey] = {
-                    displayName: rawName, 
-                    count: 0,
-                    cssClass: className,
-                    gameClass: classText
-                };
-            }
-            attendance[nameKey].count++;
+            tableRows.push({
+                key: key,
+                name: pInfo.name,
+                class: pInfo.class,
+                css: pInfo.css,
+                count: actualCount,
+                percentage: percentage
+            });
+        });
+
+        // Nach Meisten Teilnahmen sortieren
+        tableRows.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+
+        // 3. HTML Tabelle füllen
+        const tbody = document.getElementById("attendance-tbody");
+        if (tbody) {
+            tbody.innerHTML = "";
+            tableRows.forEach(p => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><span class="${p.css}">${p.name}</span></td>
+                    <td>${p.class}</td>
+                    <td><strong>${p.count}</strong> / ${totalRaids}</td>
+                    <td style="white-space: nowrap;">
+                        <div class="attendance-progress-bg">
+                            <div class="attendance-progress-bar" style="width: ${p.percentage}%;"></div>
+                        </div> 
+                        <span style="font-weight: bold; font-size: 0.85rem;">${p.percentage}%</span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
         }
     });
 
-    const sortedAttendance = Object.keys(attendance).map(key => {
-        return { name: attendance[key].displayName, ...attendance[key] };
-    }).sort((a, b) => b.count - a.count);
-
-    const tbody = document.getElementById("attendance-tbody");
-    if (tbody) {
-        tbody.innerHTML = ""; 
-
-        sortedAttendance.forEach(player => {
-            // BEHOBEN: Wir zwingen das Skript, maximal die echten totalRaids (4) zu nutzen!
-            const displayTotal = totalRaids; 
-            
-            // Falls ein Spieler öfter gezählt wurde als Raids da sind (z.B. durch Tippfehler), begrenzen wir es auf das Maximum
-            const finalCount = Math.min(player.count, displayTotal);
-            const percentage = Math.round((finalCount / displayTotal) * 100);
-            
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td><span class="${player.cssClass}">${player.name}</span></td>
-                <td>${player.gameClass}</td>
-                <td><strong>${finalCount}</strong> / ${displayTotal}</td>
-                <td style="white-space: nowrap;">
-                    <div class="attendance-progress-bg">
-                        <div class="attendance-progress-bar" style="width: ${percentage}%;"></div>
-                    </div> 
-                    <span style="font-weight: bold; font-size: 0.85rem;">${percentage}%</span>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
+    function removeTickerItem(element) {
+        const item = element.parentElement;
+        item.style.transition = "all 0.3s ease";
+        item.style.opacity = "0";
+        item.style.width = "0";
+        item.style.padding = "0";
+        setTimeout(() => { item.remove(); }, 300);
     }
-});
-</script>
+    </script>
 </body>
 </html>
