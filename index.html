@@ -572,29 +572,36 @@
     </footer>
 
 <script>
+function removeTickerItem(element) {
+    const item = element.parentElement;
+    item.style.transition = "all 0.3s ease";
+    item.style.opacity = "0";
+    item.style.width = "0";
+    item.style.padding = "0";
+    setTimeout(() => {
+        item.remove();
+    }, 300);
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     const rows = document.querySelectorAll(".table-responsive table tbody tr");
     const attendance = {};
     
-    // Zählt, wie viele Raid-Links im Archiv-Menü eingetragen sind (aktuell 4)
+    // Zählt die Links im Archiv (das sind genau 4)
     let totalRaids = document.querySelectorAll(".archive-list li a").length; 
     
     if (totalRaids === 0) {
-        totalRaids = document.querySelectorAll("article.post, section.post").length;
+        totalRaids = 4; // Sicherheitsanker, falls das Archiv mal nicht lädt
     }
 
-    // 1. Daten aus den bestehenden Tabellen auslesen
     rows.forEach(row => {
-        // Ignoriert Zeilen, die zur Attendance-Tabelle selbst gehören
+        // Ignoriert Zeilen, die bereits in der Haupt-Anwesenheitstabelle stehen
         if (row.closest("#attendance-table")) return;
 
         const nameSpan = row.querySelector("td:first-child span");
         if (nameSpan) {
             const rawName = nameSpan.textContent.trim();
-            
-            // WICHTIG: Macht den Namen klein und entfernt Akzente (ê -> e), damit der Abgleich immer klappt!
             const nameKey = rawName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-            
             const className = nameSpan.className; 
             
             const classCell = row.querySelector("td:nth-child(2)");
@@ -602,7 +609,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             if (!attendance[nameKey]) {
                 attendance[nameKey] = {
-                    displayName: rawName, // Speichert die schöne Schreibweise für die Anzeige
+                    displayName: rawName, 
                     count: 0,
                     cssClass: className,
                     gameClass: classText
@@ -612,25 +619,27 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // 2. In ein Array umwandeln und nach Anzahl der Raids sortieren
     const sortedAttendance = Object.keys(attendance).map(key => {
         return { name: attendance[key].displayName, ...attendance[key] };
     }).sort((a, b) => b.count - a.count);
 
-    // 3. Anwesenheits-Tabelle im HTML befüllen
     const tbody = document.getElementById("attendance-tbody");
     if (tbody) {
         tbody.innerHTML = ""; 
 
         sortedAttendance.forEach(player => {
-            const displayTotal = Math.max(totalRaids, player.count);
-            const percentage = Math.round((player.count / displayTotal) * 100);
+            // BEHOBEN: Wir zwingen das Skript, maximal die echten totalRaids (4) zu nutzen!
+            const displayTotal = totalRaids; 
+            
+            // Falls ein Spieler öfter gezählt wurde als Raids da sind (z.B. durch Tippfehler), begrenzen wir es auf das Maximum
+            const finalCount = Math.min(player.count, displayTotal);
+            const percentage = Math.round((finalCount / displayTotal) * 100);
             
             const tr = document.createElement("tr");
             tr.innerHTML = `
                 <td><span class="${player.cssClass}">${player.name}</span></td>
                 <td>${player.gameClass}</td>
-                <td><strong>${player.count}</strong> / ${displayTotal}</td>
+                <td><strong>${finalCount}</strong> / ${displayTotal}</td>
                 <td style="white-space: nowrap;">
                     <div class="attendance-progress-bg">
                         <div class="attendance-progress-bar" style="width: ${percentage}%;"></div>
@@ -642,19 +651,6 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
-</script>
-    <script>
-function removeTickerItem(element) {
-    // Findet das übergeordnete .ticker-item und blendet es smooth aus
-    const item = element.parentElement;
-    item.style.transition = "all 0.3s ease";
-    item.style.opacity = "0";
-    item.style.width = "0";
-    item.style.padding = "0";
-    setTimeout(() => {
-        item.remove();
-    }, 300);
-}
 </script>
 </body>
 </html>
