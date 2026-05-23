@@ -50,7 +50,7 @@
             <div class="ticker-item"><span class="color-warlock">Lobstars</span><span class="ticker-del" onclick="removeTickerItem(this)">×</span></div>
             <div class="ticker-item"><span class="color-priest">Sunnysideupp</span><span class="ticker-del" onclick="removeTickerItem(this)">×</span></div>
             <div class="ticker-item"><span class="color-priest">Zilinei</span><span class="ticker-del" onclick="removeTickerItem(this)">×</span></div>
-            <div class="ticker-item"><span class="color-warrior">Hemmø</span></td><td>Krieger</td><td><strong>2</strong> / 4</td><td><span class="ticker-del" onclick="removeTickerItem(this)">×</span></div>
+            <div class="ticker-item"><span class="color-warrior">Hemmø</span><span class="ticker-del" onclick="removeTickerItem(this)">×</span></div>
             <div class="ticker-item"><span class="color-paladin">Pukipala</span><span class="ticker-del" onclick="removeTickerItem(this)">×</span></div>
         </div>
     </div>
@@ -638,6 +638,19 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+</script>
+    <script>
+function removeTickerItem(element) {
+    // Findet das übergeordnete .ticker-item und blendet es smooth aus
+    const item = element.parentElement;
+    item.style.transition = "all 0.3s ease";
+    item.style.opacity = "0";
+    item.style.width = "0";
+    item.style.padding = "0";
+    setTimeout(() => {
+        item.remove();
+    }, 300);
+}
 </script>
 </body>
 </html>
