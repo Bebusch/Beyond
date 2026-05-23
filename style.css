@@ -433,3 +433,14 @@ footer {
     font-size: 0.9rem;
     color: #ff3333;
 }
+
+/* Verhindert den Spalt zwischen Banner und Ticker */
+.main-header {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.ticker-wrap {
+    margin-top: 0 !important;
+    border-top: none; /* Falls eine obere Linie den Spalt optisch erzeugt */
+}
