@@ -327,3 +327,75 @@ footer {
         width: 100%;
     }
 }
+
+/* Ticker Container */
+.ticker-wrap {
+    width: 100%;
+    background: #111116;
+    border-bottom: 2px solid #aa0000;
+    overflow: hidden;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    font-family: Arial, sans-serif;
+}
+
+/* Roter Titel-Badge links (bleibt stehen) */
+.ticker-title {
+    background: #aa0000;
+    color: #fff;
+    padding: 0 15px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 5px 0 10px rgba(0,0,0,0.5);
+}
+
+/* Die Laufbahn */
+.ticker {
+    display: flex;
+    white-space: nowrap;
+    padding-left: 100%;
+    animation: marquee 25s linear infinite;
+}
+
+/* Stoppt die Animation, wenn man mit der Maus drüber geht (zum besseren Klicken!) */
+.ticker-wrap:hover .ticker {
+    animation-play-state: paused;
+}
+
+/* Einzelne Spieler-Elemente im Ticker */
+.ticker-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 20px;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+/* Das kleine Lösch-Kreuz */
+.ticker-del {
+    color: #555;
+    margin-left: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: color 0.2s, transform 0.2s;
+    display: inline-block;
+    line-height: 1;
+}
+
+.ticker-del:hover {
+    color: #ff0000;
+    transform: scale(1.3);
+}
+
+/* Die unendliche Lauf-Animation */
+@keyframes marquee {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-100%, 0, 0); }
+}
