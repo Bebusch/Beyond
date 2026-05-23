@@ -355,77 +355,79 @@
         </div>
     </footer>
 
-    <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        if (typeof RAID_DATABASE === 'undefined') {
-            console.error("Datenbank 'raid-database.js' konnte nicht geladen werden!");
-            return;
-        }
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const attendance = {};
+    
+    // Zählt, wie viele Raid-Beiträge (Articles) es wirklich im Dokument gibt
+    const raidArticles = document.querySelectorAll("article.post");
+    const totalRaids = raidArticles.length; 
 
-        const totalRaids = RAID_DATABASE.totalRaidCount;
-        const playerAttendance = {};
+    // 1. Daten NUR aus den Raid-Tabellen auslesen
+    raidArticles.forEach(article => {
+        const rows = article.querySelectorAll(".table-responsive table tbody tr");
+        
+        rows.forEach(row => {
+            const nameSpan = row.querySelector("td:first-child span");
+            if (nameSpan) {
+                const rawName = nameSpan.textContent.trim();
+                
+                // Namen normalisieren für den Abgleich (kleingeschrieben, ohne Akzente)
+                const nameKey = rawName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                
+                const className = nameSpan.className; 
+                
+                const classCell = row.querySelector("td:nth-child(2)");
+                const classText = classCell ? classCell.textContent.trim().split(" ")[0] : "Unbekannt"; 
 
-        // 1. Alle eingetragenen Raids durchgehen und Teilnahmen zählen
-        RAID_DATABASE.raids.forEach(raid => {
-            raid.attendees.forEach(attendee => {
-                const nameKey = attendee.normalize("NFD").replace(/[\u0300-\u036f]/g "").toLowerCase();
-                if (!playerAttendance[nameKey]) {
-                    playerAttendance[nameKey] = 0;
+                if (!attendance[nameKey]) {
+                    attendance[nameKey] = {
+                        displayName: rawName,
+                        count: 0,
+                        cssClass: className,
+                        gameClass: classText
+                    };
                 }
-                playerAttendance[nameKey]++;
-            });
+                // Verhindert, dass ein Spieler im selben Raid mehrfach gezählt wird (falls er z.B. DD und Heal war)
+                if (!row.dataset.countedInRaid) {
+                    attendance[nameKey].count++;
+                    row.dataset.countedInRaid = "true";
+                }
+            }
         });
-
-        // 2. Array für die Tabelle bauen und sortieren
-        const tableRows = [];
-        Object.keys(RAID_DATABASE.players).forEach(key => {
-            const pInfo = RAID_DATABASE.players[key];
-            const actualCount = playerAttendance[key] || 0;
-            const percentage = Math.round((actualCount / totalRaids) * 100);
-
-            tableRows.push({
-                key: key,
-                name: pInfo.name,
-                class: pInfo.class,
-                css: pInfo.css,
-                count: actualCount,
-                percentage: percentage
-            });
-        });
-
-        // Nach Meisten Teilnahmen sortieren
-        tableRows.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
-
-        // 3. HTML Tabelle füllen
-        const tbody = document.getElementById("attendance-tbody");
-        if (tbody) {
-            tbody.innerHTML = "";
-            tableRows.forEach(p => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td><span class="${p.css}">${p.name}</span></td>
-                    <td>${p.class}</td>
-                    <td><strong>${p.count}</strong> / ${totalRaids}</td>
-                    <td style="white-space: nowrap;">
-                        <div class="attendance-progress-bg">
-                            <div class="attendance-progress-bar" style="width: ${p.percentage}%;"></div>
-                        </div> 
-                        <span style="font-weight: bold; font-size: 0.85rem;">${p.percentage}%</span>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
     });
 
-    function removeTickerItem(element) {
-        const item = element.parentElement;
-        item.style.transition = "all 0.3s ease";
-        item.style.opacity = "0";
-        item.style.width = "0";
-        item.style.padding = "0";
-        setTimeout(() => { item.remove(); }, 300);
+    // 2. In ein Array umwandeln und nach Anzahl der Raids sortieren
+    const sortedAttendance = Object.keys(attendance).map(key => {
+        return { name: attendance[key].displayName, ...attendance[key] };
+    }).sort((a, b) => b.count - a.count);
+
+    // 3. Anwesenheits-Tabelle im HTML befüllen
+    const tbody = document.getElementById("attendance-tbody");
+    if (tbody) {
+        tbody.innerHTML = ""; 
+
+        sortedAttendance.forEach(player => {
+            // Berechne die korrekte Quote basierend auf der realen Raid-Anzahl
+            const displayTotal = totalRaids;
+            const percentage = Math.round((player.count / displayTotal) * 100);
+            
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td><span class="${player.cssClass}">${player.name}</span></td>
+                <td>${player.gameClass}</td>
+                <td><strong>${player.count}</strong> / ${displayTotal}</td>
+                <td style="white-space: nowrap;">
+                    <div class="attendance-progress-bg" style="background: #333; width: 100px; height: 10px; display: inline-block; margin-right: 5px; border-radius: 3px;">
+                        <div class="attendance-progress-bar" style="width: ${percentage}%; height: 100%; background: #00ff00; border-radius: 3px;"></div>
+                    </div> 
+                    <span style="font-weight: bold; font-size: 0.85rem;">${percentage}%</span>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
     }
-    </script>
+});
+</script>
 </body>
 </html>
