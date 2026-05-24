@@ -393,103 +393,183 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    const raidArticles = document.querySelectorAll("article.post");
-    const attendance = {};
-    const deathCounter = {};
-
-    // 1. Daten aus den Raid-Berichten auslesen
-    raidArticles.forEach(article => {
-        const rows = article.querySelectorAll(".table-responsive table tbody tr");
-        rows.forEach(row => {
-            const nameSpan = row.querySelector("td:first-child span");
-            if (nameSpan) {
-                const rawName = nameSpan.textContent.trim();
-                const nameKey = rawName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-                const className = nameSpan.className; 
-                const classCell = row.querySelector("td:nth-child(2)");
-                const classText = classCell ? classCell.textContent.trim().split(" ")[0] : "Unbekannt"; 
-
-                if (!attendance[nameKey]) {
-                    attendance[nameKey] = { displayName: rawName, count: 0, cssClass: className, gameClass: classText };
-                }
-                if (!row.dataset.countedInRaid) {
-                    attendance[nameKey].count++;
-                    row.dataset.countedInRaid = "true";
-                }
-
-                // Tode für Hall of Shame zählen
-                const deathCell = row.querySelector("td:nth-child(4)");
-                if (deathCell) {
-                    const deathText = deathCell.textContent.trim();
-                    const match = deathText.match(/^(\d+)/);
-                    const deaths = match ? parseInt(match[1], 10) : 0;
-                    if (deaths > 0) {
-                        if (!deathCounter[nameKey]) {
-                            deathCounter[nameKey] = { name: rawName, cssClass: className, totalDeaths: 0 };
-                        }
-                        deathCounter[nameKey].totalDeaths += deaths;
-                    }
-                }
-            }
-        });
-    });
-
-    // 2. Anwesenheits-Tabelle füllen
-    const sortedAttendance = Object.keys(attendance).map(key => {
-        return { name: attendance[key].displayName, ...attendance[key] };
-    }).sort((a, b) => b.count - a.count);
-
-    const tbody = document.getElementById("attendance-tbody");
-    if (tbody) {
-        tbody.innerHTML = ""; 
-        const totalRaids = 4; // Feste Anzahl eurer Archiv-Abende
-        sortedAttendance.forEach(player => {
-            const finalCount = Math.min(player.count, totalRaids);
-            const percentage = Math.round((finalCount / totalRaids) * 100);
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td><span class="${player.cssClass}">${player.name}</span></td>
-                <td>${player.gameClass}</td>
-                <td><strong>${finalCount}</strong> / ${totalRaids}</td>
-                <td style="white-space: nowrap;">
-                    <div style="background: #222; width: 100px; height: 10px; display: inline-block; margin-right: 8px; border-radius: 3px; overflow: hidden; border: 1px solid #333;">
-                        <div style="width: ${percentage}%; height: 100%; background: linear-gradient(90deg, #00aa00 0%, #00ff00 100%); border-radius: 3px;"></div>
-                    </div> 
-                    <span style="font-weight: bold; font-size: 0.85rem; color: #00ff00;">${percentage}%</span>
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
+    // Sicherstellen, dass die Raid-Datenbank existiert
+    if (typeof RAID_DATABASE === 'undefined') {
+        console.error("RAID_DATABASE wurde nicht gefunden! Stelle sicher, dass raid-database.js geladen ist.");
+        return;
     }
 
-    // 3. Hall of Shame Diagramm füllen
-    const sortedDeaths = Object.keys(deathCounter).map(key => deathCounter[key]).sort((a, b) => b.totalDeaths - a.totalDeaths);
-    const chartContainer = document.getElementById("shame-chart-container");
-    const awardDiv = document.getElementById("floor-tester-award");
+    try {
+        const attendance = {};
+        const deathCounter = {};
+        const totalRaids = RAID_DATABASE.totalRaidCount || 4; // Zieht die Gesamtanzahl direkt aus deiner DB
 
-    if (chartContainer && sortedDeaths.length > 0) {
-        chartContainer.innerHTML = "";
-        const maxDeaths = sortedDeaths[0].totalDeaths;
-        sortedDeaths.slice(0, 7).forEach(player => {
-            const barWidth = Math.max(8, Math.round((player.totalDeaths / maxDeaths) * 100));
-            const rowDiv = document.createElement("div");
-            rowDiv.style = "display: flex; align-items: center; gap: 15px; margin-bottom: 10px;";
-            rowDiv.innerHTML = `
-                <div style="width: 120px; font-weight: bold; text-align: right; white-space: nowrap;"><span class="${player.cssClass}">${player.name}</span></div>
-                <div style="flex-grow: 1; background: #222; height: 20px; border-radius: 4px; border: 1px solid #333; overflow: hidden;">
-                    <div style="width: ${barWidth}%; height: 100%; background: linear-gradient(90deg, #880000 0%, #ff2222 100%);"></div>
-                </div>
-                <div style="width: 60px; font-weight: bold; color: #ff3333;">💀 ${player.totalDeaths} x</div>
-            `;
-            chartContainer.appendChild(rowDiv);
+        // 1. ANWESENHEIT AUS DER DATENBANK BERECHNEN
+        RAID_DATABASE.raids.forEach(raid => {
+            raid.attendees.forEach(rawName => {
+                const nameKey = rawName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                
+                // Spieler-Stammdaten aus der DB holen (Klasse, CSS-Klasse etc.)
+                const playerMeta = RAID_DATABASE.players[nameKey] || { name: rawName, class: "Unbekannt", css: "color-warrior" };
+
+                if (!attendance[nameKey]) {
+                    attendance[nameKey] = { 
+                        displayName: playerMeta.name, 
+                        count: 0, 
+                        cssClass: playerMeta.css, 
+                        gameClass: playerMeta.class 
+                    };
+                }
+                attendance[nameKey].count++;
+            });
         });
-        if (awardDiv) {
-            awardDiv.innerHTML = `👑 Amtlicher Bodenbelag-Tester des Monats: <span class="${sortedDeaths[0].cssClass}" style="font-weight: 900;">${sortedDeaths[0].name}</span> (${sortedDeaths[0].totalDeaths} Tode! 🛌)`;
+
+        // 2. TODE AUS DER DATENBANK ZÄHLEN
+        if (RAID_DATABASE.deaths) {
+            Object.keys(RAID_DATABASE.deaths).forEach(nameKey => {
+                const playerMeta = RAID_DATABASE.players[nameKey];
+                const displayName = playerMeta ? playerMeta.name : nameKey;
+                const cssClass = playerMeta ? playerMeta.css : "color-warrior";
+                const totalDeaths = RAID_DATABASE.deaths[nameKey];
+
+                if (totalDeaths > 0) {
+                    deathCounter[nameKey] = {
+                        name: displayName,
+                        cssClass: cssClass,
+                        totalDeaths: totalDeaths
+                    };
+                }
+            });
         }
+
+        // 3. ANWESENHEITS-TABELLE BEFÜLLEN
+        const sortedAttendance = Object.keys(attendance).map(key => attendance[key]).sort((a, b) => b.count - a.count);
+        const tbody = document.getElementById("attendance-tbody");
+        
+        if (tbody) {
+            tbody.innerHTML = ""; 
+            sortedAttendance.forEach(player => {
+                const finalCount = Math.min(player.count, totalRaids);
+                const percentage = Math.round((finalCount / totalRaids) * 100);
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><span class="${player.cssClass}">${player.displayName}</span></td>
+                    <td>${player.gameClass}</td>
+                    <td><strong>${finalCount}</strong> / ${totalRaids}</td>
+                    <td style="white-space: nowrap;">
+                        <div style="background: #222; width: 100px; height: 10px; display: inline-block; margin-right: 8px; border-radius: 3px; overflow: hidden; border: 1px solid #333;">
+                            <div style="width: ${percentage}%; height: 100%; background: linear-gradient(90deg, #00aa00 0%, #00ff00 100%); border-radius: 3px;"></div>
+                        </div> 
+                        <span style="font-weight: bold; font-size: 0.85rem; color: #00ff00;">${percentage}%</span>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 4. HALL OF SHAME (DETAILS-LOOK) AUS DER DATENBANK BEFÜLLEN
+        const sortedDeaths = Object.keys(deathCounter).map(key => deathCounter[key]).sort((a, b) => b.totalDeaths - a.totalDeaths);
+        const chartContainer = document.getElementById("shame-chart-container");
+        const awardDiv = document.getElementById("floor-tester-award");
+
+        const classToBgMap = {
+            'color-hunter': 'bg-bar-hunter',
+            'color-rogue': 'bg-bar-rogue',
+            'color-shaman': 'bg-bar-shaman',
+            'color-warlock': 'bg-bar-warlock',
+            'color-warrior': 'bg-bar-warrior',
+            'color-paladin': 'bg-bar-paladin',
+            'color-mage': 'bg-bar-mage',
+            'color-druid': 'bg-bar-druid',
+            'color-priest': 'bg-bar-priest'
+        };
+
+        if (chartContainer) {
+            if (sortedDeaths.length > 0) {
+                chartContainer.innerHTML = "";
+                const maxDeaths = sortedDeaths[0].totalDeaths;
+                
+                sortedDeaths.slice(0, 10).forEach((player, index) => {
+                    const barWidth = Math.max(5, Math.round((player.totalDeaths / maxDeaths) * 100));
+                    const bgClass = classToBgMap[player.cssClass] || 'bg-bar-warrior';
+                    
+                    const rowDiv = document.createElement("div");
+                    rowDiv.className = "shame-row";
+                    rowDiv.innerHTML = `
+                        <div class="shame-bar-wrapper ${bgClass}" style="width: ${barWidth}%;"></div>
+                        <div class="shame-text-layer">
+                            <div class="shame-player-name">${index + 1}. ${player.name}</div>
+                            <div class="shame-death-count">💀 ${player.totalDeaths} Tode</div>
+                        </div>
+                    `;
+                    chartContainer.appendChild(rowDiv);
+                });
+                
+                if (awardDiv) {
+                    awardDiv.innerHTML = `👑 Amtlicher Bodenbelag-Tester des Monats: <span class="${sortedDeaths[0].cssClass}" style="font-weight: 900;">${sortedDeaths[0].name}</span> (${sortedDeaths[0].totalDeaths} Tode! 🛌)`;
+                }
+            } else {
+                chartContainer.innerHTML = "<p style='color: #666; padding: 10px; font-style: italic;'>Noch keine Sünden registriert...</p>";
+                if (awardDiv) awardDiv.style.display = "none";
+            }
+        }
+    } catch (globalError) {
+        console.error("Fehler beim Verarbeiten der Datenbank: ", globalError);
     }
 });
 
-// FIESE SPRÜCHE FÜR DEN BUTTON
+// --- 5. LIVE-COUNTDOWN (KOMPLETT ISOLIERT & GEKAPSELT) ---
+(function() {
+    function updateRaidCountdown() {
+        const timerElement = document.getElementById("countdown-timer");
+        if (!timerElement) return;
+
+        try {
+            const now = new Date();
+            const RAID_HOUR = 19;
+            const RAID_MIN  = 45;
+            const raidDays = [3, 4]; // Mittwoch und Donnerstag
+            
+            let minDiff = Infinity;
+
+            raidDays.forEach(day => {
+                let targetDate = new Date();
+                let daysAhead = (day - now.getDay() + 7) % 7;
+                
+                targetDate.setDate(now.getDate() + daysAhead);
+                targetDate.setHours(RAID_HOUR, RAID_MIN, 0, 0);
+
+                if (daysAhead === 0 && now > targetDate) {
+                    targetDate.setDate(targetDate.getDate() + 7);
+                }
+
+                let diff = targetDate - now;
+                if (diff < minDiff) {
+                    minDiff = diff;
+                }
+            });
+
+            const d = Math.floor(minDiff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((minDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((minDiff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((minDiff % (1000 * 60)) / 1000);
+
+            if (minDiff < 0) { 
+                timerElement.innerHTML = "<span style='color: #00ff00; text-shadow: 0 0 5px #00ff00;'>RAID LÄUFT! AUFSTELLEN! ⚔️</span>";
+            } else {
+                timerElement.textContent = 
+                    `${d}d : ${String(h).padStart(2, '0')}h : ${String(m).padStart(2, '0')}m : ${String(s).padStart(2, '0')}s`;
+            }
+        } catch (e) {
+            console.error("Countdown Fehler: ", e);
+        }
+    }
+
+    updateRaidCountdown();
+    setInterval(updateRaidCountdown, 1000);
+})();
+
+// --- MIMIMI BUTTON FUNKTION ---
 const MIMIMI_QUOTES = [
     "Wirbelwind ist KEIN Karussell! Warum laufen da fünf Caster gleichzeitig rein?! Seid ihr farbenblind? 🎡💀",
     "Pukipala macht 119 DPS. Ein nackter Gnom mit einem Holzlöffel macht im Autohit mehr Druck! AUFWACHEN! 🪵💤",
@@ -515,77 +595,6 @@ const MIMIMI_QUOTES = [
     "Kuscheln könnt ihr nach dem Raid im Goldhain, hier wird gefälligst Abstand gehalten beim Multi-Shot, ihr verdammten Slacker! 🏹💥"
 ];
 
-function generateQuote() {
-    const quoteElement = document.getElementById("raid-quote");
-    if (!quoteElement) return;
-    quoteElement.style.opacity = "0";
-    setTimeout(() => {
-        const randomIndex = Math.floor(Math.random() * MIMIMI_QUOTES.length);
-        quoteElement.textContent = MIMIMI_QUOTES[randomIndex];
-        quoteElement.style.opacity = "1";
-    }, 150);
-}
-
-function removeTickerItem(element) {
-    const item = element.parentElement;
-    item.remove();
-}
-// --- 5. LIVE-COUNTDOWN (ABSOLUT FEHLERSICHER GEKAPSELT) ---
-(function() {
-    function updateRaidCountdown() {
-        const timerElement = document.getElementById("countdown-timer");
-        if (!timerElement) return; // Falls das Element nicht da ist, abbrechen ohne Fehler!
-
-        try {
-            const now = new Date();
-            const RAID_HOUR = 19;
-            const RAID_MIN  = 45;
-            const raidDays = [3, 4]; // 3 = Mittwoch, 4 = Donnerstag
-            
-            let minDiff = Infinity;
-
-            raidDays.forEach(day => {
-                let targetDate = new Date();
-                let daysAhead = (day - now.getDay() + 7) % 7;
-                
-                targetDate.setDate(now.getDate() + daysAhead);
-                targetDate.setHours(RAID_HOUR, RAID_MIN, 0, 0);
-
-                // Wenn der Raidtag heute ist, aber 19:45 Uhr schon vorbei ist
-                if (daysAhead === 0 && now > targetDate) {
-                    targetDate.setDate(targetDate.getDate() + 7);
-                }
-
-                let diff = targetDate - now;
-                if (diff < minDiff) {
-                    minDiff = diff;
-                }
-            });
-
-            // Berechnung
-            const d = Math.floor(minDiff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((minDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((minDiff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((minDiff % (1000 * 60)) / 1000);
-
-            // Falls wir im Minus sind (während des Raids am Mittwoch/Donnerstag)
-            if (minDiff < 0) { 
-                timerElement.innerHTML = "<span style='color: #00ff00; text-shadow: 0 0 5px #00ff00;'>RAID LÄUFT! AUFSTELLEN! ⚔️</span>";
-            } else {
-                timerElement.textContent = 
-                    `${d}d : ${String(h).padStart(2, '0')}h : ${String(m).padStart(2, '0')}m : ${String(s).padStart(2, '0')}s`;
-            }
-        } catch (e) {
-            console.error("Countdown Fehler abgefangen: ", e);
-        }
-    }
-
-    // Sofort ausführen und Intervall starten
-    updateRaidCountdown();
-    setInterval(updateRaidCountdown, 1000);
-})();
-
-// --- MIMIMI BUTTON FUNKTION (BLEIBT GLEICH) ---
 function generateQuote() {
     const quoteElement = document.getElementById("raid-quote");
     if (!quoteElement) return;
