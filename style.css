@@ -1,4 +1,34 @@
-/* Grundlegende Einstellungen für sauberes Layout */
+/* ==========================================================================
+   BEYOND - Raid Analysen (Dark Mode / Sündenregister Theme)
+   ========================================================================== */
+
+/* --- 1. FARBPALETTE & VARIABLEN --- */
+:root {
+    --bg-dark: #0a0a0c;         /* Sehr dunkles Grau/Schwarz als Haupt-Hintergrund */
+    --bg-panel: #141416;        /* Panels / Boxen Hintergrund */
+    --bg-header: #050505;       /* Header Hintergrund */
+    --border-color: #2a2a2a;    /* Dezente Rahmenlinien */
+    
+    --text-main: #cccccc;       /* Haupttext (lesbar auf dunkel) */
+    --text-bright: #ffffff;     /* Überschriften */
+    --text-muted: #777777;      /* Abgeschwächter Text */
+    
+    --accent-red: #aa0000;      /* Beyond / Mimimi Rot */
+    --accent-red-hover: #ff3333;
+    
+    /* WoW Klassenfarben (Saturiert für Dark Mode) */
+    --color-hunter: #abd473;
+    --color-rogue: #fff569;
+    --color-shaman: #0070de;
+    --color-warlock: #8788ee;
+    --color-warrior: #c79c6e;
+    --color-paladin: #f58cba;
+    --color-mage: #3fc7eb;
+    --color-druid: #ff7d0a;
+    --color-priest: #ffffff;
+}
+
+/* --- 2. GRUNDLAYOUT --- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,345 +36,102 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #e0e0e0; /* Dezenter, grauer Hintergrund */
-    color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
 }
 
-/* Der Container hält alles schön in der Mitte */
 .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    align-items: flex-start;
+    width: 95%;
+    max-width: 1200px;
+    margin: auto;
+    overflow: hidden;
+    padding: 0 15px;
 }
 
-/* Header & BEYOND Logo */
+a {
+    color: var(--accent-red);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: var(--accent-red-hover);
+}
+
+/* --- 3. HEADER & BANNER (NEU ANGEORDNET) --- */
 .main-header {
-    width: 100%;
-    background-color: #1a1a1a; 
-    padding: 15px 0;           
-    text-align: center;        
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3); 
-    margin-bottom: 40px;
+    background: var(--bg-header);
+    border-bottom: 2px solid var(--accent-red);
+    padding: 15px 20px;
+    margin-bottom: 0 !important; /* Verhindert Lücke zum Ticker */
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.8);
+}
+
+.header-container {
+    display: flex;
+    justify-content: center; /* Zentriert das Logo grundsätzlich */
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative; /* Wichtig, damit der Timer absolut positioniert werden kann */
+    min-height: 80px; /* Platzhalter, falls Logo lädt */
 }
 
 .header-logo {
-    max-height: 160px;  
-    width: auto;       
-    display: inline-block;
-    transition: transform 0.2s ease; 
-}
-
-.header-logo:hover {
-    transform: scale(1.05);
-}
-
-/* BLOG LAYOUT SPALTEN */
-.main-content {
-    flex: 3; /* Hauptbereich nimmt 3 Teile des Platzes */
-    min-width: 300px;
-}
-
-.sidebar {
-    flex: 1; /* Sidebar nimmt 1 Teil des Platzes */
-    min-width: 250px;
-}
-
-/* Die einzelnen Raid-Posts */
-.post {
-    background: #ffffff; 
-    padding: 30px;
-    border-radius: 8px;
-    margin-bottom: 40px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
-}
-
-.post h2 {
-    color: #222;
-    margin-bottom: 5px;
-}
-
-.date {
+    max-height: 90px;
+    width: auto;
     display: block;
-    color: #888;
-    font-size: 0.9rem;
-    margin-bottom: 20px;
-    font-style: italic;
+    filter: drop-shadow(0px 0px 8px rgba(170, 0, 0, 0.4));
 }
 
-.post p {
-    margin-bottom: 25px;
-}
-
-.post ul {
-    margin-left: 20px;
-    margin-bottom: 20px;
-}
-
-.post li {
-    margin-bottom: 8px;
-}
-
-/* SIDEBAR STYLING */
-.sidebar-box {
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-.sidebar-box h3 {
-    margin-bottom: 15px;
-    border-bottom: 3px solid #4CAF50; /* Grüner Akzent für BEYOND */
-    padding-bottom: 5px;
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.archive-list {
-    list-style: none;
-}
-
-.archive-list li {
-    margin-bottom: 8px;
-}
-
-.archive-list li a {
-    color: #444;
-    text-decoration: none;
-    display: block;
-    padding: 4px 0;
-    transition: color 0.2s ease;
-}
-
-.archive-list li a:hover, .archive-list li a.active {
-    color: #4CAF50;
-    font-weight: bold;
-}
-
-/* KOMPAKTES STYLING FÜR DIE ATTENDANCE BOX */
-.attendance-box {
-    background: #1a1a1a; /* Dunkler, edler Hintergrund */
-    border: 1px solid #333;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 25px;
-}
-
-.attendance-box h2 {
-    color: #ffffff !important; /* Strahlendes Weiß */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Macht es noch edler und lesbarer */
-    margin-bottom: 15px;
-}
-
-/* Scrollbalken, falls die Tabelle doch mal zu lang wird */
-.attendance-scroll {
-    max-height: 400px; /* Begrenzt die Höhe der Liste */
-    overflow-y: auto;  /* Erlaubt vertikales Scrollen innerhalb der Box */
-    margin-top: 10px;
-}
-
-/* Tabellen-Feinschliff */
-#attendance-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
-}
-
-#attendance-table th {
-    background-color: #262626;
-    color: #fff;
-    border: 1px solid #333;
-}
-
-#attendance-table td {
-    padding: 8px 10px;
-    text-align: left;
-    border: 1px solid #2a2a2a;
-    color: #ddd;
-}
-
-#attendance-table tr:nth-child(even) {
-    background-color: #202020;
-}
-
-/* Der Fortschrittsbalken */
-.attendance-progress-bg {
-    background: #262626;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 3px;
-    width: 80px; 
-    display: inline-block;
-    margin-right: 8px;
-    vertical-align: middle;
-    overflow: hidden;
-    height: 6px;
-}
-
-.attendance-progress-bar {
-    background: linear-gradient(90deg, #4caf50, #81c784); /* Schöner grüner Verlauf */
-    height: 100%;
-    border-radius: 3px;
-}
-
-/* EINKLAPPBARE TABELLE (ACCORDION) */
-.table-accordion {
-    margin-top: 10px;
-    background: #fdfdfd;
-    border-radius: 6px;
-    border: 1px solid #e0e0e0;
-    overflow: hidden;
-}
-
-.attendance-box .table-accordion {
-    background: #222;
-    border: 1px solid #333;
-}
-
-.table-accordion summary {
-    padding: 15px 20px;
-    font-weight: bold;
-    cursor: pointer;
-    outline: none;
-    user-select: none;
-    background-color: #f7f7f7;
-    transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.attendance-box .table-accordion summary {
-    background-color: #262626;
-    color: #eee;
-}
-
-.table-accordion summary:hover {
-    background-color: #eeeeee;
-    color: #4CAF50;
-}
-
-.attendance-box .table-accordion summary:hover {
-    background-color: #333;
-    color: #4CAF50;
-}
-
-.table-accordion[open] summary {
-    border-bottom: 1px solid #ddd;
-    background-color: #f4f4f4;
-}
-
-.attendance-box .table-accordion[open] summary {
-    border-bottom: 1px solid #333;
-    background-color: #1e1e1e;
-}
-
-/* Tabellen-Styling standard */
-.table-responsive {
-    overflow-x: auto; 
-    padding: 10px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-}
-
-th, td {
-    padding: 12px 15px;
-    text-align: left;
-}
-
-th {
-    background-color: #f4f4f4;
-    color: #333;
-    font-weight: bold;
-}
-
-tr:nth-child(even) {
-    background-color: #fafafa;
-}
-
-footer {
+/* Der Countdown klebt jetzt kompakt rechts in der Ecke des Banners */
+#raid-countdown-box {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(20, 20, 20, 0.85);
+    border: 1px solid var(--accent-red);
+    padding: 6px 12px;
+    border-radius: 4px;
     text-align: center;
-    padding: 30px 0;
-    color: #666;
-    font-size: 0.9rem;
-    margin-top: 20px;
-    width: 100%;
+    box-shadow: 0 0 10px rgba(170, 0, 0, 0.3);
+    min-width: 180px;
 }
 
-/* WoW Klassenfarben */
-.color-druid { color: #FF7C0A; font-weight: bold; }
-.color-hunter { color: #AAD372; font-weight: bold; }
-.color-mage { color: #3FC7EB; font-weight: bold; }
-.color-paladin { color: #F48CBA; font-weight: bold; }
-.color-priest { color: #7f8c8d; font-weight: bold; } 
-.color-rogue { color: #d1c40f; font-weight: bold; } 
-.color-shaman { color: #0070DD; font-weight: bold; }
-.color-warlock { color: #8788EE; font-weight: bold; }
-.color-warrior { color: #C69B6D; font-weight: bold; }
-
-/* Mobile Optimierung fürs Handy */
-@media (max-width: 900px) {
-    .container {
-        flex-direction: column-reverse; /* Sidebar wandert oben übers Handy-Display */
-    }
-
-    .sidebar {
-        margin-bottom: 20px; 
-        width: 100%;
-    }
-    
-    .main-content {
-        width: 100%;
-    }
-
-    .post {
-        padding: 20px;
-    }
-
-    th, td {
-        padding: 10px;
-        font-size: 0.9rem;
-    }
-
-    .table-accordion summary {
-        font-size: 16px; 
-        padding: 12px 15px; 
-    }
-
-    .table-responsive {
-        padding: 0;
-        width: 100%;
-    }
+#raid-countdown-box div:first-child {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 2px;
 }
 
-/* Ticker Container */
+#countdown-timer {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--text-bright);
+    font-family: monospace;
+}
+
+/* --- 4. LIVE TICKER --- */
 .ticker-wrap {
     width: 100%;
-    background: #111116;
-    border-bottom: 2px solid #aa0000;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border-color);
     overflow: hidden;
-    height: 40px;
+    height: 35px;
     display: flex;
     align-items: center;
     box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    font-family: Arial, sans-serif;
+    margin-top: 0 !important;
 }
 
-/* Roter Titel-Badge links (bleibt stehen) */
 .ticker-title {
-    background: #aa0000;
-    color: #fff;
+    background: var(--accent-red);
+    color: var(--text-bright);
     padding: 0 15px;
     height: 100%;
     display: flex;
@@ -356,91 +143,192 @@ footer {
     box-shadow: 5px 0 10px rgba(0,0,0,0.5);
 }
 
-/* Die Laufbahn */
 .ticker {
     display: flex;
     white-space: nowrap;
     padding-left: 100%;
-    animation: marquee 25s linear infinite;
+    animation: marquee 35s linear infinite;
 }
 
-/* Stoppt die Animation, wenn man mit der Maus drüber geht (zum besseren Klicken!) */
 .ticker-wrap:hover .ticker {
     animation-play-state: paused;
 }
 
-/* Einzelne Spieler-Elemente im Ticker */
 .ticker-item {
     display: inline-flex;
     align-items: center;
     padding: 0 20px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: bold;
 }
 
-/* Das kleine Lösch-Kreuz */
 .ticker-del {
-    color: #555;
+    color: var(--text-muted);
     margin-left: 6px;
     cursor: pointer;
     font-size: 0.8rem;
     transition: color 0.2s, transform 0.2s;
-    display: inline-block;
-    line-height: 1;
 }
 
 .ticker-del:hover {
-    color: #ff0000;
+    color: var(--accent-red-hover);
     transform: scale(1.3);
 }
 
-/* Die unendliche Lauf-Animation */
 @keyframes marquee {
     0% { transform: translate3d(0, 0, 0); }
     100% { transform: translate3d(-100%, 0, 0); }
 }
 
-.shame-row {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+/* --- 5. GRID LAYOUT (CONTENT & SIDEBAR) --- */
+.blog-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    margin-top: 25px; /* Symmetrischer Abstand zum Ticker */
+    align-items: start; /* Ganz wichtig: Zieht die Sidebar nach oben, damit sie nicht durch Inhalt rutscht */
 }
-.shame-name {
-    width: 120px;
+
+@media (max-width: 900px) {
+    .blog-layout {
+        grid-template-columns: 1fr;
+    }
+    #raid-countdown-box {
+        position: static;
+        transform: none;
+        margin-top: 10px;
+    }
+    .header-container {
+        flex-direction: column;
+    }
+}
+
+/* --- 6. ARTIKEL & BOXEN --- */
+.post, .sidebar-box, .attendance-box, .shame-box, .mimimi-btn-box {
+    background: var(--bg-panel);
+    padding: 25px;
+    margin-bottom: 30px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+h2, h3 {
+    color: var(--text-bright);
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 5px;
+}
+
+/* --- 7. TABELLEN (ANWESENHEIT & RAIDS) --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: var(--bg-dark);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+th {
+    background-color: #1a1a1c;
+    color: var(--text-bright);
     font-weight: bold;
-    font-size: 0.9rem;
-    text-align: right;
-    white-space: nowrap;
+    text-transform: uppercase;
+    font-size: 0.85rem;
 }
-.shame-bar-wrapper {
-    flex-grow: 1;
-    background: #222;
-    height: 24px;
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid #333;
+
+tr:hover td {
+    background-color: #1a1a1c;
 }
-.shame-bar {
-    height: 100%;
-    background: #ff3333;
-    background: linear-gradient(90deg, #aa0000 0%, #ff3333 100%);
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+/* Details/Summary für ein- und ausklappbare Tabellen */
+details {
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 15px;
+}
+
+summary {
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--accent-red);
+    outline: none;
+    padding: 5px;
+}
+
+summary:hover {
+    color: var(--accent-red-hover);
+}
+
+/* --- 8. LISTEN IM CONTENT --- */
+.post ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 15px;
+}
+
+.post li {
+    background: var(--bg-dark);
+    margin-bottom: 10px;
+    padding: 12px 15px;
+    border-left: 4px solid var(--accent-red);
     border-radius: 3px;
-    transition: width 1s ease-out;
-}
-.shame-count {
-    width: 60px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    color: #ff3333;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
 
-/* Verhindert den Spalt zwischen Banner und Ticker */
-.main-header {
-    margin-bottom: 0 !important;
-    padding-bottom: 0 !important;
+/* --- 9. SIDEBAR ELEMENTE --- */
+.archive-list {
+    list-style: none;
 }
 
-.ticker-wrap {
-    margin-top: 0 !important;
-    border-top: none; /* Falls eine obere Linie den Spalt optisch erzeugt */
+.archive-list li {
+    margin-bottom: 8px;
+}
+
+.archive-list a {
+    display: block;
+    padding: 8px 12px;
+    background: var(--bg-dark);
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    transition: all 0.2s;
+}
+
+.archive-list a:hover, .archive-list a.active {
+    background: var(--accent-red);
+    color: var(--text-bright);
+    border-color: var(--accent-red);
+}
+
+/* --- 10. KLASSENFARBEN --- */
+.color-hunter { color: var(--color-hunter); font-weight: bold; }
+.color-rogue { color: var(--color-rogue); font-weight: bold; }
+.color-shaman { color: var(--color-shaman); font-weight: bold; }
+.color-warlock { color: var(--color-warlock); font-weight: bold; }
+.color-warrior { color: var(--color-warrior); font-weight: bold; }
+.color-paladin { color: var(--color-paladin); font-weight: bold; }
+.color-mage { color: var(--color-mage); font-weight: bold; }
+.color-druid { color: var(--color-druid); font-weight: bold; }
+.color-priest { color: var(--color-priest); font-weight: bold; }
+
+/* --- 11. FOOTER --- */
+footer {
+    background: var(--bg-header);
+    color: var(--text-muted);
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+    border-top: 1px solid var(--border-color);
 }
