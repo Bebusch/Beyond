@@ -530,61 +530,77 @@ function removeTickerItem(element) {
     const item = element.parentElement;
     item.remove();
 }
-// --- 5. LIVE-COUNTDOWN (MITTWOCH & DONNERSTAG) - FIX ---
-function updateRaidCountdown() {
-    const now = new Date();
-    
-    // HIER STELLST DU DIE UHRZEIT EIN (19:45 Uhr)
-    const RAID_HOUR = 19;
-    const RAID_MIN  = 45;
+// --- 5. LIVE-COUNTDOWN (ABSOLUT FEHLERSICHER GEKAPSELT) ---
+(function() {
+    function updateRaidCountdown() {
+        const timerElement = document.getElementById("countdown-timer");
+        if (!timerElement) return; // Falls das Element nicht da ist, abbrechen ohne Fehler!
 
-    // Eure Raidtage: 3 = Mittwoch, 4 = Donnerstag
-    const raidDays = [3, 4]; 
-    let nextRaid = null;
-    let minDiff = Infinity;
+        try {
+            const now = new Date();
+            const RAID_HOUR = 19;
+            const RAID_MIN  = 45;
+            const raidDays = [3, 4]; // 3 = Mittwoch, 4 = Donnerstag
+            
+            let minDiff = Infinity;
 
-    raidDays.forEach(day => {
-        let targetDate = new Date();
-        let daysAhead = (day - now.getDay() + 7) % 7;
-        
-        targetDate.setDate(now.getDate() + daysAhead);
-        targetDate.setHours(RAID_HOUR, RAID_MIN, 0, 0);
+            raidDays.forEach(day => {
+                let targetDate = new Date();
+                let daysAhead = (day - now.getDay() + 7) % 7;
+                
+                targetDate.setDate(now.getDate() + daysAhead);
+                targetDate.setHours(RAID_HOUR, RAID_MIN, 0, 0);
 
-        // Wenn der Raidtag heute ist, aber 19:45 Uhr schon vorbei ist -> nächste Woche
-        if (daysAhead === 0 && now > targetDate) {
-            targetDate.setDate(targetDate.getDate() + 7);
-        }
+                // Wenn der Raidtag heute ist, aber 19:45 Uhr schon vorbei ist
+                if (daysAhead === 0 && now > targetDate) {
+                    targetDate.setDate(targetDate.getDate() + 7);
+                }
 
-        let diff = targetDate - now;
-        if (diff < minDiff) {
-            minDiff = diff;
-            nextRaid = targetDate;
-        }
-    });
+                let diff = targetDate - now;
+                if (diff < minDiff) {
+                    minDiff = diff;
+                }
+            });
 
-    // Berechnung von Tagen, Stunden, Minuten und Sekunden
-    const d = Math.floor(minDiff / (1000 * 60 * 60 * 24));
-    const h = Math.floor((minDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const m = Math.floor((minDiff % (1000 * 60 * 60)) / (1000 * 60));
-    const s = Math.floor((minDiff % (1000 * 60)) / 1000);
+            // Berechnung
+            const d = Math.floor(minDiff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((minDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((minDiff % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((minDiff % (1000 * 60)) / 1000);
 
-    const timerElement = document.getElementById("countdown-timer");
-    if (timerElement) {
-        // Wenn der nächste Raid in weniger als 4 Tagen ist UND die Differenz negativ wäre 
-        // (oder wir uns im Zeitfenster des aktuellen Raids befinden – z.B. Mittwochabend)
-        if (minDiff < 0) { 
-            timerElement.innerHTML = "<span style='color: #00ff00; text-shadow: 0 0 5px #00ff00;'>RAID LÄUFT! AUFSTELLEN! ⚔️</span>";
-        } else {
-            // Schickes Format: 1d : 05h : 42m : 11s
-            timerElement.textContent = 
-                `${d}d : ${String(h).padStart(2, '0')}h : ${String(m).padStart(2, '0')}m : ${String(s).padStart(2, '0')}s`;
+            // Falls wir im Minus sind (während des Raids am Mittwoch/Donnerstag)
+            if (minDiff < 0) { 
+                timerElement.innerHTML = "<span style='color: #00ff00; text-shadow: 0 0 5px #00ff00;'>RAID LÄUFT! AUFSTELLEN! ⚔️</span>";
+            } else {
+                timerElement.textContent = 
+                    `${d}d : ${String(h).padStart(2, '0')}h : ${String(m).padStart(2, '0')}m : ${String(s).padStart(2, '0')}s`;
+            }
+        } catch (e) {
+            console.error("Countdown Fehler abgefangen: ", e);
         }
     }
+
+    // Sofort ausführen und Intervall starten
+    updateRaidCountdown();
+    setInterval(updateRaidCountdown, 1000);
+})();
+
+// --- MIMIMI BUTTON FUNKTION (BLEIBT GLEICH) ---
+function generateQuote() {
+    const quoteElement = document.getElementById("raid-quote");
+    if (!quoteElement) return;
+    quoteElement.style.opacity = "0";
+    setTimeout(() => {
+        const randomIndex = Math.floor(Math.random() * MIMIMI_QUOTES.length);
+        quoteElement.textContent = MIMIMI_QUOTES[randomIndex];
+        quoteElement.style.opacity = "1";
+    }, 150);
 }
 
-// Sofort starten und jede Sekunde aktualisieren
-updateRaidCountdown();
-setInterval(updateRaidCountdown, 1000);
+function removeTickerItem(element) {
+    const item = element.parentElement;
+    item.remove();
+}
 </script>
 </body>
 </html>
