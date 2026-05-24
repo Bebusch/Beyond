@@ -417,7 +417,9 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (raid.attendees && Array.isArray(raid.attendees)) {
                     raid.attendees.forEach(rawName => {
                         if (!rawName) return;
-                        const nameKey = rawName.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                        
+                        // SONDERZEICHEN-FIX: Behält â, ø, ê, ä exakt bei und macht es nur klein!
+                        const nameKey = rawName.trim().toLowerCase();
                         
                         // Stammdaten holen
                         const playerMeta = (RAID_DATABASE.players && RAID_DATABASE.players[nameKey]) 
