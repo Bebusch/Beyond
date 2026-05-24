@@ -237,6 +237,14 @@ body {
     padding-bottom: 6px;
 }
 
+.sidebar-box ul li {
+    color: #ffffff !important; /* Hier ändern */
+}
+
+/* Für die Überschrift "Raid-News" */
+.sidebar-box h3 {
+    color: #ff3333 !important; /* Hier ändern */
+}
 .archive-list {
     list-style: none;
 }
