@@ -81,7 +81,7 @@ body {
 }
 
 .header-logo {
-    height: 60px; /* <--- HIER DIE GRÖSSE/HÖHE EINSTELLEN (z.B. 45px, 60px, 80px) */
+    height: 90px; /* <--- HIER DIE GRÖSSE/HÖHE EINSTELLEN (z.B. 45px, 60px, 80px) */
     width: auto;  /* Behält das richtige Seitenverhältnis bei */
     display: block;
     transition: transform 0.2s ease;
