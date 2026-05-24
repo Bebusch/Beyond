@@ -406,7 +406,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
-    // Hilfsfunktion: Wandelt WoW-Namen exakt in die sauberen Datenbank-Schlüssel um (z.B. Alessâ -> alessa, Hemmø -> hemmo)
+    // Hilfsfunktion für die Spieler-Stammdaten (sucht immer kleingeschrieben und ohne Sonderzeichen)
     function getCleanDatabaseKey(name) {
         if (!name) return "";
         return name.trim()
@@ -431,17 +431,14 @@ document.addEventListener("DOMContentLoaded", function() {
                     raid.attendees.forEach(rawName => {
                         if (!rawName) return;
                         
-                        // Übersetzt z.B. "Alessâ" zu "alessa", damit der Key in den Stammdaten gefunden wird
                         const nameKey = getCleanDatabaseKey(rawName);
-                        
-                        // Stammdaten holen
                         const playerMeta = (RAID_DATABASE.players && RAID_DATABASE.players[nameKey]) 
                             ? RAID_DATABASE.players[nameKey] 
                             : { name: rawName, class: "Unbekannt", css: "color-warrior" };
 
                         if (!attendance[nameKey]) {
                             attendance[nameKey] = { 
-                                displayName: playerMeta.name, // Nutzt den schönen Namen mit Sonderzeichen aus der DB
+                                displayName: playerMeta.name, 
                                 count: 0, 
                                 cssClass: playerMeta.css, 
                                 gameClass: playerMeta.class 
@@ -453,17 +450,20 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }
 
-        // 3. TODE AUS DER DATENBANK ZÄHLEN
+        // 3. TODE AUS DER DATENBANK ZÄHLEN (Nutzt exakt die originalen Keys aus deinem DB-Objekt)
         if (RAID_DATABASE.deaths) {
             Object.keys(RAID_DATABASE.deaths).forEach(rawKey => {
-                const nameKey = getCleanDatabaseKey(rawKey);
-                const playerMeta = RAID_DATABASE.players ? RAID_DATABASE.players[nameKey] : null;
-                const displayName = playerMeta ? playerMeta.name : rawKey;
-                const cssClass = playerMeta ? playerMeta.css : "color-warrior";
                 const totalDeaths = RAID_DATABASE.deaths[rawKey];
-
+                
                 if (totalDeaths > 0) {
-                    deathCounter[nameKey] = {
+                    // Für die Klassenfarbe/Stammdaten nutzen wir den bereinigten Schlüssel
+                    const cleanKey = getCleanDatabaseKey(rawKey);
+                    const playerMeta = RAID_DATABASE.players ? RAID_DATABASE.players[cleanKey] : null;
+                    
+                    const displayName = playerMeta ? playerMeta.name : rawKey;
+                    const cssClass = playerMeta ? playerMeta.css : "color-warrior";
+
+                    deathCounter[cleanKey] = {
                         name: displayName,
                         cssClass: cssClass,
                         totalDeaths: totalDeaths
