@@ -406,6 +406,19 @@ document.addEventListener("DOMContentLoaded", function() {
         return;
     }
 
+    // Hilfsfunktion: Wandelt WoW-Namen exakt in die sauberen Datenbank-Schlüssel um (z.B. Alessâ -> alessa, Hemmø -> hemmo)
+    function getCleanDatabaseKey(name) {
+        if (!name) return "";
+        return name.trim()
+            .toLowerCase()
+            .replace(/[âäàáå]/g, "a")
+            .replace(/[êëèé]/g, "e")
+            .replace(/[îïìí]/g, "i")
+            .replace(/[ôöòóø]/g, "o")
+            .replace(/[ûüùú]/g, "u")
+            .replace(/ß/g, "ss");
+    }
+
     try {
         const attendance = {};
         const deathCounter = {};
@@ -418,8 +431,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     raid.attendees.forEach(rawName => {
                         if (!rawName) return;
                         
-                        // SONDERZEICHEN-FIX: Behält â, ø, ê, ä exakt bei und macht es nur klein!
-                        const nameKey = rawName.trim().toLowerCase();
+                        // Übersetzt z.B. "Alessâ" zu "alessa", damit der Key in den Stammdaten gefunden wird
+                        const nameKey = getCleanDatabaseKey(rawName);
                         
                         // Stammdaten holen
                         const playerMeta = (RAID_DATABASE.players && RAID_DATABASE.players[nameKey]) 
@@ -428,7 +441,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                         if (!attendance[nameKey]) {
                             attendance[nameKey] = { 
-                                displayName: playerMeta.name, 
+                                displayName: playerMeta.name, // Nutzt den schönen Namen mit Sonderzeichen aus der DB
                                 count: 0, 
                                 cssClass: playerMeta.css, 
                                 gameClass: playerMeta.class 
@@ -442,11 +455,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
         // 3. TODE AUS DER DATENBANK ZÄHLEN
         if (RAID_DATABASE.deaths) {
-            Object.keys(RAID_DATABASE.deaths).forEach(nameKey => {
+            Object.keys(RAID_DATABASE.deaths).forEach(rawKey => {
+                const nameKey = getCleanDatabaseKey(rawKey);
                 const playerMeta = RAID_DATABASE.players ? RAID_DATABASE.players[nameKey] : null;
-                const displayName = playerMeta ? playerMeta.name : nameKey;
+                const displayName = playerMeta ? playerMeta.name : rawKey;
                 const cssClass = playerMeta ? playerMeta.css : "color-warrior";
-                const totalDeaths = RAID_DATABASE.deaths[nameKey];
+                const totalDeaths = RAID_DATABASE.deaths[rawKey];
 
                 if (totalDeaths > 0) {
                     deathCounter[nameKey] = {
