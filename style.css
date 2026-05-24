@@ -415,7 +415,7 @@ footer {
     display: inline-block;
     margin-right: 10px;
     font-size: 0.75rem;
-    color: var(--accent-red); /* Der Pfeil selbst bleibt als Akzent rot */
+    color: var(--text-bright); /* Der Pfeil selbst bleibt als Akzent rot */
     transition: transform 0.2s ease;
 }
 
