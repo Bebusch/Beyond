@@ -335,6 +335,10 @@ tr:hover td {
 
 /* --- 10. RAID COUNTDOWN BOX --- */
 #raid-countdown-box {
+    position: absolute;       /* Löst den Kasten aus dem normalen Fluss heraus */
+    right: 20px;              /* Klebt ihn exakt rechts an den Rand des Containers */
+    top: 50%;                 /* Zentriert ihn vertikal im Header */
+    transform: translateY(-50%); /* Verhindert, dass er nach unten rutscht */
     background: #0f0f11;
     border: 1px solid #222;
     padding: 6px 14px;
@@ -346,6 +350,7 @@ tr:hover td {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+    z-index: 10;              /* Sorgt dafür, dass er über anderen Elementen liegt */
 }
 
 #countdown-timer {
