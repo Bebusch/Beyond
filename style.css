@@ -332,3 +332,83 @@ footer {
     margin-top: 40px;
     border-top: 1px solid var(--border-color);
 }
+
+/* --- FIX FÜR DEN DREHBAREN PFEIL & COMPACT LOOK (DETAILS) --- */
+
+/* Verhindert, dass das Flex-Layout der Hauptseite die Hall-of-Shame verzerrt */
+.shame-box details, 
+.shame-box .shame-content-wrapper {
+    display: block !important;
+    width: 100%;
+}
+
+/* Entfernt das starre ➡️ und stellt den nativen, drehbaren Browser-Pfeil ein */
+.shame-box summary {
+    list-style: list-item !important; /* Erzwingt den echten WoW-Drehpfeil */
+    display: list-item !important;    
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--accent-red) !important;
+    padding: 5px;
+    outline: none;
+    margin-bottom: 10px;
+}
+
+.shame-box summary:hover {
+    color: var(--accent-red-hover) !important;
+}
+
+/* Der innere schwarze Kasten für die Balken */
+#shame-chart-container {
+    background: #050505 !important;
+    padding: 12px !important;
+    border-radius: 4px;
+    border: 1px solid #111;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important; /* Drückt die Details-Balken eng zusammen, kein Verzerren! */
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+/* Definiert die exakte Spaltenhöhe für jeden einzelnen Balken */
+.shame-row {
+    display: flex !important;
+    align-items: center !important;
+    position: relative !important;
+    width: 100%;
+    height: 22px !important; /* Absolut flach und kompakt wie im Addon */
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+.shame-bar-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    z-index: 1;
+}
+
+.shame-text-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex !important;
+    justify-content: space-between !important; /* Name links, Zahl rechts */
+    align-items: center !important;
+    padding: 0 8px;
+    z-index: 2;
+    font-family: Arial, sans-serif;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.shame-player-name, .shame-death-count {
+    color: #ffffff !important;
+    text-shadow: 1px 1px 1px #000000;
+}
