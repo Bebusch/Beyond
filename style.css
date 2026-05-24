@@ -352,15 +352,16 @@ footer {
 
 /* Verhindert, dass das Flex-Layout der Hauptseite die Hall-of-Shame verzerrt */
 .shame-box details, 
-.shame-box .shame-content-wrapper {
+.details-shame,
+.shame-content-wrapper {
     display: block !important;
     width: 100%;
 }
 
-/* Entfernt das starre ➡️ und stellt den nativen, drehbaren Browser-Pfeil ein */
-.shame-box summary {
-    list-style: list-item !important; /* Erzwingt den echten WoW-Drehpfeil */
-    display: list-item !important;    
+/* Entfernt die hässliche 0 und stellt den nativen, sauberen Browser-Pfeil ein */
+.details-shame summary {
+    display: list-item !important;    /* Erzwingt die native Listen-Anzeige für den Pfeil */
+    list-style-type: disclosure-closed !important; /* Definiert exakt das geschlossene Dreieck */
     font-weight: bold;
     cursor: pointer;
     color: var(--accent-red) !important;
@@ -369,11 +370,16 @@ footer {
     margin-bottom: 10px;
 }
 
-.shame-box summary:hover {
+/* Wenn das Sündenregister aufgeklappt wird, schwenkt der native Pfeil nach unten */
+.details-shame[open] summary {
+    list-style-type: disclosure-open !important;
+}
+
+.details-shame summary:hover {
     color: var(--accent-red-hover) !important;
 }
 
-/* Der innere schwarze Kasten für die Balken */
+/* Der innere schwarze Kasten für die Balken (Perfekt im Details-Addon-Style!) */
 #shame-chart-container {
     background: #050505 !important;
     padding: 12px !important;
