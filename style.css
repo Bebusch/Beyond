@@ -362,6 +362,16 @@ footer {
    HALL OF SHAME - SPECIAL COMPACT DETAILS-LOOK (NO-ZERO FIX)
    ========================================================================== */
 
+/* Die äußere Box – exakt wie die .post oder .attendance-box */
+.shame-box {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
 /* Verhindert Verzerrungen innerhalb des Akkordeons */
 .shame-box details, 
 .details-shame,
@@ -370,20 +380,22 @@ footer {
     width: 100%;
 }
 
-/* KOMPLETTER PFEIL-FIX: 
-   Wir verwandeln summary in eine Flexbox. Das entzieht dem Browser 
-   die Basis, eine ungewollte nummerierte Liste ("0.") einzublenden!
-*/
+/* KOMPLETTER PFEIL-FIX & SCHRIFTFARBE (Jetzt dezent wie bei der Anwesenheit) */
 .shame-box summary,
 .details-shame summary {
     display: flex !important;         /* Killt die "0.", da kein list-item erzwungen wird */
     align-items: center !important;
     font-weight: bold;
     cursor: pointer;
-    color: var(--accent-red) !important;
-    padding: 5px;
+    color: var(--text-main) !important; /* Weiß/Grau statt Rot, passend zur Gilden-Anwesenheit */
+    padding: 8px;
+    background: #19191c;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
     outline: none;
-    margin-bottom: 10px;
+    user-select: none;
+    transition: background 0.2s, color 0.2s;
+    margin-bottom: 15px;
 }
 
 /* Versteckt den fehlerhaften nativen Browser-Marker rigoros */
@@ -401,9 +413,9 @@ footer {
 .details-shame summary::before {
     content: "▶";
     display: inline-block;
-    margin-right: 8px;
+    margin-right: 10px;
     font-size: 0.75rem;
-    color: var(--accent-red);
+    color: var(--accent-red); /* Der Pfeil selbst bleibt als Akzent rot */
     transition: transform 0.2s ease;
 }
 
@@ -413,9 +425,11 @@ footer {
     transform: rotate(90deg);
 }
 
+/* Hover-Effekt wie bei den restlichen Tabellen-Akkordeons */
 .shame-box summary:hover,
 .details-shame summary:hover {
-    color: var(--accent-red-hover) !important;
+    background: #222226;
+    color: #fff !important;
 }
 
 /* Der tiefe, pechschwarze Kasten für die Balken (Genau wie Details!-Addon) */
