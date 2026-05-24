@@ -72,15 +72,17 @@ body {
 
 .header-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* SPERRT DAS LOGO BOMBENFEST IN DER MITTE */
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    position: relative; /* Wichtig, falls der Countdown darin absolut liegt */
 }
 
 .header-logo {
-    height: 45px;
+    height: 60px; /* <--- HIER DIE GRÖSSE/HÖHE EINSTELLEN (z.B. 45px, 60px, 80px) */
+    width: auto;  /* Behält das richtige Seitenverhältnis bei */
     display: block;
     transition: transform 0.2s ease;
 }
