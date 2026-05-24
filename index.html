@@ -530,7 +530,7 @@ function removeTickerItem(element) {
     const item = element.parentElement;
     item.remove();
 }
-// --- 5. LIVE-COUNTDOWN FÜR MITTWOCH & DONNERSTAG ---
+// --- 5. LIVE-COUNTDOWN (MITTWOCH & DONNERSTAG) - FIX ---
 function updateRaidCountdown() {
     const now = new Date();
     
@@ -538,12 +538,11 @@ function updateRaidCountdown() {
     const RAID_HOUR = 19;
     const RAID_MIN  = 45;
 
-    // Eure Raidtage als Zahlen: 3 = Mittwoch, 4 = Donnerstag
+    // Eure Raidtage: 3 = Mittwoch, 4 = Donnerstag
     const raidDays = [3, 4]; 
     let nextRaid = null;
     let minDiff = Infinity;
 
-    // Das Skript prüft beide Tage und nimmt den, der am dichtesten in der Zukunft liegt
     raidDays.forEach(day => {
         let targetDate = new Date();
         let daysAhead = (day - now.getDay() + 7) % 7;
@@ -551,7 +550,7 @@ function updateRaidCountdown() {
         targetDate.setDate(now.getDate() + daysAhead);
         targetDate.setHours(RAID_HOUR, RAID_MIN, 0, 0);
 
-        // Wenn der Raidtag heute ist, aber die Uhrzeit schon vorbei ist -> Springe zur nächsten Woche
+        // Wenn der Raidtag heute ist, aber 19:45 Uhr schon vorbei ist -> nächste Woche
         if (daysAhead === 0 && now > targetDate) {
             targetDate.setDate(targetDate.getDate() + 7);
         }
@@ -563,6 +562,7 @@ function updateRaidCountdown() {
         }
     });
 
+    // Berechnung von Tagen, Stunden, Minuten und Sekunden
     const d = Math.floor(minDiff / (1000 * 60 * 60 * 24));
     const h = Math.floor((minDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const m = Math.floor((minDiff % (1000 * 60 * 60)) / (1000 * 60));
@@ -570,8 +570,9 @@ function updateRaidCountdown() {
 
     const timerElement = document.getElementById("countdown-timer");
     if (timerElement) {
-        // Wenn die Differenz weniger als 3 Stunden her ist (also während des Raids)
-        if (minDiff > 6*24*60*60*1000 + 21*60*60*1000) { 
+        // Wenn der nächste Raid in weniger als 4 Tagen ist UND die Differenz negativ wäre 
+        // (oder wir uns im Zeitfenster des aktuellen Raids befinden – z.B. Mittwochabend)
+        if (minDiff < 0) { 
             timerElement.innerHTML = "<span style='color: #00ff00; text-shadow: 0 0 5px #00ff00;'>RAID LÄUFT! AUFSTELLEN! ⚔️</span>";
         } else {
             // Schickes Format: 1d : 05h : 42m : 11s
