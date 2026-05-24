@@ -516,40 +516,51 @@ function removeTickerItem(element) {
     const item = element.parentElement;
     item.remove();
 }
-    // --- 5. LIVE-COUNTDOWN FÜR DEN NÄCHSTEN RAID ---
+// --- 5. LIVE-COUNTDOWN FÜR MITTWOCH & DONNERSTAG ---
 function updateRaidCountdown() {
     const now = new Date();
-    const nextRaid = new Date();
     
-    // Annahme: Euer Hauptraid ist z.B. jeden Sonntag um 19:30 Uhr
-    // (Kannst du unten anpassen: 0 = Sonntag, 1 = Montag, 2 = Dienstag, etc.)
-    const RAID_WDAY = 0; // Sonntag
+    // HIER STELLST DU DIE UHRZEIT EIN (19:45 Uhr)
     const RAID_HOUR = 19;
-    const RAID_MIN  = 30;
+    const RAID_MIN  = 45;
 
-    let daysSize = (RAID_WDAY - now.getDay() + 7) % 7;
-    
-    nextRaid.setDate(now.getDate() + daysSize);
-    nextRaid.setHours(RAID_HOUR, RAID_MIN, 0, 0);
+    // Eure Raidtage als Zahlen: 3 = Mittwoch, 4 = Donnerstag
+    const raidDays = [3, 4]; 
+    let nextRaid = null;
+    let minDiff = Infinity;
 
-    // Wenn der Raid heute war und die Uhrzeit schon vorbei ist -> Nächste Woche
-    if (daysSize === 0 && now > nextRaid) {
-        nextRaid.setDate(nextRaid.getDate() + 7);
-    }
+    // Das Skript prüft beide Tage und nimmt den, der am dichtesten in der Zukunft liegt
+    raidDays.forEach(day => {
+        let targetDate = new Date();
+        let daysAhead = (day - now.getDay() + 7) % 7;
+        
+        targetDate.setDate(now.getDate() + daysAhead);
+        targetDate.setHours(RAID_HOUR, RAID_MIN, 0, 0);
 
-    const diff = nextRaid - now;
+        // Wenn der Raidtag heute ist, aber die Uhrzeit schon vorbei ist -> Springe zur nächsten Woche
+        if (daysAhead === 0 && now > targetDate) {
+            targetDate.setDate(targetDate.getDate() + 7);
+        }
 
-    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    const s = Math.floor((diff % (1000 * 60)) / 1000);
+        let diff = targetDate - now;
+        if (diff < minDiff) {
+            minDiff = diff;
+            nextRaid = targetDate;
+        }
+    });
+
+    const d = Math.floor(minDiff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((minDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((minDiff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((minDiff % (1000 * 60)) / 1000);
 
     const timerElement = document.getElementById("countdown-timer");
     if (timerElement) {
-        if (diff <= 0) {
-            timerElement.innerHTML = "<span style='color: #ff0000; animate: pulse 1s infinite;'>RAID LÄUFT! AUFSTELLEN! ⚔️</span>";
+        // Wenn die Differenz weniger als 3 Stunden her ist (also während des Raids)
+        if (minDiff > 6*24*60*60*1000 + 21*60*60*1000) { 
+            timerElement.innerHTML = "<span style='color: #00ff00; text-shadow: 0 0 5px #00ff00;'>RAID LÄUFT! AUFSTELLEN! ⚔️</span>";
         } else {
-            // Schickes Format: 02d : 05h : 42m : 11s
+            // Schickes Format: 1d : 05h : 42m : 11s
             timerElement.textContent = 
                 `${d}d : ${String(h).padStart(2, '0')}h : ${String(m).padStart(2, '0')}m : ${String(s).padStart(2, '0')}s`;
         }
