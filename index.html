@@ -518,7 +518,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-// --- 5. LIVE-COUNTDOWN (KOMPLETT ISOLIERT & GEKAPSELT) ---
+// --- 5. LIVE-COUNTDOWN (KOMPLETT WASSERDICHT GELÖST) ---
 (function() {
     function updateRaidCountdown() {
         const timerElement = document.getElementById("countdown-timer");
@@ -528,9 +528,10 @@ document.addEventListener("DOMContentLoaded", function() {
             const now = new Date();
             const RAID_HOUR = 19;
             const RAID_MIN  = 45;
-            const raidDays = [3, 4]; // Mittwoch und Donnerstag
+            const raidDays = [3, 4]; // Mittwoch (3) und Donnerstag (4)
             
             let minDiff = Infinity;
+            let raidRunning = false;
 
             raidDays.forEach(day => {
                 let targetDate = new Date();
@@ -539,24 +540,34 @@ document.addEventListener("DOMContentLoaded", function() {
                 targetDate.setDate(now.getDate() + daysAhead);
                 targetDate.setHours(RAID_HOUR, RAID_MIN, 0, 0);
 
-                if (daysAhead === 0 && now > targetDate) {
+                // Ein zweites Datum für das Raid-Ende erstellen (z.B. 3 Stunden Laufzeit bis 22:45 Uhr)
+                let endDate = new Date(targetDate.getTime() + (3 * 60 * 60 * 1000));
+
+                // Befinden wir uns JETZT genau in diesem Raid-Zeitfenster?
+                if (daysAhead === 0 && now >= targetDate && now <= endDate) {
+                    raidRunning = true;
+                }
+
+                // Wenn der Raidtag heute ist, aber das Raidfenster schon vorbei ist -> Nächste Woche planen
+                if (daysAhead === 0 && now > endDate) {
                     targetDate.setDate(targetDate.getDate() + 7);
                 }
 
                 let diff = targetDate - now;
-                if (diff < minDiff) {
+                // Nur zukünftige Differenzen für den Countdown auswerten
+                if (diff > 0 && diff < minDiff) {
                     minDiff = diff;
                 }
             });
 
-            const d = Math.floor(minDiff / (1000 * 60 * 60 * 24));
-            const h = Math.floor((minDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((minDiff % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((minDiff % (1000 * 60)) / 1000);
-
-            if (minDiff < 0) { 
+            if (raidRunning) { 
                 timerElement.innerHTML = "<span style='color: #00ff00; text-shadow: 0 0 5px #00ff00;'>RAID LÄUFT! AUFSTELLEN! ⚔️</span>";
-            } else {
+            } else if (minDiff !== Infinity) {
+                const d = Math.floor(minDiff / (1000 * 60 * 60 * 24));
+                const h = Math.floor((minDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((minDiff % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((minDiff % (1000 * 60)) / 1000);
+
                 timerElement.textContent = 
                     `${d}d : ${String(h).padStart(2, '0')}h : ${String(m).padStart(2, '0')}m : ${String(s).padStart(2, '0')}s`;
             }
@@ -571,7 +582,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // --- MIMIMI BUTTON FUNKTION ---
 const MIMIMI_QUOTES = [
-    "Wirbelwind ist KEIN Karussell! Warum laufen da fünf Caster gleichzeitig rein?! Seid ihr farbenblind? 🎡💀",
+    "Wirbelwind ist KEIN Karussell! Warum laufen da pfünf Caster gleichzeitig rein?! Seid ihr farbenblind? 🎡💀",
     "Pukipala macht 119 DPS. Ein nackter Gnom mit einem Holzlöffel macht im Autohit mehr Druck! AUFWACHEN! 🪵💤",
     "Dagegen ist schon wieder First-Death! Jungs, wenn du als Magier Aggro ziehst, hilft dir auch kein Manaschild mehr! 🛌🧙‍♂️",
     "Alessâ stirbt an STURZSCHADEN im Schlangenschrein! Hast du versucht Bungee-Jumping ohne Seil zu üben?! 🪂🤣",
@@ -581,9 +592,9 @@ const MIMIMI_QUOTES = [
     "Liebst du das Geräusch vom Boss-Hammer oder warum läufst du da jede ID dreimal rein?! 🔨💥",
     "Im Flammenfeld von Al'ar ist es gemütlich warm, gell? DA BLEIBT MAN NICHT LIEGEN! Raus da! 🔥🏃‍♂️",
     "Ihr teilt euch doch alle eine einzige Gehirnzelle im Raid, und die hat heute auch noch Urlaub! 🧠✈️",
-    "Kuscheln könnt ihr nach dem Raid im Goldhain, hier wird Abstand gehalten beim Multi-Shot! 🏹💥"
+    "Kuscheln könnt ihr nach dem Raid im Goldhain, hier wird Abstand gehalten beim Multi-Shot! 🏹💥", // Hier war das fehlende Komma fixiert!
     "Was war das gerade für ein bodenloser Slotwaste im DPS-Meter?! Ihr verdammten Slacker könnt froh sein, wenn ich euch nächste ID überhaupt als Groupie mitnehme! 📉🗑️",
-    "Ihr raidet alle wie der letzte Hurensohn mit hartem R! Jedes Mal das Gleiche mit euch Slackern bei den einfachsten Boss-Mechaniken! 🤬🔨",
+    "Ihr raidet alle wie der letzte Hurensohn mit hartem R! Jedes Mal das Gewohnte mit euch Slackern bei den einfachsten Boss-Mechaniken! 🤬🔨",
     "Wie kann man sich nur so dermaßen den Schwanz in der Instanz-Tür einklemmen?! Schaltet endlich das Gehirn ein oder verpisst euch nach Elwynn! 🚪🤡",
     "Seid ihr farbenblind, dumm oder einfach nur unfassbare Slacker?! Die Voidzone leuchtet nicht umsonst lila, ihr Hurensöhne! 🟣💀",
     "Ein nackter Gnom mit einem Holzlöffel macht im Autohit mehr Druck als dieser absolute Slotwaste von Raid-Kader! Schämt euch! 🪵💤",
