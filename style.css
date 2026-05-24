@@ -220,6 +220,21 @@ h2, h3 {
     padding-bottom: 5px;
 }
 
+/* --- EXTRA LESBARER TEXT FÜR DIE RAID-NEWS --- */
+.sidebar-box p {
+    color: #e0e0e0 !important; /* Ein helles, klares Grau-Weiß */
+    font-size: 0.9rem;
+}
+
+/* Falls du die Links/Daten in den News auch heller haben willst */
+.sidebar-box ul li {
+    color: #ffffff !important; /* Knallweiß für Listen-Einträge in der Sidebar */
+}
+
+.sidebar-box h3 {
+    color: #ff3333 !important; /* Macht die Überschrift "Raid-News" feurig rot */
+}
+
 /* --- 7. TABELLEN (ANWESENHEIT & RAIDS) --- */
 table {
     width: 100%;
