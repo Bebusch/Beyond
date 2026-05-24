@@ -1,4 +1,4 @@
-/* ==========================================================================
+* ==========================================================================
    BEYOND - Raid Analysen (Dark Mode / Sündenregister Theme)
    ========================================================================== */
 
@@ -28,7 +28,7 @@
     --color-priest: #ffffff;
 }
 
-/* --- 2. GRUNDLAYOUT --- */
+/* --- 2. GENERELLE EINSTELLUNGEN --- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -36,321 +36,334 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     background-color: var(--bg-dark);
     color: var(--text-main);
+    line-height: 1.6;
 }
 
 .container {
-    width: 95%;
+    width: 100%;
     max-width: 1200px;
-    margin: auto;
-    overflow: hidden;
-    padding: 0 15px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
-a {
-    color: var(--accent-red);
-    text-decoration: none;
-    transition: color 0.3s;
-}
+/* --- 3. CLASS-COLOR ASSIGNMENTS (TYPOGRAFIE) --- */
+.color-hunter { color: var(--color-hunter) !important; }
+.color-rogue { color: var(--color-rogue) !important; }
+.color-shaman { color: var(--color-shaman) !important; }
+.color-warlock { color: var(--color-warlock) !important; }
+.color-warrior { color: var(--color-warrior) !important; }
+.color-paladin { color: var(--color-paladin) !important; }
+.color-mage { color: var(--color-mage) !important; }
+.color-druid { color: var(--color-druid) !important; }
+.color-priest { color: var(--color-priest) !important; }
 
-a:hover {
-    color: var(--accent-red-hover);
-}
-
-/* --- 3. HEADER & BANNER (NEU ANGEORDNET) --- */
+/* --- 4. HEADER & NAVI --- */
 .main-header {
-    background: var(--bg-header);
+    background-color: var(--bg-header);
     border-bottom: 2px solid var(--accent-red);
-    padding: 15px 20px;
-    margin-bottom: 0 !important; /* Verhindert Lücke zum Ticker */
-    position: relative;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .header-container {
     display: flex;
-    justify-content: center; /* Zentriert das Logo grundsätzlich */
+    justify-content: space-between;
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
-    position: relative; /* Wichtig, damit der Timer absolut positioniert werden kann */
-    min-height: 80px; /* Platzhalter, falls Logo lädt */
+    padding: 0 20px;
 }
 
 .header-logo {
-    max-height: 90px;
-    width: auto;
+    height: 45px;
     display: block;
-    filter: drop-shadow(0px 0px 8px rgba(170, 0, 0, 0.4));
+    transition: transform 0.2s ease;
 }
 
-/* Der Countdown klebt jetzt kompakt rechts in der Ecke des Banners */
-#raid-countdown-box {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(20, 20, 20, 0.85);
-    border: 1px solid var(--accent-red);
-    padding: 6px 12px;
-    border-radius: 4px;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(170, 0, 0, 0.3);
-    min-width: 180px;
+.header-logo:hover {
+    transform: scale(1.03);
 }
 
-#raid-countdown-box div:first-child {
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 2px;
-}
-
-#countdown-timer {
-    font-size: 1rem;
-    font-weight: bold;
-    color: var(--text-bright);
-    font-family: monospace;
-}
-
-/* --- 4. LIVE TICKER --- */
+/* --- 5. INTERAKTIVER NEWS-TICKER (SCHWANZ-LISTE) --- */
 .ticker-wrap {
     width: 100%;
-    background: var(--bg-panel);
-    border-bottom: 1px solid var(--border-color);
     overflow: hidden;
-    height: 35px;
+    background: #000000;
+    border-bottom: 1px solid var(--border-color);
+    padding: 8px 0;
     display: flex;
     align-items: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    margin-top: 0 !important;
 }
 
 .ticker-title {
     background: var(--accent-red);
-    color: var(--text-bright);
-    padding: 0 15px;
-    height: 100%;
-    display: flex;
-    align-items: center;
+    color: #ffffff;
     font-weight: bold;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    padding: 4px 12px;
     white-space: nowrap;
     z-index: 10;
     box-shadow: 5px 0 10px rgba(0,0,0,0.5);
+    letter-spacing: 0.5px;
 }
 
 .ticker {
     display: flex;
     white-space: nowrap;
-    padding-left: 100%;
-    animation: marquee 35s linear infinite;
+    animation: ticker 35s linear infinite;
+    padding-left: 20px;
 }
 
-.ticker-wrap:hover .ticker {
+.ticker:hover {
     animation-play-state: paused;
 }
 
 .ticker-item {
     display: inline-flex;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 14px;
     font-size: 0.9rem;
     font-weight: bold;
+    color: #fff;
+    background: #0d0d0f;
+    margin-right: 8px;
+    border: 1px solid #1c1c1f;
+    border-radius: 3px;
+    height: 26px;
 }
 
 .ticker-del {
-    color: var(--text-muted);
-    margin-left: 6px;
+    margin-left: 8px;
+    color: #555;
     cursor: pointer;
-    font-size: 0.8rem;
-    transition: color 0.2s, transform 0.2s;
+    font-size: 0.95rem;
+    font-weight: normal;
+    transition: color 0.15s;
 }
 
 .ticker-del:hover {
     color: var(--accent-red-hover);
-    transform: scale(1.3);
 }
 
-@keyframes marquee {
+@keyframes ticker {
     0% { transform: translate3d(0, 0, 0); }
-    100% { transform: translate3d(-100%, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
 }
 
-/* --- 5. GRID LAYOUT (CONTENT & SIDEBAR) --- */
+/* --- 6. BLOG LAYOUT (MAIN & SIDEBAR) --- */
 .blog-layout {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
+    display: flex;
     gap: 30px;
-    margin-top: 25px; /* Symmetrischer Abstand zum Ticker */
-    align-items: start; /* Ganz wichtig: Zieht die Sidebar nach oben, damit sie nicht durch Inhalt rutscht */
+    margin-top: 30px;
+    margin-bottom: 5px;
 }
 
-@media (max-width: 900px) {
-    .blog-layout {
-        grid-template-columns: 1fr;
-    }
-    #raid-countdown-box {
-        position: static;
-        transform: none;
-        margin-top: 10px;
-    }
-    .header-container {
-        flex-direction: column;
-    }
+.main-content {
+    flex: 3;
+    min-width: 0;
 }
 
-/* --- 6. ARTIKEL & BOXEN --- */
-.post, .sidebar-box, .attendance-box, .shame-box, .mimimi-btn-box {
-    background: var(--bg-panel);
-    padding: 25px;
-    margin-bottom: 30px;
+.sidebar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* --- 7. ALLGEMEINE PANELS / BOXEN (.POST) --- */
+.post {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
-h2, h3 {
+.post h2 {
     color: var(--text-bright);
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+}
+
+.post h3 {
+    color: var(--text-bright);
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+}
+
+.post p {
     margin-bottom: 15px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 5px;
+    color: var(--text-main);
 }
 
-/* --- EXTRA LESBARER TEXT FÜR DIE RAID-NEWS --- */
-.sidebar-box p {
-    color: #e0e0e0 !important; /* Ein helles, klares Grau-Weiß */
-    font-size: 0.9rem;
-}
-
-/* Falls du die Links/Daten in den News auch heller haben willst */
-.sidebar-box ul li {
-    color: #ffffff !important; /* Knallweiß für Listen-Einträge in der Sidebar */
-}
-
-.sidebar-box h3 {
-    color: #ff3333 !important; /* Macht die Überschrift "Raid-News" feurig rot */
-}
-
-/* --- 7. TABELLEN (ANWESENHEIT & RAIDS) --- */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    background: var(--bg-dark);
-}
-
-th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-}
-
-th {
-    background-color: #1a1a1c;
-    color: var(--text-bright);
-    font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-}
-
-tr:hover td {
-    background-color: #1a1a1c;
-}
-
-.table-responsive {
-    overflow-x: auto;
-}
-
-/* Details/Summary für ein- und ausklappbare Tabellen */
-details {
-    background: var(--bg-dark);
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    padding: 10px;
-    margin-top: 15px;
-}
-
-summary {
-    font-weight: bold;
-    cursor: pointer;
-    color: var(--accent-red);
-    outline: none;
-    padding: 5px;
-}
-
-summary:hover {
-    color: var(--accent-red-hover);
-}
-
-/* --- 8. LISTEN IM CONTENT --- */
 .post ul {
-    list-style-type: none;
-    padding-left: 0;
-    margin-top: 15px;
+    margin-left: 20px;
+    margin-bottom: 25px;
 }
 
 .post li {
-    background: var(--bg-dark);
-    margin-bottom: 10px;
-    padding: 12px 15px;
-    border-left: 4px solid var(--accent-red);
-    border-radius: 3px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    margin-bottom: 8px;
 }
 
-/* --- 9. SIDEBAR ELEMENTE --- */
+.date {
+    display: inline-block;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+}
+
+/* --- 8. SIDEBAR CONTENT PANELS --- */
+.sidebar-box {
+    background-color: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-box h3 {
+    color: var(--text-bright);
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 6px;
+}
+
 .archive-list {
     list-style: none;
 }
 
 .archive-list li {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .archive-list a {
-    display: block;
-    padding: 8px 12px;
-    background: var(--bg-dark);
-    border-radius: 4px;
-    border: 1px solid var(--border-color);
     color: var(--text-main);
-    transition: all 0.2s;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+    display: block;
 }
 
-.archive-list a:hover, .archive-list a.active {
-    background: var(--accent-red);
+.archive-list a:hover,
+.archive-list a.active {
+    color: var(--accent-red-hover);
+    font-weight: bold;
+}
+
+/* --- 9. TABELLEN-AKKORDEONS & ALLGEMEINE TABELLEN --- */
+.table-accordion {
+    margin-top: 15px;
+}
+
+.table-accordion summary {
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--text-main);
+    padding: 8px;
+    background: #19191c;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    outline: none;
+    user-select: none;
+    transition: background 0.2s;
+}
+
+.table-accordion summary:hover {
+    background: #222226;
+    color: #fff;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+    background: #0d0d0f;
+}
+
+th, td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+th {
+    background-color: #141416;
     color: var(--text-bright);
-    border-color: var(--accent-red);
+    font-weight: bold;
 }
 
-/* --- 10. KLASSENFARBEN --- */
-.color-hunter { color: var(--color-hunter); font-weight: bold; }
-.color-rogue { color: var(--color-rogue); font-weight: bold; }
-.color-shaman { color: var(--color-shaman); font-weight: bold; }
-.color-warlock { color: var(--color-warlock); font-weight: bold; }
-.color-warrior { color: var(--color-warrior); font-weight: bold; }
-.color-paladin { color: var(--color-paladin); font-weight: bold; }
-.color-mage { color: var(--color-mage); font-weight: bold; }
-.color-druid { color: var(--color-druid); font-weight: bold; }
-.color-priest { color: var(--color-priest); font-weight: bold; }
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover td {
+    background-color: #121215;
+}
+
+/* Spezifisch für das Anwesenheits-Meter */
+.attendance-box table th:last-child,
+.attendance-box table td:last-child {
+    width: 160px;
+}
+
+/* --- 10. RAID COUNTDOWN BOX --- */
+#raid-countdown-box {
+    background: #0f0f11;
+    border: 1px solid #222;
+    padding: 6px 14px;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+}
+
+#countdown-timer {
+    font-size: 1rem;
+    color: var(--accent-red-hover);
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: 900;
+    margin-top: 2px;
+    text-shadow: 0 0 4px rgba(255, 51, 51, 0.3);
+}
 
 /* --- 11. FOOTER --- */
 footer {
-    background: var(--bg-header);
-    color: var(--text-muted);
-    text-align: center;
-    padding: 20px 0;
-    margin-top: 40px;
+    background-color: var(--bg-header);
     border-top: 1px solid var(--border-color);
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 50px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
 }
 
-/* --- FIX FÜR DEN DREHBAREN PFEIL & COMPACT LOOK (DETAILS) --- */
 
-/* Verhindert, dass das Flex-Layout der Hauptseite die Hall-of-Shame verzerrt */
+/* ==========================================================================
+   HALL OF SHAME - SPECIAL COMPACT DETAILS-LOOK (NO-ZERO FIX)
+   ========================================================================== */
+
+/* Verhindert Verzerrungen innerhalb des Akkordeons */
 .shame-box details, 
 .details-shame,
 .shame-content-wrapper {
@@ -358,10 +371,14 @@ footer {
     width: 100%;
 }
 
-/* Entfernt die hässliche 0 und stellt den nativen, sauberen Browser-Pfeil ein */
+/* KOMPLETTER PFEIL-FIX: 
+   Wir verwandeln summary in eine Flexbox. Das entzieht dem Browser 
+   die Basis, eine ungewollte nummerierte Liste ("0.") einzublenden!
+*/
+.shame-box summary,
 .details-shame summary {
-    display: list-item !important;    /* Erzwingt die native Listen-Anzeige für den Pfeil */
-    list-style-type: disclosure-closed !important; /* Definiert exakt das geschlossene Dreieck */
+    display: flex !important;         /* Killt die "0.", da kein list-item erzwungen wird */
+    align-items: center !important;
     font-weight: bold;
     cursor: pointer;
     color: var(--accent-red) !important;
@@ -370,16 +387,39 @@ footer {
     margin-bottom: 10px;
 }
 
-/* Wenn das Sündenregister aufgeklappt wird, schwenkt der native Pfeil nach unten */
-.details-shame[open] summary {
-    list-style-type: disclosure-open !important;
+/* Versteckt den fehlerhaften nativen Browser-Marker rigoros */
+.shame-box summary::-webkit-details-marker,
+.details-shame summary::-webkit-details-marker {
+    display: none !important;
+}
+.shame-box summary::marker,
+.details-shame summary::marker {
+    display: none !important;
 }
 
+/* Wir bauen uns einen unzerstörbaren, eigenen Drehpfeil im WoW-Stil */
+.shame-box summary::before,
+.details-shame summary::before {
+    content: "▶";
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 0.75rem;
+    color: var(--accent-red);
+    transition: transform 0.2s ease;
+}
+
+/* Lässt den Pfeil smooth nach unten rotieren, wenn das Sündenregister offen ist */
+.shame-box[open] summary::before,
+.details-shame[open] summary::before {
+    transform: rotate(90deg);
+}
+
+.shame-box summary:hover,
 .details-shame summary:hover {
     color: var(--accent-red-hover) !important;
 }
 
-/* Der innere schwarze Kasten für die Balken (Perfekt im Details-Addon-Style!) */
+/* Der tiefe, pechschwarze Kasten für die Balken (Genau wie Details!-Addon) */
 #shame-chart-container {
     background: #050505 !important;
     padding: 12px !important;
@@ -387,18 +427,18 @@ footer {
     border: 1px solid #111;
     display: flex !important;
     flex-direction: column !important;
-    gap: 4px !important; /* Drückt die Details-Balken eng zusammen, kein Verzerren! */
+    gap: 4px !important; /* Drückt die Leisten extrem kompakt zusammen */
     margin-bottom: 15px;
     width: 100%;
 }
 
-/* Definiert die exakte Spaltenhöhe für jeden einzelnen Balken */
+/* Definiert die exakte Spaltenhöhe für jeden einzelnen Details-Balken */
 .shame-row {
     display: flex !important;
     align-items: center !important;
     position: relative !important;
     width: 100%;
-    height: 22px !important; /* Absolut flach und kompakt wie im Addon */
+    height: 22px !important; /* Extrem flach und kompakt */
     background: rgba(255, 255, 255, 0.02);
     border-radius: 2px;
     overflow: hidden;
@@ -413,6 +453,7 @@ footer {
     z-index: 1;
 }
 
+/* Die Textschicht liegt über dem farbigen Balken */
 .shame-text-layer {
     position: absolute;
     top: 0;
@@ -420,16 +461,29 @@ footer {
     width: 100%;
     height: 100%;
     display: flex !important;
-    justify-content: space-between !important; /* Name links, Zahl rechts */
+    justify-content: space-between !important; /* Name linksbündig, Zahl rechtsbündig */
     align-items: center !important;
-    padding: 0 8px;
+    padding: 0 10px;
     z-index: 2;
     font-family: Arial, sans-serif;
     font-size: 0.85rem;
     font-weight: bold;
 }
 
-.shame-player-name, .shame-death-count {
+.shame-player-name, 
+.shame-death-count {
     color: #ffffff !important;
-    text-shadow: 1px 1px 1px #000000;
+    text-shadow: 1px 1px 2px #000000, -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000;
+}
+
+/* Amtlicher Award-Text unter dem Diagramm */
+#floor-tester-award {
+    background: #1a0f0f;
+    border: 1px solid #3a1111;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: #ffcccc;
 }
