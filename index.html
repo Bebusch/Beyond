@@ -720,28 +720,37 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // FIESE SPRÜCHE FÜR DEN BUTTON
 const MIMIMI_QUOTES = [
+    // --- MOVEMENT & BOSS-MECHANIKEN ---
     "Wirbelwind ist KEIN Karussell! Warum laufen da fünf Caster gleichzeitig rein?! Seid ihr farbenblind? 🎡💀",
-    "Pukipala macht 119 DPS. Ein nackter Gnom mit einem Holzlöffel macht im Autohit mehr Druck! AUFWACHEN! 🪵💤",
-    "Dagegen ist schon wieder First-Death! Jungs, wenn du als Magier Aggro ziehst, hilft dir auch kein Manaschild mehr! 🛌🧙‍♂️",
-    "Alessâ stirbst an STURZSCHADEN im Schlangenschrein! Hast du versucht Bungee-Jumping ohne Seil zu üben?! 🪂🤣",
     "Wer nicht wegläuft, wird weggespült. Wasser marsch! Die Fontäne ist keine Dusche! 🌊🚿",
-    "An alle Schadensverursacher: Eure Trank-Quote ist absolut erbärmlich! 0 Pots eingeworfen aber nach Loot schreien! 🧪❌",
-    "Du bist KEIN Tank! Aggro-Management überdenken oder Reparaturgold selber farmen! 🛡️🛑",
     "Liebst du das Geräusch vom Boss-Hammer oder warum läufst du da jede ID dreimal rein?! 🔨💥",
     "Im Flammenfeld von Al'ar ist es gemütlich warm, gell? DA BLEIBT MAN NICHT LIEGEN! Raus da! 🔥🏃‍♂️",
-    "Ihr teilt euch doch alle eine einzige Gehirnzelle im Raid, und die hat heute auch noch Urlaub! 🧠✈️",
-    "Kuscheln könnt ihr nach dem Raid im Goldhain, hier wird Abstand gehalten beim Multi-Shot! 🏹💥",
-    "Was war das gerade für ein bodenloser Slotwaste im DPS-Meter?! Ihr verdammten Slacker könnt froh sein, wenn ich euch nächste ID überhaupt als Groupie mitnehme! 📉🗑️",
-    "Ihr raidet alle wie der letzte Hurensohn mit hartem R! Jedes Mal das Gleiche mit euch Slackern bei den einfachsten Boss-Mechaniken! 🤬🔨",
-    "Wie kann man sich nur so dermaßen den Schwanz in der Instanz-Tür einklemmen?! Schaltet endlich das Gehirn ein oder verpisst euch nach Elwynn! 🚪🤡",
     "Seid ihr farbenblind, dumm oder einfach nur unfassbare Slacker?! Die Voidzone leuchtet nicht umsonst lila, ihr Hurensöhne! 🟣💀",
+    "Kuscheln könnt ihr nach dem Raid im Goldhain, hier wird gefälligst Abstand gehalten beim Multi-Shot, ihr verdammten Slacker! 🏹💥",
+    "Hurensohn mit hartem R ist noch ein Kompliment für das, was dieser Melee-Haufen da vorne gerade an Movement-Katastrophe abgeliefert hat! 🌪️🏃‍♂️",
+    "Das Umfliegen von dicken, fetten, leuchtenden Orbs gehört scheinbar nicht zu euren Kernkompetenzen. Nächste ID wird vorher Moorhuhn geübt! 🔮🤡",
+    "Ihr steht in der Kälte-Aura wie eingefrorene Fischstäbchen im Kühlregal! Bewegt euren virtuellen Arsch aus den Zonen! 🥶🐟",
+
+    // --- DAMAGE-DEALER & SLOTWASTE ---
     "Ein nackter Gnom mit einem Holzlöffel macht im Autohit mehr Druck als dieser absolute Slotwaste von Raid-Kader! Schämt euch! 🪵💤",
-    "Ich verteile nächste ID keine Pots mehr, sondern nur noch Taschentücher für euer elendiges Mimimi beim Loot-Verteilen! Slacker-Bande! 🧪😭",
-    "Aggro-Management wie ein Dreijähriger auf Ecstasy! Du bist kein Tank, du bist einfach nur purer Slotwaste! Pack die Sachen! 🛡️❌",
+    "Was war das gerade für ein bodenloser Slotwaste im DPS-Meter?! Ihr verdammten Slacker könnt froh sein, wenn ich euch nächste ID überhaupt als Groupie mitnehme! 📉🗑️",
+    "Wie kann man sich nur so dermaßen den Schwanz in der Instanz-Tür einklemmen?! Schaltet endlich das Gehirn ein oder verpisst euch nach Elwynn! 🚪🤡",
     "Das war wieder ein kollektiver Schwanz-Vergleich im Recount, während draußen die Heiler jämmerlich verreckt sind! Grandios gemacht, ihr Helden! 🪓🚑",
+    "Ihr teilt euch doch alle eine einzige Gehirnzelle im Raid, und die hat heute auch noch Urlaub! 🧠✈️",
+    "Eure Rotations-Logik basiert scheinbar auf dem Zufallsprinzip. Ein dressierter Schimpanse auf einer Schreibmaschine drückt mehr DPS! 🐒⌨️",
+    "Wenn der Shadow mehr Aggro zieht als die Furor-Krieger Schaden machen, läuft hier gewaltig was schief. Macht die Augen auf! 📉🕶️",
+
+    // --- AGGRO & TANK-FAILER ---
+    "Du bist KEIN Tank! Aggro-Management überdenken oder Reparaturgold selber farmen! 🛡️🛑",
+    "Aggro-Management wie ein Dreijähriger auf Ecstasy! Du bist kein Tank, du bist einfach nur purer Slotwaste! Pack die Sachen! 🛡️❌",
+    "Schon wieder First-Death bei den Castern! Jungs, wenn ihr instant beim Pull voll reinzündet, hilft euch auch kein Manaschild mehr! 🛌🧙‍♂️",
+    "Wer dem Tank vor dem Antanken die Aggro klaut, darf den Boss zur Strafe bis nach Shattrath kiten. Unfassbare Slacker! 🏃‍♂️💨",
+
+    // --- SLACKER, BUFFS & TRÄNKE ---
+    "An alle Schadensverursacher: Eure Trank-Quote ist absolut erbärmlich! 0 Pots eingeworfen aber nach Loot schreien! 🧪❌",
+    "Ich verteile nächste ID keine Pots mehr, sondern nur noch Taschentücher für euer elendiges Mimimi beim Loot-Verteilen! Slacker-Bande! 🧪😭",
     "Wer nächste ID wieder ohne Pots, Food und Schleifsteine antritt, fliegt hochkant hoch 8 aus dem Raid. Ich füttere keine Slacker durch! 🍗🛑",
-    "Hurensohn mit hartem R ist noch ein Kompliment für das, was dieser Caster-Haufen da hinten gerade an Movement-Katastrophe abgeliefert hat! 🌪️🏃‍♂️",
-    "Kuscheln könnt ihr nach dem Raid im Goldhain, hier wird gefälligst Abstand gehalten beim Multi-Shot, ihr verdammten Slacker! 🏹💥"
+    "Keine Flask, kein Food, aber im TS große Töne spucken. Ihr seid keine Raider, ihr seid glorifizierte Touristen! 🎒🎫"
 ];
 
 function generateQuote() {
