@@ -516,3 +516,9 @@ footer {
     font-size: 0.9rem;
     color: #ffcccc;
 }
+
+.quote-box {
+    display: flex;
+    align-items: center;     /* Zentriert alles perfekt von oben nach unten */
+    justify-content: center;  /* Zentriert alles perfekt von links nach rechts */
+}
