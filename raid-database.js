@@ -51,7 +51,20 @@ const RAID_DATABASE = {
                 "Vaeroketh", "Dagegen", "Fckmogli", "Salzstange", "Bruegal", 
                 "Pukipala", "Chalawan", "Helumi", "Schuppenhuhn", "Safedich", "Alessâ"
             ]
-        }
+        },
+        {
+        id: "raid-27-05", 
+        date: "2026-05-27",
+        zone: "SSC / TK",
+        score: "2-",
+        attendees: [
+            "Bruegal", "Salzstange", "Fckmogli", "Nanev", "Vaeroketh", 
+            "Chaixi", "Tempêst", "Jibbi", "Tombery", "Schamänä", 
+            "Aevips", "Thyndal", "Konsequenz", "Glebbo", "Størmdude", 
+            "Elyrii", "Blackzillaqt", "Zilinei", "Dagegen", "Purine", 
+            "Chalawan", "Helumi", "Schuppenhuhn", "Takko", "Alessâ"
+        ]
+    }
     ],
 
     // Spielerspezifische Stammdaten (Damit Klassenfarben und Klarnamen IMMER stimmen)
