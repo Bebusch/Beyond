@@ -72,6 +72,7 @@ body {
 
 .header-container {
     display: flex;
+    flex-wrap: wrap;
     justify-content: center; /* SPERRT DAS LOGO BOMBENFEST IN DER MITTE */
     align-items: center;
     max-width: 1200px;
